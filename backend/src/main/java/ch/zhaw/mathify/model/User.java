@@ -9,6 +9,9 @@ public class User {
     private int level;
     private int exp;
 
+    /**
+     * @param username username of the user
+     */
     public User(String username) {
         this.username = username;
         this.level = 1;
@@ -22,7 +25,7 @@ public class User {
         this.exp += exp;
         if (this.exp >= 100) {
             this.exp -= 100;
-            this.level++;
+            level++;
         }
     }
 
