@@ -1,8 +1,8 @@
 package ch.zhaw.mathify.math;
 
-public class ArithmeticExercise implements Exercise{
+public class ArithmeticExercise extends Exercise {
     @Override
     public double getResult() {
-        return 0;
+        return 0.0;
     }
 }

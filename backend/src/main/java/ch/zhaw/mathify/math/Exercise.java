@@ -1,5 +1,11 @@
 package ch.zhaw.mathify.math;
 
-public interface Exercise {
-    double getResult();
+import ch.zhaw.mathify.model.Grade;
+
+public abstract class Exercise {
+    private Grade grade;
+    public abstract double getResult();
+    protected void build(Grade grade){
+        this.grade = grade;
+    }
 }
