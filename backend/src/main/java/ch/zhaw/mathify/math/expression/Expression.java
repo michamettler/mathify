@@ -37,15 +37,12 @@ public class Expression {
             char operator = operators.get(i);
             double operand = operands.get(i + 1);
             switch (operator) {
-                case '+':
-                    result += operand;
-                    break;
-                case '-':
-                    result -= operand;
-                    break;
-                default:
+                case '+' -> result += operand;
+                case '-' -> result -= operand;
+                default -> {
                     LOG.error("Unknown operator: {}", operator);
                     throw new IllegalArgumentException("Unknown operator: " + operator);
+                }
             }
         }
         return result;
