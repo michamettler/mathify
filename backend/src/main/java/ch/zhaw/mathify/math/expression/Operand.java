@@ -1,7 +1,7 @@
 package ch.zhaw.mathify.math.expression;
 
 public class Operand implements Expression{
-    private double value;
+    private final double value;
 
     public Operand(double value) {
         this.value = value;

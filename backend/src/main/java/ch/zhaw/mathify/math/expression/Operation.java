@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
  */
 public class Operation implements Expression {
     private static final Logger LOG = LoggerFactory.getLogger(Operation.class);
-    private Expression left;
-    private Expression right;
-    private char operator;
+    private final Expression left;
+    private final Expression right;
+    private final char operator;
 
     /**
      * @param left left part of the operation
