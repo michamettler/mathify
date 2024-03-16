@@ -3,8 +3,6 @@ package ch.zhaw.mathify.math.exercise;
 import ch.zhaw.mathify.math.expression.Expression;
 import ch.zhaw.mathify.model.Grade;
 
-import java.util.List;
-
 public abstract class Exercise {
     private Grade grade;
     private ExerciseSubType subType;
