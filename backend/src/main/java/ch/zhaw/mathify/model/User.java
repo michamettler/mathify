@@ -1,12 +1,17 @@
 package ch.zhaw.mathify.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * User model with username, level and experience
  * Every 100exp, the level will increase by one
  */
 public class User {
+    @JsonProperty
     private String username;
+    @JsonProperty
     private int level;
+    @JsonProperty
     private int exp;
 
     /**
@@ -15,6 +20,14 @@ public class User {
     public User(String username) {
         this.username = username;
         this.level = 1;
+    }
+
+    /**
+     * Default constructor used by Jackson object mapper
+     */
+    public User() {
+        this.level = 1;
+        this.exp = 0;
     }
 
     /**
