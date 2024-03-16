@@ -11,4 +11,11 @@ public abstract class Exercise {
         this.grade = grade;
         this.subType = subType;
     }
+
+    /**
+     * @return the result of the exercise
+     */
+    public double getResult() {
+        return expression.evaluate();
+    }
 }
