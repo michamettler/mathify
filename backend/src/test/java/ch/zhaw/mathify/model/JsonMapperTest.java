@@ -18,11 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class JsonMapperTest {
     private final List<User> users = List.of(
-            new User("john_doe", 10, 1500),
-            new User("jane_smith", 8, 1200),
-            new User("alex_jones", 12, 1800),
-            new User("sarah_jackson", 6, 900),
-            new User("michael_brown", 15, 2500)
+            new User("john_doe", 10, 55),
+            new User("jane_smith", 8, 44),
+            new User("alex_jones", 12, 33),
+            new User("sarah_jackson", 6, 22),
+            new User("michael_brown", 15, 11)
     );
     private List<User> jsonUsers;
     @BeforeEach
