@@ -18,15 +18,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class JsonMapperTest {
     private final List<User> users = List.of(
-            new User("john_doe", 10, 55),
-            new User("jane_smith", 8, 44),
-            new User("alex_jones", 12, 33),
-            new User("sarah_jackson", 6, 22),
-            new User("michael_brown", 15, 11)
+            new User("john_doe"),
+            new User("jane_smith"),
+            new User("alex_jones"),
+            new User("sarah_jackson"),
+            new User("michael_brown")
     );
     private List<User> jsonUsers;
     @BeforeEach
     void setup() throws Exception {
+        users.get(0).setLevel(10);
+        users.get(0).setExp(55);
+        users.get(1).setLevel(8);
+        users.get(1).setExp(44);
+        users.get(2).setLevel(12);
+        users.get(2).setExp(33);
+        users.get(3).setLevel(6);
+        users.get(3).setExp(22);
+        users.get(4).setLevel(15);
+        users.get(4).setExp(11);
         try{
             File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("users.json")).getFile());
             String jsonString = Files.readString(file.toPath());

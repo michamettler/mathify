@@ -23,20 +23,11 @@ public class User {
     }
 
     /**
-     * @param username username of the user
-     * @param level    level of the user
-     * @param exp      experience of the user
-     */
-    public User(String username, int level, int exp) {
-        this.username = username;
-        this.level = level;
-        this.exp = exp;
-    }
-
-    /**
      * Default constructor used by Jackson object mapper
      */
     public User() {
+        this.level = 1;
+        this.exp = 0;
     }
 
     /**
