@@ -1,27 +1,21 @@
-[
-  {
-    "username": "john_doe",
-    "level": 10,
-    "experience": 1500
-  },
-  {
-    "username": "jane_smith",
-    "level": 8,
-    "experience": 1200
-  },
-  {
-    "username": "alex_jones",
-    "level": 12,
-    "experience": 1800
-  },
-  {
-    "username": "sarah_jackson",
-    "level": 6,
-    "experience": 900
-  },
-  {
-    "username": "michael_brown",
-    "level": 15,
-    "experience": 2500
-  }
-]
+[ {
+  "username" : "john_doe",
+  "level" : 10,
+  "experience" : 55
+}, {
+  "username" : "jane_smith",
+  "level" : 8,
+  "experience" : 44
+}, {
+  "username" : "alex_jones",
+  "level" : 12,
+  "experience" : 33
+}, {
+  "username" : "sarah_jackson",
+  "level" : 6,
+  "experience" : 22
+}, {
+  "username" : "michael_brown",
+  "level" : 15,
+  "experience" : 11
+} ]
