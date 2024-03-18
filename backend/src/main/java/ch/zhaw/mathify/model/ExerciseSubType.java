@@ -4,6 +4,5 @@ public enum ExerciseSubType {
     ADDITION,
     SUBTRACTION,
     MULTIPLICATION,
-    DIVISION,
-    MIXED
+    DIVISION
 }
