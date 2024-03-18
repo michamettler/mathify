@@ -4,10 +4,9 @@ import ch.zhaw.mathify.util.JsonMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,8 +38,8 @@ class JsonMapperTest {
         users.get(4).setLevel(15);
         users.get(4).setExperience(11);
         try{
-            Path file = Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource("users.json")).toURI());
-            String jsonString = Files.readString(file);
+            File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("users.json")).getFile());
+            String jsonString = Files.readString(file.toPath());
             jsonUsers = JsonMapper.Map(jsonString, User.class);
         } catch (IOException e) {
             System.out.println("TEST-ERROR!");

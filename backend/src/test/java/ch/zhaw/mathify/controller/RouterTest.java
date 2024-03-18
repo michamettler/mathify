@@ -13,8 +13,8 @@ import static org.mockito.Mockito.when;
 /**
  * Tests the Backbone of the class for Frontend <> Backend
  */
-public class BackboneTest {
-    private static Backbone backbone;
+public class RouterTest {
+    private static Router backbone;
     private Context ctx;
 
     /**
@@ -22,7 +22,7 @@ public class BackboneTest {
      */
     @BeforeAll
     public static void setUpBeforeAll() {
-        backbone = new Backbone();
+        backbone = new Router();
         backbone.startApplication();
     }
 
@@ -36,7 +36,7 @@ public class BackboneTest {
 
 
     /**
-     * Fail to retrieve a specific user cause they don't exist
+     * Fail to retrieve a specific user because they don't exist
      */
     @Test
     public void testRetrieveUserByIDUnsuccessful() {

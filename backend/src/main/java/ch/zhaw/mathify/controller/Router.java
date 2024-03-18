@@ -6,17 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Class responsible for creating endpoints to communicate between Front- and Backend
  */
-public class Backbone {
+public class Router {
     ObjectMapper mapper = new ObjectMapper();
     List<User> userList;
     Javalin app;
@@ -24,12 +22,12 @@ public class Backbone {
     /**
      * Read the users.json file
      */
-    public Backbone() {
+    public Router() {
         try {
-            Path file = Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource("users.json")).toURI());
-            userList = mapper.readValue(file.toFile(), new TypeReference<>() {
+            File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("users.json")).getFile());
+            userList = mapper.readValue(file, new TypeReference<>() {
             });
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             //TODO: Replace with LOG4J
             e.printStackTrace();
         }
@@ -73,15 +71,15 @@ public class Backbone {
         for (User user : userList) {
             if (user.getUsername().equalsIgnoreCase(username)) {
                 try {
-                    ctx.status(200);
                     ctx.result(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(user));
+                    ctx.status(200);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 return;
             }
         }
-        ctx.status(404);
         ctx.result("User " + username + " not found!");
+        ctx.status(404);
     }
 }
