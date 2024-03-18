@@ -15,9 +15,9 @@ import java.util.Objects;
  * Class responsible for creating endpoints to communicate between Front- and Backend
  */
 public class Router {
-    ObjectMapper mapper = new ObjectMapper();
-    List<User> userList;
-    Javalin app;
+    private final ObjectMapper mapper = new ObjectMapper();
+    private List<User> userList;
+    private Javalin app;
 
     /**
      * Read the users.json file
