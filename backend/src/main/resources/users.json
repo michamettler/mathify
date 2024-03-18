@@ -2,26 +2,36 @@
   {
     "username": "john_doe",
     "level": 10,
-    "experience": 1500
+    "exp": 55,
+    "email": "jd@gmail.com",
+    "password": "password"
   },
   {
     "username": "jane_smith",
     "level": 8,
-    "experience": 1200
+    "exp": 44,
+    "email": "js@mail.com",
+    "password": "admin123"
   },
   {
     "username": "alex_jones",
     "level": 12,
-    "experience": 1800
+    "exp": 33,
+    "email": "abc@xmail.com",
+    "password": "password123"
   },
   {
     "username": "sarah_jackson",
     "level": 6,
-    "experience": 900
+    "exp": 22,
+    "email": "sjackson@mail.com",
+    "password": "password123"
   },
   {
     "username": "michael_brown",
     "level": 15,
-    "experience": 2500
+    "exp": 11,
+    "email": "mail@mail.com",
+    "password": "password123"
   }
 ]

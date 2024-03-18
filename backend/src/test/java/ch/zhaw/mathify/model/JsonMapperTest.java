@@ -18,15 +18,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class JsonMapperTest {
     private final List<User> users = List.of(
-            new User("john_doe"),
-            new User("jane_smith"),
-            new User("alex_jones"),
-            new User("sarah_jackson"),
-            new User("michael_brown")
+            new User("john_doe", "jd@gmail.com", "password"),
+            new User("jane_smith", "js@mail.com", "admin123"),
+            new User("alex_jones", "abc@xmail.com", "password123"),
+            new User("sarah_jackson", "sjackson@mail.com", "password123"),
+            new User("michael_brown", "mail@mail.com", "password123")
     );
     private List<User> jsonUsers;
     @BeforeEach
-    void setup() throws Exception {
+    void setup() {
         users.get(0).setLevel(10);
         users.get(0).setExp(55);
         users.get(1).setLevel(8);
@@ -42,7 +42,8 @@ class JsonMapperTest {
             String jsonString = Files.readString(file.toPath());
             jsonUsers = JsonMapper.Map(jsonString, User.class);
         } catch (IOException e) {
-            System.out.println("TEST-ERROR!");
+            System.err.println("TEST-ERROR!");
+            throw new RuntimeException(e);
         }
     }
     @Test
@@ -57,6 +58,22 @@ class JsonMapperTest {
             assertEquals(users.get(i).getUsername(), jsonUsers.get(i).getUsername());
             assertEquals(users.get(i).getLevel(), jsonUsers.get(i).getLevel());
             assertEquals(users.get(i).getExp(), jsonUsers.get(i).getExp());
+        }
+    }
+
+    @Test
+    void testUserToJson() {
+        for (int i = 0; i < users.size(); i++) {
+            assertEquals(users.get(i).getUsername(), jsonUsers.get(i).getUsername());
+            assertEquals(users.get(i).getLevel(), jsonUsers.get(i).getLevel());
+            assertEquals(users.get(i).getExp(), jsonUsers.get(i).getExp());
+        }
+    }
+
+    @Test
+    void testGuids() {
+        for (int i = 0; i < users.size(); i++) {
+            assertTrue(jsonUsers.get(i).getGuid().matches("^[a-z0-9-]{36}$"));
         }
     }
 }
