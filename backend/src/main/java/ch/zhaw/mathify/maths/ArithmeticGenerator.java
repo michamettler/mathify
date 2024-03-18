@@ -7,9 +7,21 @@ import ch.zhaw.mathify.model.Grade;
 
 import java.util.Random;
 
+/**
+ * This class generates arithmetic exercises based on the given grade and sub type.
+ */
 public class ArithmeticGenerator {
     private static final Random random = new Random();
 
+    private ArithmeticGenerator() {
+    }
+
+    /**
+     * Generates a new exercise based on the given grade and sub type.
+     * @param grade  The grade of the exercise
+     * @param subType The sub type of the exercise
+     * @return A new exercise
+     */
     public static Exercise generate(Grade grade, ExerciseSubType subType) {
         return switch (subType) {
             case ADDITION -> generateAddition(grade);
@@ -20,7 +32,7 @@ public class ArithmeticGenerator {
     }
 
     private static Exercise generateDivision(Grade grade) {
-        if (grade == Grade.FIRST) throw new IllegalArgumentException("Division is not supported for grade " + grade);
+        if (grade == Grade.FIRST) throw new IllegalArgumentException("Division is not supported for grade one!");
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
         int b = getRandomFactor(a);
@@ -28,7 +40,7 @@ public class ArithmeticGenerator {
     }
 
     private static Exercise generateMultiplication(Grade grade) {
-        if (grade == Grade.FIRST) throw new IllegalArgumentException("Multiplication is not supported for grade " + grade);
+        if (grade == Grade.FIRST) throw new IllegalArgumentException("Multiplication is not supported for grade one!");
         int max = (int) Math.sqrt(grade.getMax());
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max + 1);
