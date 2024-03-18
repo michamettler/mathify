@@ -28,15 +28,15 @@ class JsonMapperTest {
     @BeforeEach
     void setup() throws Exception {
         users.get(0).setLevel(10);
-        users.get(0).setExperience(55);
+        users.get(0).setExp(55);
         users.get(1).setLevel(8);
-        users.get(1).setExperience(44);
+        users.get(1).setExp(44);
         users.get(2).setLevel(12);
-        users.get(2).setExperience(33);
+        users.get(2).setExp(33);
         users.get(3).setLevel(6);
-        users.get(3).setExperience(22);
+        users.get(3).setExp(22);
         users.get(4).setLevel(15);
-        users.get(4).setExperience(11);
+        users.get(4).setExp(11);
         try{
             File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("users.json")).getFile());
             String jsonString = Files.readString(file.toPath());
@@ -56,7 +56,7 @@ class JsonMapperTest {
         for (int i = 0; i < users.size(); i++) {
             assertEquals(users.get(i).getUsername(), jsonUsers.get(i).getUsername());
             assertEquals(users.get(i).getLevel(), jsonUsers.get(i).getLevel());
-            assertEquals(users.get(i).getExperience(), jsonUsers.get(i).getExperience());
+            assertEquals(users.get(i).getExp(), jsonUsers.get(i).getExp());
         }
     }
 }

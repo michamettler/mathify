@@ -12,7 +12,7 @@ public class User {
     @JsonProperty
     private int level;
     @JsonProperty
-    private int experience;
+    private int exp;
 
     /**
      * @param username username of the user
@@ -27,7 +27,7 @@ public class User {
      */
     public User() {
         this.level = 1;
-        this.experience = 0;
+        this.exp = 0;
     }
 
     /**
@@ -35,9 +35,9 @@ public class User {
      *            if exp >= 100, level will increase by 1
      */
     public void addExp(int exp) {
-        this.experience += exp;
-        if (this.experience >= 100) {
-            this.experience -= 100;
+        this.exp += exp;
+        if (this.exp >= 100) {
+            this.exp -= 100;
             level++;
         }
     }
@@ -58,11 +58,11 @@ public class User {
         this.level = level;
     }
 
-    public int getExperience() {
-        return experience;
+    public int getExp() {
+        return exp;
     }
 
-    public void setExperience(int experience) {
-        this.experience = experience;
+    public void setExp(int exp) {
+        this.exp = exp;
     }
 }

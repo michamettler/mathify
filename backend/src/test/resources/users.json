@@ -1,21 +1,21 @@
 [ {
   "username" : "john_doe",
   "level" : 10,
-  "experience" : 55
+  "exp": 55
 }, {
   "username" : "jane_smith",
   "level" : 8,
-  "experience" : 44
+  "exp": 44
 }, {
   "username" : "alex_jones",
   "level" : 12,
-  "experience" : 33
+  "exp": 33
 }, {
   "username" : "sarah_jackson",
   "level" : 6,
-  "experience" : 22
+  "exp": 22
 }, {
   "username" : "michael_brown",
   "level" : 15,
-  "experience" : 11
+  "exp": 11
 } ]

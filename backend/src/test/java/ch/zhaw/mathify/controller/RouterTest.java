@@ -61,7 +61,7 @@ public class RouterTest {
         ArgumentCaptor<String> resultCaptor = ArgumentCaptor.forClass(String.class);
         verify(ctx).result(resultCaptor.capture());
         String resultJson = resultCaptor.getValue();
-        String expectedUserJson = "{\"username\":\"john_doe\",\"level\":10,\"experience\":55}";
+        String expectedUserJson = "{\"username\":\"john_doe\",\"level\":10,\"exp\":55}";
 
         assertEquals(expectedUserJson, resultJson.replaceAll("\\s+", ""));
         verify(ctx).status(200);
