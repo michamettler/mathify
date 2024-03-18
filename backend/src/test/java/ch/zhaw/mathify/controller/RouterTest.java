@@ -5,10 +5,10 @@ import io.javalin.http.Context;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.ArgumentCaptor;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests the Backbone of the class for Frontend <> Backend
@@ -43,21 +43,27 @@ public class RouterTest {
         when(ctx.pathParam("username")).thenReturn("john");
         backbone.retrieveUserByID(ctx);
 
-        Mockito.verify(ctx).status(404);
-        Mockito.verify(ctx).result("User john not found!");
+        verify(ctx).status(404);
+        verify(ctx).result("User john not found!");
     }
 
     /**
      * Successfully retrieve an existing user
      */
     @Test
-    public void testRetrieveUserByIDSuccessful() {
+    public void testRetrieveUserByUsernameSuccessful() {
         when(ctx.pathParam("username")).thenReturn("john_doe");
 
         backbone.retrieveUserByID(ctx);
 
-        Mockito.verify(ctx).status(200);
+        verify(ctx).pathParam("username");
 
-        //TODO: Make sure it also returns the correct user (tricky...)
+        ArgumentCaptor<String> resultCaptor = ArgumentCaptor.forClass(String.class);
+        verify(ctx).result(resultCaptor.capture());
+        String resultJson = resultCaptor.getValue();
+        String expectedUserJson = "{\"username\":\"john_doe\",\"level\":10,\"experience\":55}";
+
+        assertEquals(expectedUserJson, resultJson.replaceAll("\\s+", ""));
+        verify(ctx).status(200);
     }
 }
