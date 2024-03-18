@@ -31,6 +31,7 @@ public class Router {
             File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("users.json")).getFile());
             userList = mapper.readValue(file, new TypeReference<>() {
             });
+            LOG.info("users.json was read successfully");
         } catch (IOException e) {
             LOG.error("Could not read users.json!", e);
         }
