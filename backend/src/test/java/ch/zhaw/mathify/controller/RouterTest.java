@@ -51,7 +51,7 @@ public class RouterTest {
      * Successfully retrieve an existing user
      */
     @Test
-    public void testRetrieveUserByUsernameSuccessful() {
+    public void testRetrieveUserByIDSuccessful() {
         when(ctx.pathParam("username")).thenReturn("john_doe");
 
         backbone.retrieveUserByID(ctx);
