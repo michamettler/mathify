@@ -26,11 +26,11 @@ class UserTest {
 
     @Test
     void testVerifyPassword() {
-        assertTrue(User.VerifyPassword("password", user.getPassword()));
+        assertTrue(User.verifyPassword("password", user.getPassword()));
     }
 
     @Test
     void testVerifyPasswordWithWrongPassword() {
-        assertFalse(User.VerifyPassword("wrongpassword", user.getPassword()));
+        assertFalse(User.verifyPassword("wrongpassword", user.getPassword()));
     }
 }

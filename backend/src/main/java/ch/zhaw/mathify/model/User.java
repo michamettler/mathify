@@ -29,8 +29,8 @@ public class User {
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
-        this.password = HashPassword(password);
-        this.guid = CreateGuid();
+        this.password = hashPassword(password);
+        this.guid = createGuid();
         this.level = 1;
     }
 
@@ -38,7 +38,7 @@ public class User {
      * Default constructor used by Jackson object mapper
      */
     public User() {
-        this.guid = CreateGuid();
+        this.guid = createGuid();
         this.level = 1;
         this.experience = 0;
     }
@@ -55,11 +55,11 @@ public class User {
         }
     }
 
-    private static String CreateGuid(){
+    private static String createGuid(){
         return java.util.UUID.randomUUID().toString();
     }
 
-    private static String HashPassword(String password){
+    private static String hashPassword(String password){
         return BCrypt.withDefaults().hashToString(12, password.toCharArray());
     }
 
@@ -68,7 +68,7 @@ public class User {
      * @param hash hash to verify against
      * @return  true if the password matches the hash
      */
-    public static boolean VerifyPassword(String password, String hash){
+    public static boolean verifyPassword(String password, String hash){
         BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hash);
         return result.verified;
     }
@@ -100,7 +100,7 @@ public class User {
     public String getGuid() { return guid; }
 
     public void setPassword(String password) {
-        this.password = HashPassword(password);
+        this.password = hashPassword(password);
     }
 
     public String getPassword() {
