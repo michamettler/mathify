@@ -1,6 +1,7 @@
 package ch.zhaw.mathify.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 /**
  * User model with username, level and experience
@@ -28,7 +29,7 @@ public class User {
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
-        this.password = password;
+        this.password = HashPassword(password);
         this.guid = CreateGuid();
         this.level = 1;
     }
@@ -58,6 +59,20 @@ public class User {
         return java.util.UUID.randomUUID().toString();
     }
 
+    private static String HashPassword(String password){
+        return BCrypt.withDefaults().hashToString(12, password.toCharArray());
+    }
+
+    /**
+     * @param password password to verify
+     * @param hash hash to verify against
+     * @return  true if the password matches the hash
+     */
+    public static boolean VerifyPassword(String password, String hash){
+        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hash);
+        return result.verified;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -83,4 +98,12 @@ public class User {
     }
 
     public String getGuid() { return guid; }
+
+    public void setPassword(String password) {
+        this.password = HashPassword(password);
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }
