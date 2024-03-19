@@ -1,6 +1,7 @@
 package ch.zhaw.mathify.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 /**
  * User model with username, level and experience
@@ -28,8 +29,8 @@ public class User {
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
-        this.password = password;
-        this.guid = CreateGuid();
+        this.password = hashPassword(password);
+        this.guid = createGuid();
         this.level = 1;
     }
 
@@ -37,7 +38,7 @@ public class User {
      * Default constructor used by Jackson object mapper
      */
     public User() {
-        this.guid = CreateGuid();
+        this.guid = createGuid();
         this.level = 1;
         this.experience = 0;
     }
@@ -54,8 +55,22 @@ public class User {
         }
     }
 
-    private static String CreateGuid(){
+    private static String createGuid(){
         return java.util.UUID.randomUUID().toString();
+    }
+
+    private static String hashPassword(String password){
+        return BCrypt.withDefaults().hashToString(12, password.toCharArray());
+    }
+
+    /**
+     * @param password password to verify
+     * @param hash hash to verify against
+     * @return  true if the password matches the hash
+     */
+    public static boolean verifyPassword(String password, String hash){
+        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hash);
+        return result.verified;
     }
 
     public String getUsername() {
@@ -83,4 +98,20 @@ public class User {
     }
 
     public String getGuid() { return guid; }
+
+    public void setPassword(String password) {
+        this.password = hashPassword(password);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
