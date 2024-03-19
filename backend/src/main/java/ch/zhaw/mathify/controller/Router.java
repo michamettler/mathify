@@ -53,6 +53,11 @@ public class Router {
             LOG.info("user list was retrieved via GET /users endpoint");
         });
         app.get("/users/{username}", this::retrieveUserByID);
+        app.get("/page-not-found", ctx -> {
+            ctx.result("Page " + ctx.queryParam("invalid-endpoint") + " not found!");
+            LOG.error("Page " + ctx.queryParam("invalid-endpoint") +  " not found!");
+        });
+        app.error(404, ctx -> ctx.redirect("/page-not-found?invalid-endpoint=" + ctx.path()));
     }
 
     /**
