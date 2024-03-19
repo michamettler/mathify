@@ -11,10 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests the Backbone of the class for Frontend <> Backend
+ * Tests the Router of the class for Frontend <> Backend
  */
 public class RouterTest {
-    private static Router backbone;
+    private static Router router;
     private Context ctx;
 
     /**
@@ -22,8 +22,8 @@ public class RouterTest {
      */
     @BeforeAll
     public static void setUpBeforeAll() {
-        backbone = new Router();
-        backbone.startApplication();
+        router = new Router();
+        router.startApplication();
     }
 
     /**
@@ -41,7 +41,7 @@ public class RouterTest {
     @Test
     public void testRetrieveUserByIDUnsuccessful() {
         when(ctx.pathParam("username")).thenReturn("john");
-        backbone.retrieveUserByID(ctx);
+        router.retrieveUserByID(ctx);
 
         verify(ctx).status(404);
         verify(ctx).result("User john not found!");
@@ -54,7 +54,7 @@ public class RouterTest {
     public void testRetrieveUserByIDSuccessful() {
         when(ctx.pathParam("username")).thenReturn("john_doe");
 
-        backbone.retrieveUserByID(ctx);
+        router.retrieveUserByID(ctx);
 
         verify(ctx).pathParam("username");
 
