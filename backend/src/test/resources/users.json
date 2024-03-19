@@ -19,3 +19,41 @@
   "level" : 15,
   "exp": 11
 } ]
+=======
+[
+  {
+    "username": "john_doe",
+    "level": 10,
+    "experience": 55,
+    "email": "jd@gmail.com",
+    "password": "password"
+  },
+  {
+    "username": "jane_smith",
+    "level": 8,
+    "experience": 44,
+    "email": "js@mail.com",
+    "password": "admin123"
+  },
+  {
+    "username": "alex_jones",
+    "level": 12,
+    "experience": 33,
+    "email": "abc@xmail.com",
+    "password": "password123"
+  },
+  {
+    "username": "sarah_jackson",
+    "level": 6,
+    "experience": 22,
+    "email": "sjackson@mail.com",
+    "password": "password123"
+  },
+  {
+    "username": "michael_brown",
+    "level": 15,
+    "experience": 11,
+    "email": "mail@mail.com",
+    "password": "password123"
+  }
+]
