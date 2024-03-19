@@ -13,9 +13,9 @@ class UserTest {
         assertEquals(1, user.getLevel());
         user.addExp(50);
         assertEquals(2, user.getLevel());
-        assertEquals(0, user.getExp());
+        assertEquals(0, user.getExperience());
         user.addExp(101);
         assertEquals(3, user.getLevel());
-        assertEquals(1, user.getExp());
+        assertEquals(1, user.getExperience());
     }
 }
