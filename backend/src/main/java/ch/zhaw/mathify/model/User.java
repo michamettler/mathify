@@ -7,18 +7,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Every 100exp, the level will increase by one
  */
 public class User {
-    @JsonProperty
+    @JsonProperty(required = true)
     private String username;
     @JsonProperty
     private int level;
     @JsonProperty
-    private int exp;
+    private int experience;
+    @JsonProperty(required = true)
+    private String guid;
+    @JsonProperty(required = true)
+    private String password;
+    @JsonProperty(required = true)
+    private String email;
 
     /**
      * @param username username of the user
+     * @param email email of the user
+     * @param password password of the user
      */
-    public User(String username) {
+    public User(String username, String email, String password) {
         this.username = username;
+        this.email = email;
+        this.password = password;
+        this.guid = CreateGuid();
         this.level = 1;
     }
 
@@ -26,8 +37,9 @@ public class User {
      * Default constructor used by Jackson object mapper
      */
     public User() {
+        this.guid = CreateGuid();
         this.level = 1;
-        this.exp = 0;
+        this.experience = 0;
     }
 
     /**
@@ -35,11 +47,15 @@ public class User {
      *            if exp >= 100, level will increase by 1
      */
     public void addExp(int exp) {
-        this.exp += exp;
-        if (this.exp >= 100) {
-            this.exp -= 100;
+        this.experience += exp;
+        if (this.experience >= 100) {
+            this.experience -= 100;
             level++;
         }
+    }
+
+    private static String CreateGuid(){
+        return java.util.UUID.randomUUID().toString();
     }
 
     public String getUsername() {
@@ -58,11 +74,13 @@ public class User {
         this.level = level;
     }
 
-    public int getExp() {
-        return exp;
+    public int getExperience() {
+        return experience;
     }
 
-    public void setExp(int exp) {
-        this.exp = exp;
+    public void setExperience(int experience) {
+        this.experience = experience;
     }
+
+    public String getGuid() { return guid; }
 }
