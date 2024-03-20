@@ -38,9 +38,6 @@ public class User {
      * Default constructor used by Jackson object mapper
      */
     public User() {
-        this.guid = createGuid();
-        this.level = 1;
-        this.experience = 0;
     }
 
     /**
