@@ -18,11 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class JsonMapperTest {
     private final List<User> users = List.of(
-            new User("john_doe", "jd@gmail.com", "password"),
-            new User("jane_smith", "js@mail.com", "admin123"),
-            new User("alex_jones", "abc@xmail.com", "password123"),
-            new User("sarah_jackson", "sjackson@mail.com", "password123"),
-            new User("michael_brown", "mail@mail.com", "password123")
+            new User("john_doe", "jd@gmail.com", "$2a$12$r88eOP26jtTyTcPYPyhbdOEZfkHS.2cqvSoZpDRp97eLix86bZOsW"),
+            new User("jane_smith", "js@mail.com", "$2a$12$GYcDJSLSQtuyyGqL3Ksuh.w14csWK5V4HIsDSiaXAhl0s4d3u2yke"),
+            new User("alex_jones", "abc@xmail.com", "$2a$12$gllQ3ezTJf22FBzmAwSx6e0w0NsKVia6vetDL99TG6X4SjtOgLtfi"),
+            new User("sarah_jackson", "sjackson@mail.com", "$2a$12$MS/3FWRSmL1zhc2ryLeXz.eOSSnFvMtVohuiNA05cpS/cquKnH9SW"),
+            new User("michael_brown", "mail@mail.com", "$2a$12$Nu.X7I1eq4lBWa9u6soIO.OLRbTzQXpztgNvNRjn9f6ZTu1gAq26a")
     );
     private List<User> jsonUsers;
     @BeforeEach
