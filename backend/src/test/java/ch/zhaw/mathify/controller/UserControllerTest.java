@@ -52,10 +52,11 @@ class UserControllerTest {
     @Test
     void testGetOneUser() {
         User testUser = new User("testuser", "Test User", "testpassword");
+        testUser.setGuid("testguid");
         userController.setUsers(List.of(testUser));
         when(contextMock.pathParam("s")).thenReturn("testuser");
 
-        userController.getOne(contextMock, "testuser");
+        userController.getOne(contextMock, "testguid");
 
         verify(contextMock).json(testUser);
     }
@@ -63,9 +64,10 @@ class UserControllerTest {
     @Test
     void testUpdateUser() {
         User updatedUser = new User("testuser", "Updated Test User", "testpassword");
+        updatedUser.setGuid("testguid");
         when(contextMock.bodyAsClass(User.class)).thenReturn(updatedUser);
 
-        userController.update(contextMock, "testuser");
+        userController.update(contextMock, "testguid");
 
         assertTrue(userController.getUsers().stream().anyMatch(u -> u.getUsername().equals("testuser") && u.getEmail().equals("Updated Test User")));
         verify(contextMock).status(204);
@@ -74,11 +76,12 @@ class UserControllerTest {
     @Test
     void testDeleteUser() {
         User userToDelete = new User("testuser", "Test User", "testpassword");
+        userToDelete.setGuid("testguid");
         List<User> users = userController.getUsers();
         users.add(userToDelete);
         userController.setUsers(users);
 
-        userController.delete(contextMock, "testuser");
+        userController.delete(contextMock, "testguid");
 
         assertFalse(userController.getUsers().contains(userToDelete));
     }

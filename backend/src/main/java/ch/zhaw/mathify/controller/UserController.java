@@ -19,7 +19,10 @@ import java.util.Objects;
  */
 public class UserController implements CrudHandler {
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
-    public static final File USERS_JSON_FILE = new File(Objects.requireNonNull(UserController.class.getClassLoader().getResource("users.json")).getFile());
+    public static final File USERS_JSON_FILE = new File(
+            Objects.requireNonNull(
+                    UserController.class.getClassLoader().getResource("users.json")
+            ).getFile());
     private List<User> users;
 
     /**
@@ -47,7 +50,7 @@ public class UserController implements CrudHandler {
     @Override
     public void create(@NotNull Context context) {
         User user = context.bodyAsClass(User.class);
-        if (users.stream().anyMatch(u -> u.getUsername().equals(user.getUsername()))) {
+        if (users.stream().anyMatch(u -> u.getGuid().equals(user.getGuid()))) {
             context.status(409);
             context.result("Username already exists!");
             LOG.error("Username already exists!");
@@ -66,7 +69,7 @@ public class UserController implements CrudHandler {
      */
     @Override
     public void delete(@NotNull Context context, @NotNull String s) {
-        if (users.removeIf(u -> u.getUsername().equals(s))) {
+        if (users.removeIf(u -> u.getGuid().equals(s))) {
             JsonMapper.writeJson(USERS_JSON_FILE, users);
             context.status(204);
             context.result("User deleted successfully!");
@@ -93,7 +96,7 @@ public class UserController implements CrudHandler {
      */
     @Override
     public void getOne(@NotNull Context context, @NotNull String s) {
-        User user = users.stream().filter(u -> u.getUsername().equals(s)).findFirst().orElse(null);
+        User user = users.stream().filter(u -> u.getGuid().equals(s)).findFirst().orElse(null);
         if (user != null) {
             context.json(user);
             LOG.info("user {} was retrieved via GET /users/{} endpoint", s, s);
@@ -111,7 +114,7 @@ public class UserController implements CrudHandler {
     @Override
     public void update(@NotNull Context context, @NotNull String s) {
         User user = context.bodyAsClass(User.class);
-        if (users.removeIf(u -> u.getUsername().equals(s))) {
+        if (users.removeIf(u -> u.getGuid().equals(s))) {
             users.add(user);
             JsonMapper.writeJson(USERS_JSON_FILE, users);
             context.status(204);
