@@ -1,5 +1,6 @@
 package ch.zhaw.mathify;
 
+import ch.zhaw.mathify.controller.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,5 +9,8 @@ public class App {
 
     public static void main(String[] args) {
         LOG.info("Starting app...");
+
+        Router backbone = new Router();
+        backbone.startApplication();
     }
 }
