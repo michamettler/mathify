@@ -4,7 +4,7 @@
     "level": 10,
     "experience": 55,
     "email": "jd@gmail.com",
-    "password": "password",
+    "password": "$2a$12$r88eOP26jtTyTcPYPyhbdOEZfkHS.2cqvSoZpDRp97eLix86bZOsW",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b7"
   },
   {
@@ -12,7 +12,7 @@
     "level": 8,
     "experience": 44,
     "email": "js@mail.com",
-    "password": "admin123",
+    "password": "$2a$12$GYcDJSLSQtuyyGqL3Ksuh.w14csWK5V4HIsDSiaXAhl0s4d3u2yke",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b8"
   },
   {
@@ -20,7 +20,7 @@
     "level": 12,
     "experience": 33,
     "email": "abc@xmail.com",
-    "password": "password123",
+    "password": "$2a$12$gllQ3ezTJf22FBzmAwSx6e0w0NsKVia6vetDL99TG6X4SjtOgLtfi",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b9"
   },
   {
@@ -28,7 +28,7 @@
     "level": 6,
     "experience": 22,
     "email": "sjackson@mail.com",
-    "password": "password123",
+    "password": "$2a$12$MS/3FWRSmL1zhc2ryLeXz.eOSSnFvMtVohuiNA05cpS/cquKnH9SW",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b0"
   },
   {
@@ -36,7 +36,7 @@
     "level": 15,
     "experience": 11,
     "email": "mail@mail.com",
-    "password": "password123",
+    "password": "$2a$12$Nu.X7I1eq4lBWa9u6soIO.OLRbTzQXpztgNvNRjn9f6ZTu1gAq26a",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b1"
   }
 ]
