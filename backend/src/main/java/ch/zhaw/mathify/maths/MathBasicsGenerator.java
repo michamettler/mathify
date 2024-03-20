@@ -42,6 +42,6 @@ public class MathBasicsGenerator {
     private static Exercise generateNeighbors(Grade grade){
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
-        return new MathBasicsExercise(new int[]{a - 1, a, a + 1}, String.valueOf(a));
+        return new MathBasicsExercise(new int[]{a - 1, a, a + 1}, "Find the neighbors of " + a + "!");
     }
 }
