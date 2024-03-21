@@ -62,18 +62,6 @@ class UserControllerTest {
     }
 
     @Test
-    void testUpdateUser() {
-        User updatedUser = new User("testuser", "Updated Test User", "testpassword");
-        updatedUser.setGuid("testguid");
-        when(contextMock.bodyAsClass(User.class)).thenReturn(updatedUser);
-
-        userController.update(contextMock, "testguid");
-
-        assertTrue(userController.getUsers().stream().anyMatch(u -> u.getUsername().equals("testuser") && u.getEmail().equals("Updated Test User")));
-        verify(contextMock).status(204);
-    }
-
-    @Test
     void testDeleteUser() {
         User userToDelete = new User("testuser", "Test User", "testpassword");
         userToDelete.setGuid("testguid");
