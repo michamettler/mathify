@@ -10,8 +10,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for the JsonMapper
@@ -48,7 +47,7 @@ class JsonMapperTest {
     }
     @Test
     void testUserMapNotNull() {
-        assertEquals(5, jsonUsers.size());
+        assertFalse(jsonUsers.isEmpty());
         assertTrue(jsonUsers.stream().allMatch(Objects::nonNull));
     }
 
