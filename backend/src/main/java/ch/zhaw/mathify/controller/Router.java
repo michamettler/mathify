@@ -1,10 +1,13 @@
 package ch.zhaw.mathify.controller;
 
+import ch.zhaw.mathify.App;
 import io.javalin.Javalin;
 import io.javalin.community.ssl.SslPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import static io.javalin.apibuilder.ApiBuilder.crud;
@@ -14,8 +17,6 @@ import static io.javalin.apibuilder.ApiBuilder.crud;
  */
 public class Router {
     private static final Logger LOG = LoggerFactory.getLogger(Router.class);
-    public static final int HTTP_PORT = 7000;
-    public static final int HTTPS_PORT = 7070;
     private Javalin app;
 
     /**
@@ -24,32 +25,15 @@ public class Router {
     public void startApplication() {
         Runtime.getRuntime().addShutdownHook(new Thread(this::closeApplication));
 
-        boolean sslActive = Optional.ofNullable(getClass().getClassLoader().getResource("cert/cert.pem")).isPresent()
-                && Optional.ofNullable(getClass().getClassLoader().getResource("cert/key.pem")).isPresent();
-
-        SslPlugin sslPlugin;
-        if (sslActive) {
-            LOG.info("SSL certificate found");
-            sslPlugin = new SslPlugin(config -> {
-                config.pemFromClasspath("cert/cert.pem", "cert/key.pem");
-                config.insecurePort = HTTP_PORT;
-                config.securePort = HTTPS_PORT;
-                config.sniHostCheck = false;
-                config.redirect = true;
-            });
-        } else {
-            sslPlugin = null;
-            LOG.error("SSL certificate not found, using HTTP only! Make sure to provide a cert.pem and key.pem in the cert folder as soon as possible.");
-        }
-
+        Optional<SslPlugin> sslPluginOptional = doSslPluginConfig();
         app = Javalin.create(config -> {
-                            if (sslActive) config.registerPlugin(sslPlugin);
+                            sslPluginOptional.ifPresent(config::registerPlugin);
                             config.router.apiBuilder(() ->
                                     crud("users/{user-guid}", new UserController())
                             );
                         }
                 )
-                .start(HTTP_PORT);
+                .start(App.getSettings().getHttp().port());
         app.get("/", ctx -> ctx.redirect("/welcome"));
         app.get("/welcome", ctx -> {
             ctx.result("Welcome to Mathify!");
@@ -60,6 +44,29 @@ public class Router {
             LOG.error("Page {} not found!", ctx.queryParam("invalid-endpoint"));
         });
         app.error(404, ctx -> ctx.redirect("/page-not-found?invalid-endpoint=" + ctx.path()));
+    }
+
+    private Optional<SslPlugin> doSslPluginConfig() {
+        File certFile = Paths.get(App.getSettings().getHttps().cert()).toFile();
+        File keyFile = Paths.get(App.getSettings().getHttps().key()).toFile();
+
+        boolean sslActive = certFile.exists() && keyFile.exists();
+
+        SslPlugin sslPlugin;
+        if (sslActive) {
+            LOG.info("SSL certificate found. Using HTTPS!");
+            sslPlugin = new SslPlugin(config -> {
+                config.pemFromPath(App.getSettings().getHttps().cert(), App.getSettings().getHttps().key());
+                config.insecurePort = App.getSettings().getHttp().port();
+                config.securePort = App.getSettings().getHttps().port();
+                config.sniHostCheck = false;
+                config.redirect = true;
+            });
+        } else {
+            sslPlugin = null;
+            LOG.warn("SSL certificate not found, using HTTP only! Make sure to provide a mathifyCert.pem and mathifyCertKey.pem in the cert folder as soon as possible.");
+        }
+        return Optional.ofNullable(sslPlugin);
     }
 
     /**

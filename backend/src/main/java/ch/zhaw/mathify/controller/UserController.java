@@ -35,9 +35,9 @@ public class UserController implements CrudHandler {
                     LOG.error("Could not create users.json!");
                     throw new IOException("Could not create users.json!");
                 }
-                JsonMapper.writeJson(USERS_JSON_FILE, List.of());
+                JsonMapper.writeUsersToJson(USERS_JSON_FILE, List.of());
             }
-            this.users = JsonMapper.Map(Files.readString(USERS_JSON_FILE.toPath()), User.class);
+            this.users = JsonMapper.map(Files.readString(USERS_JSON_FILE.toPath()), User.class);
             LOG.info("users.json was read successfully");
         } catch (IOException e) {
             LOG.error("Could not read users.json!", e);
@@ -56,7 +56,7 @@ public class UserController implements CrudHandler {
             LOG.error("Username already exists!");
         } else {
             users.add(user);
-            JsonMapper.writeJson(USERS_JSON_FILE, users);
+            JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);
             context.status(201);
             context.result("User created successfully!");
             LOG.info("User created successfully!");
@@ -70,7 +70,7 @@ public class UserController implements CrudHandler {
     @Override
     public void delete(@NotNull Context context, @NotNull String s) {
         if (users.removeIf(u -> u.getGuid().equals(s))) {
-            JsonMapper.writeJson(USERS_JSON_FILE, users);
+            JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);
             context.status(204);
             context.result("User deleted successfully!");
             LOG.info("User deleted successfully!");
@@ -116,7 +116,7 @@ public class UserController implements CrudHandler {
         User user = context.bodyAsClass(User.class);
         if (users.removeIf(u -> u.getGuid().equals(s))) {
             users.add(user);
-            JsonMapper.writeJson(USERS_JSON_FILE, users);
+            JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);
             context.status(204);
             context.result("User updated successfully!");
             LOG.info("User updated successfully!");
