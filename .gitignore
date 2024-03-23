@@ -49,4 +49,9 @@
 /frontend/libpeerconnection.log
 /frontend/testem.log
 /frontend/typings
+/frontend/dist/
+/frontend/build/
 
+# Backend
+*/.gradle/
+*/bin/
