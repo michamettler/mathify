@@ -3,6 +3,7 @@ package ch.zhaw.mathify.controller;
 import io.javalin.Javalin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import io.javalin.community.ssl.SslPlugin;
 
 import static io.javalin.apibuilder.ApiBuilder.crud;
 
@@ -17,13 +18,24 @@ public class Router {
      * Starts the Javalin instance including the Endpoints
      */
     public void startApplication() {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::closeApplication));
 
-        app = Javalin.create(config ->
-                        config.router.apiBuilder(() ->
-                                crud("users/{user-guid}", new UserController())
-                        )
+        SslPlugin sslPlugin = new SslPlugin(config -> {
+            config.pemFromClasspath("cert/cert.pem", "cert/key.pem");
+            config.insecurePort = 7000;
+            config.securePort = 7001;
+            config.sniHostCheck = false;
+        });
+        
+        app = Javalin.create(config -> {
+                            config.registerPlugin(sslPlugin);
+                            config.router.apiBuilder(() ->
+                                    crud("users/{user-guid}", new UserController())
+                            );
+                        }
                 )
-                .start("127.0.0.1", 7000);
+                .start();
+        app.get("/", ctx -> ctx.redirect("/welcome"));
         app.get("/welcome", ctx -> {
             ctx.result("Welcome to Mathify!");
             LOG.info("welcome page was accessed");
@@ -40,7 +52,7 @@ public class Router {
      */
     public void closeApplication() {
         if (app != null) {
-            app = Javalin.create().stop();
+            app.stop();
         }
     }
 }
