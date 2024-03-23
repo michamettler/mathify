@@ -5,7 +5,6 @@ import io.javalin.community.ssl.SslPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.util.Optional;
 
 import static io.javalin.apibuilder.ApiBuilder.crud;
@@ -25,14 +24,8 @@ public class Router {
     public void startApplication() {
         Runtime.getRuntime().addShutdownHook(new Thread(this::closeApplication));
 
-        boolean sslActive = false;
-        try{
-
-            sslActive = Optional.ofNullable(getClass().getClassLoader().getResource("cert/cert.pem")).isPresent()
-                    && Optional.ofNullable(getClass().getClassLoader().getResource("cert/key.pem")).isPresent();
-        } catch (Exception e) {
-            LOG.error("Could not find cert.pem and key.pem in the cert folder!");
-        }
+        boolean sslActive = Optional.ofNullable(getClass().getClassLoader().getResource("cert/cert.pem")).isPresent()
+                && Optional.ofNullable(getClass().getClassLoader().getResource("cert/key.pem")).isPresent();
 
         SslPlugin sslPlugin;
         if (sslActive) {
@@ -49,9 +42,8 @@ public class Router {
             LOG.error("SSL certificate not found, using HTTP only! Make sure to provide a cert.pem and key.pem in the cert folder as soon as possible.");
         }
 
-        boolean finalSslActive = sslActive;
         app = Javalin.create(config -> {
-                            if (finalSslActive) config.registerPlugin(sslPlugin);
+                            if (sslActive) config.registerPlugin(sslPlugin);
                             config.router.apiBuilder(() ->
                                     crud("users/{user-guid}", new UserController())
                             );
