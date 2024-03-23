@@ -25,8 +25,9 @@ public class Router {
             config.insecurePort = 7000;
             config.securePort = 7001;
             config.sniHostCheck = false;
+            config.redirect = true;
         });
-        
+
         app = Javalin.create(config -> {
                             config.registerPlugin(sslPlugin);
                             config.router.apiBuilder(() ->
