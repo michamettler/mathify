@@ -25,16 +25,16 @@ public class App {
         if (!SETTINGS_FILE.exists()) {
             LOG.error("settings.json not found! Make sure to provide a settings.json in the resources folder.");
             throw new SettingsNotFoundException("settings.json not found! Make sure to provide a settings.json in the resources folder.");
-        } else {
-            LOG.info("settings.json found!");
-            try {
-                settings = JsonMapper.readSettingsFromJson(SETTINGS_FILE);
-            } catch (IOException e) {
-                LOG.error("Could not read settings.json!", e);
-                throw new SettingsNotFoundException("Could not read settings.json!");
-            }
-            (new Router()).startApplication();
         }
+        LOG.info("settings.json found!");
+        try {
+            settings = JsonMapper.readSettingsFromJson(SETTINGS_FILE);
+        } catch (IOException e) {
+            LOG.error("Could not read settings.json!", e);
+            throw new SettingsNotFoundException("Could not read settings.json!");
+        }
+        (new Router()).startApplication();
+
     }
 
     public static Settings getSettings() {
