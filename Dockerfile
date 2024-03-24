@@ -30,6 +30,3 @@ WORKDIR /opt/repository/backend
 
 # Build the application using Gradle
 RUN gradle build
-
-# Command to run the application
-# ENTRYPOINT ["gradle", "run"]
