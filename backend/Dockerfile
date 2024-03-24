@@ -26,7 +26,7 @@ RUN wget https://services.gradle.org/distributions/gradle-8.7-bin.zip && \
 COPY . /opt/repository
 
 # Set working directory
-WORKDIR /opt/repository/backend
+WORKDIR /opt/repository
 
 # Build the application using Gradle
 RUN gradle build
