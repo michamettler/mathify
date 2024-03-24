@@ -1,5 +1,6 @@
 package ch.zhaw.mathify;
 
+import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
 
 import java.util.List;
@@ -10,11 +11,11 @@ import java.util.List;
  */
 public class UserSampleData {
     private final List<User> users = List.of(
-            new User("john_doe", "jd@gmail.com", "$2a$12$r88eOP26jtTyTcPYPyhbdOEZfkHS.2cqvSoZpDRp97eLix86bZOsW"),
-            new User("jane_smith", "js@mail.com", "$2a$12$GYcDJSLSQtuyyGqL3Ksuh.w14csWK5V4HIsDSiaXAhl0s4d3u2yke"),
-            new User("alex_jones", "abc@xmail.com", "$2a$12$gllQ3ezTJf22FBzmAwSx6e0w0NsKVia6vetDL99TG6X4SjtOgLtfi"),
-            new User("sarah_jackson", "sjackson@mail.com", "$2a$12$MS/3FWRSmL1zhc2ryLeXz.eOSSnFvMtVohuiNA05cpS/cquKnH9SW"),
-            new User("michael_brown", "mail@mail.com", "$2a$12$Nu.X7I1eq4lBWa9u6soIO.OLRbTzQXpztgNvNRjn9f6ZTu1gAq26a")
+            new User("john_doe", "jd@gmail.com", "$2a$12$r88eOP26jtTyTcPYPyhbdOEZfkHS.2cqvSoZpDRp97eLix86bZOsW", Grade.FIRST),
+            new User("jane_smith", "js@mail.com", "$2a$12$GYcDJSLSQtuyyGqL3Ksuh.w14csWK5V4HIsDSiaXAhl0s4d3u2yke", Grade.SECOND),
+            new User("alex_jones", "abc@xmail.com", "$2a$12$gllQ3ezTJf22FBzmAwSx6e0w0NsKVia6vetDL99TG6X4SjtOgLtfi", Grade.THIRD),
+            new User("sarah_jackson", "sjackson@mail.com", "$2a$12$MS/3FWRSmL1zhc2ryLeXz.eOSSnFvMtVohuiNA05cpS/cquKnH9SW", Grade.FOURTH),
+            new User("michael_brown", "mail@mail.com", "$2a$12$Nu.X7I1eq4lBWa9u6soIO.OLRbTzQXpztgNvNRjn9f6ZTu1gAq26a", Grade.FIFTH)
     );
 
     public UserSampleData() {

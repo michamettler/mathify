@@ -1,5 +1,6 @@
 package ch.zhaw.mathify.controller;
 
+import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
 import io.javalin.http.Context;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,7 @@ class UserControllerTest {
 
     @Test
     void testCreateUser() {
-        User newUser = new User("testuser", "Test User", "testpassword");
+        User newUser = new User("testuser", "Test User", "testpassword", Grade.FIRST);
         when(contextMock.bodyAsClass(User.class)).thenReturn(newUser);
 
         userController.create(contextMock);
@@ -51,7 +52,7 @@ class UserControllerTest {
 
     @Test
     void testGetOneUser() {
-        User testUser = new User("testuser", "Test User", "testpassword");
+        User testUser = new User("testuser", "Test User", "testpassword", Grade.FIRST);
         testUser.setGuid("testguid");
         userController.setUsers(List.of(testUser));
         when(contextMock.pathParam("s")).thenReturn("testuser");
@@ -63,7 +64,7 @@ class UserControllerTest {
 
     @Test
     void testDeleteUser() {
-        User userToDelete = new User("testuser", "Test User", "testpassword");
+        User userToDelete = new User("testuser", "Test User", "testpassword", Grade.FIRST);
         userToDelete.setGuid("testguid");
         List<User> users = userController.getUsers();
         users.add(userToDelete);
