@@ -9,11 +9,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 
 public class App {
     private static final Logger LOG = LoggerFactory.getLogger(App.class);
-    private static final File SETTINGS_FILE = new File(Objects.requireNonNull(App.class.getClassLoader().getResource("settings.json")).getFile());
+    private static final URL SETTINGS_FILE = App.class.getClassLoader().getResource("settings.json");
     private static Settings settings;
 
     /**
@@ -22,13 +23,14 @@ public class App {
     public static void run() throws SettingsNotFoundException {
         LOG.info("Starting app...");
 
-        if (!SETTINGS_FILE.exists()) {
+
+        if (SETTINGS_FILE == null) {
             LOG.error("settings.json not found! Make sure to provide a settings.json in the resources folder.");
             throw new SettingsNotFoundException("settings.json not found! Make sure to provide a settings.json in the resources folder.");
         }
         LOG.info("settings.json found!");
         try {
-            settings = JsonMapper.readSettingsFromJson(SETTINGS_FILE);
+            settings = JsonMapper.readSettingsFromJson(new File(Objects.requireNonNull(SETTINGS_FILE.getFile())));
         } catch (IOException e) {
             LOG.error("Could not read settings.json!", e);
             throw new SettingsNotFoundException("Could not read settings.json!");
