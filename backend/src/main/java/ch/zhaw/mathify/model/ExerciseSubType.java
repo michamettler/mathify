@@ -7,6 +7,8 @@ public enum ExerciseSubType {
     ADDITION,
     DIVISION,
     MULTIPLICATION,
-    SUBTRACTION
+    SUBTRACTION,
+    SORTING,
+    NEIGHBORS
 
 }

@@ -28,6 +28,7 @@ public class ArithmeticGenerator {
             case SUBTRACTION -> generateSubtraction(grade);
             case MULTIPLICATION -> generateMultiplication(grade);
             case DIVISION -> generateDivision(grade);
+            default -> throw new IllegalArgumentException("Sub type " + subType + " is not supported!");
         };
     }
 
