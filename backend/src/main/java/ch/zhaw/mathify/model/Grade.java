@@ -1,11 +1,25 @@
 package ch.zhaw.mathify.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Enum for the different grades 1-6
  */
 public enum Grade {
-    FIRST(20), SECOND(100), THIRD(1000), FOURTH(10000), FIFTH(100000), SIXTH(1000000);
+    @JsonProperty("first")
+    FIRST(20),
+    @JsonProperty("second")
+    SECOND(100),
+    @JsonProperty("third")
+    THIRD(1000),
+    @JsonProperty("fourth")
+    FOURTH(10000),
+    @JsonProperty("fifth")
+    FIFTH(100000),
+    @JsonProperty("sixth")
+    SIXTH(1000000);
     private final int max;
+
     Grade(int max) {
         this.max = max;
     }

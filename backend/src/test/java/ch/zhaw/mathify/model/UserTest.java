@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
-    private final User user = new User("test", "testmail@mail.com", "password");
+    private final User user = new User("test", "testmail@mail.com", "password", Grade.SECOND);
 
     @Test
     void testAddExp() {

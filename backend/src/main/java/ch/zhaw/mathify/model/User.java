@@ -1,6 +1,5 @@
 package ch.zhaw.mathify.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 /**
@@ -8,28 +7,24 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
  * Every 100exp, the level will increase by one
  */
 public class User {
-    @JsonProperty(required = true)
     private String username;
-    @JsonProperty
     private int level;
-    @JsonProperty
     private int experience;
-    @JsonProperty(required = true)
     private String guid;
-    @JsonProperty(required = true)
     private String password;
-    @JsonProperty(required = true)
     private String email;
+    private Grade grade;
 
     /**
      * @param username username of the user
      * @param email email of the user
      * @param password password of the user
      */
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password, Grade grade) {
         this.username = username;
         this.email = email;
         this.password = hashPassword(password);
+        this.grade = grade;
         this.guid = createGuid();
         this.level = 1;
     }
@@ -113,5 +108,13 @@ public class User {
     }
     public void setGuid(String guid) {
         this.guid = guid;
+    }
+
+    public Grade getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Grade grade) {
+        this.grade = grade;
     }
 }
