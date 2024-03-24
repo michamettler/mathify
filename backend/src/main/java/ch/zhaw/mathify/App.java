@@ -2,6 +2,7 @@ package ch.zhaw.mathify;
 
 import ch.zhaw.mathify.controller.Router;
 import ch.zhaw.mathify.model.Settings;
+import ch.zhaw.mathify.model.SettingsNotFoundException;
 import ch.zhaw.mathify.util.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,27 +19,29 @@ public class App {
     /**
      * Starts the application by reading the settings.json and starting the Router
      */
-    public static void run(){
+    public static void run() throws SettingsNotFoundException {
         LOG.info("Starting app...");
 
         if (!SETTINGS_FILE.exists()) {
             LOG.error("settings.json not found! Make sure to provide a settings.json in the resources folder.");
-            System.exit(1);
+            throw new SettingsNotFoundException("settings.json not found! Make sure to provide a settings.json in the resources folder.");
+        } else {
+            LOG.info("settings.json found!");
+            try {
+                settings = JsonMapper.readSettingsFromJson(SETTINGS_FILE);
+            } catch (IOException e) {
+                LOG.error("Could not read settings.json!", e);
+                throw new SettingsNotFoundException("Could not read settings.json!");
+            }
+            (new Router()).startApplication();
         }
-        try {
-            settings = JsonMapper.readSettingsFromJson(SETTINGS_FILE);
-        } catch (IOException e) {
-            LOG.error("Could not read settings.json!", e);
-            System.exit(1);
-        }
-        (new Router()).startApplication();
     }
 
     public static Settings getSettings() {
         return settings;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SettingsNotFoundException {
         App.run();
     }
 }
