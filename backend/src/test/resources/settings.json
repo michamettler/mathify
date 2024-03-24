@@ -1,0 +1,10 @@
+{
+  "http": {
+    "port": 8080
+  },
+  "https": {
+    "port": 8443,
+    "key": "/etc/ssl/mathifyCertKey.pem",
+    "cert": "/etc/ssl/mathifyCert.pem"
+  }
+}

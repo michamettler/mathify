@@ -1,5 +1,6 @@
 package ch.zhaw.mathify.util;
 
+import ch.zhaw.mathify.model.Settings;
 import ch.zhaw.mathify.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class JsonMapper {
@@ -21,19 +23,33 @@ public class JsonMapper {
      * @param clazz      class to map to
      * @param <T>        type of the class
      * @return mapped object
-     * @throws Exception if the mapping fails
+     * @throws JsonProcessingException if the mapping fails
      */
-    public static <T> List<T> Map(String jsonString, Class<T> clazz) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public static <T> List<T> map(String jsonString, Class<T> clazz) throws JsonProcessingException {
+        LOG.debug("Mapping json to object...");
         return objectMapper.readValue(jsonString, objectMapper.getTypeFactory().constructCollectionType(List.class, clazz));
     }
 
-    public static void writeJson(File file, List<User> users) {
+    /**
+     * @param file  file to map
+     * @param users list of users
+     */
+    public static void writeUsersToJson(File file, List<User> users) {
+        LOG.debug("Writing users.json...");
         try {
             objectMapper.writeValue(file, users);
             LOG.info("users.json was written successfully");
         } catch (Exception e) {
             LOG.error("Could not write users.json!", e);
         }
+    }
+
+    /**
+     * @param file file to map
+     * @return new settings object
+     */
+    public static Settings readSettingsFromJson(File file) throws IOException {
+        LOG.debug("Reading settings.json...");
+        return objectMapper.readValue(file, Settings.class);
     }
 }
