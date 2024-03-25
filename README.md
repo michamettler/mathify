@@ -32,3 +32,12 @@ Mathify revolutionizes the way primary students from grade 1 to 6 engage with ma
 4. Motivational Leaderboards: Incorporating competitive elements such as leaderboards, Mathify engages students in a healthy competition. This feature motivates learners to enhance their mathematical abilities, aiming for higher ranks by consistently improving their performance. 
 5. Diverse and Engaging Game Modes: With the promise of future updates, Mathify is set to introduce a range of game modes. These new additions aim to captivate students' interest over extended periods, accomodating various learning styles and preferences. By offering different modes of engagemenet, Mathify ensures that learning math remains a dynamic and appealing experience for every student.
 
+## 🔎 Technical Details 
+
+### 🧪 Technologies used in the Project
+
+- Java SDK 17
+- Gradle Version 8.0.1
+- Clean Code Convention
+- ...
+**- To be extended**
