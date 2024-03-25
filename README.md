@@ -64,4 +64,15 @@ Example: Pull-Request
 Not every pull-requests have discussion/improvement points in it, as if the reviewer agreed with the proposed changes, he immediately approved it. 
 
 ## 🔮 Features to come (Post-MVP)
-1. Will be added after discussion with team with regard to project sketsch
+1. Will be added after discussion with team with regard to project sketch
+
+## 🙌📫 Credits & Contact
+
+Mathify is developed by Team 6
+
+If you have any questions, suggestions or concerns, please feel free to contact us:
+- Küng Pascal
+- Mettler Micha
+- Zehnder Jonas
+- Gonçalves Rafael
+- Thayanantan Ragavan
