@@ -41,3 +41,9 @@ Mathify revolutionizes the way primary students from grade 1 to 6 engage with ma
 - Clean Code Convention
 - ...
 **- To be extended**
+
+
+### 🧮 Class-Diagram
+--> To be added at the end of the project
+
+
