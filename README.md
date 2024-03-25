@@ -42,9 +42,15 @@ Mathify revolutionizes the way primary students from grade 1 to 6 engage with ma
 - ...
 **- To be extended**
 
-
 ### 🧮 Class-Diagram
 --> To be added at the end of the project
 
 ### 🏗 Architecture
 --> To be added at the end of the project
+
+
+### 🌳 Branching Modell 
+
+A feature branch was generated for each task. If the feature was completed, a pull request was created. This had to be reviewed and approved by another team member so that the code from the feature branch could be merged into the main branch.
+
+![Branching](https://github.zhaw.ch/storage/user/4894/files/4e1b24bb-0a45-4792-999c-f864144bfa3f)
