@@ -62,3 +62,6 @@ Example: Pull-Request
 -- to be added at the end of the project!
 
 Not every pull-requests have discussion/improvement points in it, as if the reviewer agreed with the proposed changes, he immediately approved it. 
+
+## 🔮 Features to come (Post-MVP)
+1. Will be added after discussion with team with regard to project sketsch
