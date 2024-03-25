@@ -24,3 +24,11 @@ Mathify revolutionizes the way primary students from grade 1 to 6 engage with ma
 4. click login button in separate window
 5. type in name and grade
 6. play and have fun
+
+## 🔑 Key Features
+1. Intuitive User Interface: Experience seamless navigation through Mathify's quizzes with a user interface that combines aesthetic appeal with functionality. Designed for ease of use, it ensures learners of young age can interact with the platform without any hassle.
+2. Alignment with Official Curriculum: Mathify's content is meticulously craftet to align perfectly with the national educational standards, specifically the Lehrplan21 syllabus. This guarantees that the material is not only relevant but also supports the comprehensive development of mathematical skills in line with official guidelines.
+3. Advanced Progress Tracking & Analytics: Mathify enables both educators and parents to monitor the progress of students on an individual and class-wide basis. These insights provide a deep understanding of learning outcomes, strenghts, and areas for improvement, facilitating targeted support and encouragement. 
+4. Motivational Leaderboards: Incorporating competitive elements such as leaderboards, Mathify engages students in a healthy competition. This feature motivates learners to enhance their mathematical abilities, aiming for higher ranks by consistently improving their performance. 
+5. Diverse and Engaging Game Modes: With the promise of future updates, Mathify is set to introduce a range of game modes. These new additions aim to captivate students' interest over extended periods, accomodating various learning styles and preferences. By offering different modes of engagemenet, Mathify ensures that learning math remains a dynamic and appealing experience for every student.
+
