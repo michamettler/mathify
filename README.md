@@ -46,4 +46,5 @@ Mathify revolutionizes the way primary students from grade 1 to 6 engage with ma
 ### 🧮 Class-Diagram
 --> To be added at the end of the project
 
-
+### 🏗 Architecture
+--> To be added at the end of the project
