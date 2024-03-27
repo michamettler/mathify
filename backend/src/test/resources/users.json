@@ -6,7 +6,8 @@
     "email": "jd@gmail.com",
     "password": "$2a$12$r88eOP26jtTyTcPYPyhbdOEZfkHS.2cqvSoZpDRp97eLix86bZOsW",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b7",
-    "grade": "first"
+    "grade": "first",
+    "role": "USER"
   },
   {
     "username": "jane_smith",
@@ -15,7 +16,8 @@
     "email": "js@mail.com",
     "password": "$2a$12$GYcDJSLSQtuyyGqL3Ksuh.w14csWK5V4HIsDSiaXAhl0s4d3u2yke",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b8",
-    "grade": "second"
+    "grade": "second",
+    "role": "USER"
   },
   {
     "username": "alex_jones",
@@ -24,7 +26,8 @@
     "email": "abc@xmail.com",
     "password": "$2a$12$gllQ3ezTJf22FBzmAwSx6e0w0NsKVia6vetDL99TG6X4SjtOgLtfi",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b9",
-    "grade": "third"
+    "grade": "third",
+    "role": "USER"
   },
   {
     "username": "sarah_jackson",
@@ -33,7 +36,8 @@
     "email": "sjackson@mail.com",
     "password": "$2a$12$MS/3FWRSmL1zhc2ryLeXz.eOSSnFvMtVohuiNA05cpS/cquKnH9SW",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b0",
-    "grade": "fourth"
+    "grade": "fourth",
+    "role": "USER"
   },
   {
     "username": "michael_brown",
@@ -42,6 +46,7 @@
     "email": "mail@mail.com",
     "password": "$2a$12$Nu.X7I1eq4lBWa9u6soIO.OLRbTzQXpztgNvNRjn9f6ZTu1gAq26a",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b1",
-    "grade": "fifth"
+    "grade": "fifth",
+    "role": "USER"
   }
 ]

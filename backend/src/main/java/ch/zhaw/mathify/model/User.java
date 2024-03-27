@@ -1,6 +1,7 @@
 package ch.zhaw.mathify.model;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import ch.zhaw.mathify.controller.AccessManager;
 
 /**
  * User model with username, level and experience
@@ -14,6 +15,7 @@ public class User {
     private String password;
     private String email;
     private Grade grade;
+    private AccessManager.Role role;
 
     /**
      * @param username username of the user
@@ -27,6 +29,7 @@ public class User {
         this.grade = grade;
         this.guid = createGuid();
         this.level = 1;
+        this.role = AccessManager.Role.USER;
     }
 
     /**
@@ -116,5 +119,13 @@ public class User {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
+    }
+
+    public AccessManager.Role getRole() {
+        return role;
+    }
+
+    public void setRole(AccessManager.Role role) {
+        this.role = role;
     }
 }
