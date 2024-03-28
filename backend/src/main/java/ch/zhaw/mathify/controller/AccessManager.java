@@ -19,7 +19,7 @@ public class AccessManager {
         if (permittedRole.contains((Role.ANONYMOUS))) {
             return;
         }
-        if (ctx.attribute("role") != null && permittedRole.contains(Role.valueOf(ctx.attribute("role")))) {
+        if (ctx.attribute("role") != null && permittedRole.contains(ctx.attribute("role"))) {
             return;
         }
         ctx.header(Header.WWW_AUTHENTICATE, "Basic");
