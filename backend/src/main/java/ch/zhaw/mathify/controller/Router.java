@@ -48,7 +48,9 @@ public class Router {
                                         ctx.attribute("role", AccessManager.Role.ANONYMOUS);
                                     } else {
                                         for (User user : userList) {
-                                            if (user.getUsername().equals((Objects.requireNonNull(ctx.basicAuthCredentials())).getUsername())) {
+
+                                            if (user.getUsername().equals((Objects.requireNonNull(ctx.basicAuthCredentials())).getUsername())
+                                                    && User.verifyPassword(Objects.requireNonNull(ctx.basicAuthCredentials()).getPassword(), user.getPassword())) {
                                                 ctx.attribute("role", user.getRole());
                                             }
                                         }
