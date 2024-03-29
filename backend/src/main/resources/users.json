@@ -3,9 +3,9 @@
     "username": "john_doe",
     "level": 10,
     "experience": 55,
-    "email": "jd@gmail.com",
-    "password": "$2a$12$r88eOP26jtTyTcPYPyhbdOEZfkHS.2cqvSoZpDRp97eLix86bZOsW",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b7",
+    "password": "$2a$12$NqKIhgm2FP6qE.UXhD9wZOZwXKWNNtzFJq5DoiZX6aWduE3QxIPTO",
+    "email": "jd@gmail.com",
     "grade": "first",
     "role": "USER"
   },
@@ -13,9 +13,9 @@
     "username": "jane_smith",
     "level": 8,
     "experience": 44,
-    "email": "js@mail.com",
-    "password": "$2a$12$GYcDJSLSQtuyyGqL3Ksuh.w14csWK5V4HIsDSiaXAhl0s4d3u2yke",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b8",
+    "password": "$2a$12$xwiQ9OZhDrvb7L86xaI6XOZYhX9CMHdgS.wsYqdsflcjlAs9SZK.e",
+    "email": "js@mail.com",
     "grade": "second",
     "role": "USER"
   },
@@ -23,9 +23,9 @@
     "username": "alex_jones",
     "level": 12,
     "experience": 33,
-    "email": "abc@xmail.com",
-    "password": "$2a$12$gllQ3ezTJf22FBzmAwSx6e0w0NsKVia6vetDL99TG6X4SjtOgLtfi",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b9",
+    "password": "$2a$12$wDOKh5xPrTMpV0aOpnTrQOyKtWfJ3HOZBrsjkarAAzdU7X4ZfN/xS",
+    "email": "abc@xmail.com",
     "grade": "third",
     "role": "USER"
   },
@@ -33,9 +33,9 @@
     "username": "sarah_jackson",
     "level": 6,
     "experience": 22,
-    "email": "sjackson@mail.com",
-    "password": "$2a$12$MS/3FWRSmL1zhc2ryLeXz.eOSSnFvMtVohuiNA05cpS/cquKnH9SW",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b0",
+    "password": "$2a$12$wOxtza/Wv5N5fQqiO2NiCujIU9wvIL41zCNvuchv/QO2.TAvieFGW",
+    "email": "sjackson@mail.com",
     "grade": "fourth",
     "role": "USER"
   },
@@ -43,10 +43,20 @@
     "username": "michael_brown",
     "level": 15,
     "experience": 11,
-    "email": "mail@mail.com",
-    "password": "$2a$12$Nu.X7I1eq4lBWa9u6soIO.OLRbTzQXpztgNvNRjn9f6ZTu1gAq26a",
     "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b1",
+    "password": "$2a$12$wLYK1fpNxmZbp1kG2ls7OOyDsH6vkl1U5dn0HlUlSubsY3Wio5n6e",
+    "email": "mail@mail.com",
     "grade": "fifth",
     "role": "USER"
+  },
+  {
+    "username": "Rafael",
+    "level": 0,
+    "experience": 0,
+    "guid": "5e6a7b8c-7543-454c-b28b-2761c07fb5b2",
+    "password": "$2a$12$yAZeE44tzy9BpFi3NqOqAeyto4Pnf61FKwpo1F3UBXqq/DCRzB3RC",
+    "email": "goncaraf@students.zhaw.ch",
+    "grade": "first",
+    "role": "ADMIN"
   }
 ]

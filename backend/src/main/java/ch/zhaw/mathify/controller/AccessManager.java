@@ -1,5 +1,6 @@
 package ch.zhaw.mathify.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.javalin.http.Context;
 import io.javalin.http.Header;
 import io.javalin.http.UnauthorizedResponse;
@@ -7,10 +8,15 @@ import io.javalin.security.RouteRole;
 
 public class AccessManager {
     public enum Role implements RouteRole {
+        @JsonProperty("ANONYMOUS")
         ANONYMOUS,
+        @JsonProperty("USER")
         USER,
+        @JsonProperty("SYSTEM_READ")
         SYSTEM_READ,
+        @JsonProperty("SYSTEM_WRITE")
         SYSTEM_WRITE,
+        @JsonProperty("ADMIN")
         ADMIN
     }
 

@@ -2,17 +2,23 @@ package ch.zhaw.mathify.controller;
 
 import ch.zhaw.mathify.App;
 import ch.zhaw.mathify.model.User;
+import ch.zhaw.mathify.util.JsonMapper;
 import io.javalin.Javalin;
 import io.javalin.community.ssl.SslPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static ch.zhaw.mathify.controller.UserController.USERS_JSON_FILE;
 import static io.javalin.apibuilder.ApiBuilder.crud;
 
 /**
@@ -26,12 +32,12 @@ public class Router {
      * Starts the Javalin instance including the Endpoints
      */
     public void startApplication() {
-        Runtime.getRuntime().addShutdownHook(new Thread(this::closeApplication));
+        UserController handler = new UserController();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> closeApplication(handler)));
 
         Optional<SslPlugin> sslPluginOptional = doSslPluginConfig();
         app = Javalin.create(config -> {
                             sslPluginOptional.ifPresent(config::registerPlugin);
-                            UserController handler = new UserController();
                             config.router.apiBuilder(() ->
                                     crud("users/{user-guid}", handler)
                             );
@@ -57,11 +63,16 @@ public class Router {
         app.get("/welcome", ctx -> {
             ctx.result("Welcome to Mathify!");
             LOG.info("welcome page was accessed");
-            }, AccessManager.Role.ANONYMOUS);
+        }, AccessManager.Role.ANONYMOUS);
         app.get("/page-not-found", ctx -> {
             ctx.result("Page " + ctx.queryParam("invalid-endpoint") + " not found!");
             LOG.error("Page {} not found!", ctx.queryParam("invalid-endpoint"));
         }, AccessManager.Role.ANONYMOUS);
+        app.post("/stop", ctx -> {
+            ctx.result("Stopping server...");
+            LOG.info("Server was stopped");
+            closeApplication(handler);
+        }, AccessManager.Role.ADMIN);
         app.error(404, ctx -> ctx.redirect("/page-not-found?invalid-endpoint=" + ctx.path()));
     }
 
@@ -91,9 +102,17 @@ public class Router {
     /**
      * Shuts the Javalin instance including the Endpoints down
      */
-    public void closeApplication() {
+    public void closeApplication(UserController handler) {
         if (app != null) {
             app.stop();
+            JsonMapper.writeUsersToJson(USERS_JSON_FILE, handler.getUsers());
+            try {
+                Path source = Paths.get("build/resources/main/users.json");
+                Path target = Paths.get("src/main/resources/users.json");
+                Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                LOG.error("Could not copy users.json file to src/main/resources/ directory", e);
+            }
         }
     }
 }
