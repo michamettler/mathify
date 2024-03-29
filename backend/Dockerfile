@@ -1,5 +1,5 @@
 # Use Ubuntu as base image
-FROM ubuntu:latest
+FROM ubuntu:22.04
 
 # Set environment variables for Java and Gradle
 ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
