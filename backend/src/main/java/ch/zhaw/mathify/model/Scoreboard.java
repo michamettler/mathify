@@ -7,52 +7,83 @@ import java.util.Queue;
 public class Scoreboard {
     private ScoreboardNode root;
 
-    public ScoreboardNode insert(ScoreboardNode node, ScoreboardNode rootNode) {
-        if (node == null) {
-            return null;
-        } else if (rootNode.compareTo(node) <= 0) {
-            node.leftScoreboardNode = insert(node.leftScoreboardNode, node);
-        } else {
-            node.rightScoreboardNode = insert(node.rightScoreboardNode, node);
-        }
-        return balance(node);
+    public ScoreboardNode getRoot() {
+        return root;
     }
 
-    public ScoreboardNode remove(ScoreboardNode node, ScoreboardNode rootNode) {
-        if (node.username.equals(rootNode.username)) {
-            if (node.leftScoreboardNode == null) {
-                node = node.rightScoreboardNode;
-            } else if (node.rightScoreboardNode == null) {
-                node = node.leftScoreboardNode;
+    public void insert(ScoreboardNode node) {
+        root = insertAt(root, node);
+    }
+
+    private ScoreboardNode insertAt(ScoreboardNode currentNode, ScoreboardNode newNode) {
+        if (currentNode == null) {
+            return new ScoreboardNode(newNode.username, newNode.grade, newNode.level, newNode.experience);
+        } else if (newNode.compareTo(currentNode) <= 0) {
+            currentNode.leftScoreboardNode = insertAt(currentNode.leftScoreboardNode, newNode);
+        } else {
+            currentNode.rightScoreboardNode = insertAt(currentNode.rightScoreboardNode, newNode);
+        }
+        return balance(currentNode);
+    }
+
+    public ScoreboardNode remove(ScoreboardNode node) {
+        if (root != null) {
+            root = removeAt(root, node);
+        }
+        return null;
+    }
+
+    private ScoreboardNode removeAt(ScoreboardNode currentNode, ScoreboardNode nodeToBeRemoved) {
+        if (currentNode.username.equals(nodeToBeRemoved.username)) {
+            if (currentNode.leftScoreboardNode == null) {
+                currentNode = currentNode.rightScoreboardNode;
+            } else if (currentNode.rightScoreboardNode == null) {
+                currentNode = currentNode.leftScoreboardNode;
             } else {
-                node.leftScoreboardNode = findReplacement(node.leftScoreboardNode, node);
+                currentNode.leftScoreboardNode = findReplacement(currentNode.leftScoreboardNode, currentNode);
             }
-        } else if (rootNode.compareTo(node) < 0) {
-            node.leftScoreboardNode = remove(node.leftScoreboardNode, rootNode);
+        } else if (nodeToBeRemoved.compareTo(currentNode) < 0) {
+            currentNode.leftScoreboardNode = removeAt(currentNode.leftScoreboardNode, nodeToBeRemoved);
         } else {
-            node.rightScoreboardNode = remove(node.rightScoreboardNode, rootNode);
+            currentNode.rightScoreboardNode = removeAt(currentNode.rightScoreboardNode, nodeToBeRemoved);
         }
-        return node;
+        return balance(currentNode);
     }
 
-    private ScoreboardNode findReplacement(ScoreboardNode node, ScoreboardNode rootNode) {
-        if (node.rightScoreboardNode == null) {
-            node = node.leftScoreboardNode;
+    private ScoreboardNode findReplacement(ScoreboardNode currentNode, ScoreboardNode replacementNode) {
+        if (currentNode.rightScoreboardNode == null) {
+            replacementNode.username = currentNode.username;
+            replacementNode.grade = currentNode.grade;
+            replacementNode.level = currentNode.level;
+            replacementNode.experience = currentNode.experience;
+            currentNode = currentNode.leftScoreboardNode;
         } else {
-            node.rightScoreboardNode = findReplacement(node.rightScoreboardNode, rootNode);
+            currentNode.rightScoreboardNode = findReplacement(currentNode.rightScoreboardNode, replacementNode);
         }
-        return node;
+        return currentNode;
     }
 
-    public ScoreboardNode search(ScoreboardNode node, ScoreboardNode rootNode) {
-        if (node == null) {
+    public ScoreboardNode search(ScoreboardNode currentNode, ScoreboardNode searchNode) {
+        if (currentNode == null) {
             return null;
-        } else if (rootNode.compareTo(node) == 0) {
-            return rootNode;
-        } else if (rootNode.compareTo(node) < 0) {
-            return search(node, rootNode.rightScoreboardNode);
+        } else if (searchNode.username.equals(currentNode.username)) {
+            return currentNode;
+        } else if (searchNode.compareTo(currentNode) <= 0) {
+            return search(currentNode.leftScoreboardNode, searchNode);
         } else {
-            return search(node, rootNode.leftScoreboardNode);
+            return search(currentNode.rightScoreboardNode, searchNode);
+        }
+    }
+
+    public void update(ScoreboardNode node, int newLevel, int newExperience) {
+        ScoreboardNode nodeToUpdate = search(root, node);
+        if (nodeToUpdate != null && nodeToUpdate.level != newLevel && nodeToUpdate.experience != newExperience) {
+            remove(node);
+            nodeToUpdate.level = newLevel;
+            nodeToUpdate.experience = newExperience;
+            insert(nodeToUpdate);
+        } else {
+            insert(node);
         }
     }
 
@@ -84,30 +115,45 @@ public class Scoreboard {
 
     public List<ScoreboardNode> inOrderTraversal(ScoreboardNode node) {
         List<ScoreboardNode> inOrderList = new LinkedList<>();
+
         if (node != null) {
-            inOrderList.addAll(preOrderTraversal(node.leftScoreboardNode));
-            inOrderList.add(node);
-            inOrderList.addAll(preOrderTraversal(node.rightScoreboardNode));
+            if (node.leftScoreboardNode != null) {
+                inOrderList.addAll(inOrderTraversal(node.leftScoreboardNode));
+            }
+            inOrderList.addLast(node);
+            if (node.rightScoreboardNode != null) {
+                inOrderList.addAll(inOrderTraversal(node.rightScoreboardNode));
+            }
         }
         return inOrderList;
     }
 
     public List<ScoreboardNode> preOrderTraversal(ScoreboardNode node) {
         List<ScoreboardNode> preOrderList = new LinkedList<>();
+
         if (node != null) {
-            preOrderList.add(node);
-            preOrderList.addAll(preOrderTraversal(node.leftScoreboardNode));
-            preOrderList.addAll(preOrderTraversal(node.rightScoreboardNode));
+            preOrderList.addLast(node);
+            if (node.leftScoreboardNode != null) {
+                preOrderList.addAll(inOrderTraversal(node.leftScoreboardNode));
+            }
+            if (node.rightScoreboardNode != null) {
+                preOrderList.addAll(inOrderTraversal(node.rightScoreboardNode));
+            }
         }
         return preOrderList;
     }
 
     public List<ScoreboardNode> postOrderTraversal(ScoreboardNode node) {
         List<ScoreboardNode> postOrderList = new LinkedList<>();
+
         if (node != null) {
-            postOrderList.addAll(preOrderTraversal(node.leftScoreboardNode));
-            postOrderList.addAll(preOrderTraversal(node.rightScoreboardNode));
-            postOrderList.add(node);
+            if (node.leftScoreboardNode != null) {
+                postOrderList.addAll(inOrderTraversal(node.leftScoreboardNode));
+            }
+            if (node.rightScoreboardNode != null) {
+                postOrderList.addAll(inOrderTraversal(node.rightScoreboardNode));
+            }
+            postOrderList.addLast(node);
         }
         return postOrderList;
     }
@@ -179,7 +225,7 @@ public class Scoreboard {
         return rotateLeft(node);
     }
 
-    public class ScoreboardNode implements Comparable<ScoreboardNode> {
+    public static class ScoreboardNode implements Comparable<ScoreboardNode> {
         String username;
         Grade grade;
         int level;
@@ -187,7 +233,7 @@ public class Scoreboard {
         ScoreboardNode leftScoreboardNode = null;
         ScoreboardNode rightScoreboardNode = null;
 
-        private ScoreboardNode(String username, Grade grade, int level, int experience) {
+        ScoreboardNode(String username, Grade grade, int level, int experience) {
             this.username = username;
             this.grade = grade;
             this.level = level;
