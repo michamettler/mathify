@@ -1,13 +1,11 @@
 package ch.zhaw.mathify.model;
 
-import ch.zhaw.mathify.util.JsonMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,21 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ScoreboardTest {
     private List<User> jsonUsers;
     private final Scoreboard scoreboard = new Scoreboard();
-
-    @BeforeEach
-    void setup() {
-        try {
-            File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("users.json")).getPath());
-            String jsonString = Files.readString(file.toPath());
-            jsonUsers = JsonMapper.map(jsonString, User.class);
-            for (User user : jsonUsers) {
-                scoreboard.insert(new Scoreboard.ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
-            }
-        } catch (IOException e) {
-            System.err.println("TEST-ERROR!");
-            throw new RuntimeException(e);
-        }
-    }
 
     @Test
     void testInOrderTraversal() {
@@ -93,7 +76,7 @@ class ScoreboardTest {
     }
 
     @Test
-        void testBalancing() {
+    void testBalancing() {
         int currentSize = scoreboard.size();
 
         Random random = new Random();
