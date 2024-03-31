@@ -12,10 +12,8 @@ public class AccessManager {
         ANONYMOUS,
         @JsonProperty("USER")
         USER,
-        @JsonProperty("SYSTEM_READ")
-        SYSTEM_READ,
-        @JsonProperty("SYSTEM_WRITE")
-        SYSTEM_WRITE,
+        @JsonProperty("SYSTEM_CRUD")
+        SYSTEM_CRUD,
         @JsonProperty("ADMIN")
         ADMIN
     }

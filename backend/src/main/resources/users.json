@@ -57,6 +57,6 @@
     "password": "$2a$12$yAZeE44tzy9BpFi3NqOqAeyto4Pnf61FKwpo1F3UBXqq/DCRzB3RC",
     "email": "goncaraf@students.zhaw.ch",
     "grade": "first",
-    "role": "ADMIN"
+    "role": "SYSTEM_CRUD"
   }
 ]
