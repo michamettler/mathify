@@ -1,6 +1,7 @@
 package ch.zhaw.mathify.controller;
 
 import ch.zhaw.mathify.App;
+import ch.zhaw.mathify.model.Scoreboard;
 import io.javalin.Javalin;
 import io.javalin.community.ssl.SslPlugin;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import static io.javalin.apibuilder.ApiBuilder.crud;
 public class Router {
     private static final Logger LOG = LoggerFactory.getLogger(Router.class);
     private Javalin app;
+    private final Scoreboard scoreboard = new Scoreboard();
 
     /**
      * Starts the Javalin instance including the Endpoints
@@ -38,6 +40,10 @@ public class Router {
         app.get("/welcome", ctx -> {
             ctx.result("Welcome to Mathify!");
             LOG.info("welcome page was accessed");
+        });
+        app.get("/scoreboard", ctx -> {
+            ctx.json(scoreboard.inOrderTraversal(scoreboard.getRoot()));
+            LOG.info("scoreboard page was accessed");
         });
         app.get("/page-not-found", ctx -> {
             ctx.result("Page " + ctx.queryParam("invalid-endpoint") + " not found!");
