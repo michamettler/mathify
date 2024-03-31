@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for the Scoreboard class.
  */
 class ScoreboardTest {
-    private List<User> jsonUsers;
     private final Scoreboard scoreboard = new Scoreboard();
 
     @Test
