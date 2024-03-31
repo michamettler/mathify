@@ -38,6 +38,8 @@ public class Scoreboard {
     private ScoreboardNode insertAt(ScoreboardNode currentNode, ScoreboardNode newNode) {
         if (currentNode == null) {
             return new ScoreboardNode(newNode.username, newNode.grade, newNode.level, newNode.experience);
+        } else if (newNode.username.equals(currentNode.username)) {
+            update(currentNode, newNode.level, newNode.experience);
         } else if (newNode.compareTo(currentNode) <= 0) {
             currentNode.leftScoreboardNode = insertAt(currentNode.leftScoreboardNode, newNode);
         } else {
@@ -97,7 +99,7 @@ public class Scoreboard {
         } else {
             currentNode.rightScoreboardNode = findReplacement(currentNode.rightScoreboardNode, replacementNode);
         }
-        return currentNode;
+        return balance(currentNode);
     }
 
     /**
@@ -126,13 +128,11 @@ public class Scoreboard {
      */
     public void update(ScoreboardNode node, int newLevel, int newExperience) {
         ScoreboardNode nodeToUpdate = search(root, node);
-        if (nodeToUpdate != null && nodeToUpdate.level != newLevel && nodeToUpdate.experience != newExperience) {
+        if (nodeToUpdate != null) {
             remove(node);
             nodeToUpdate.level = newLevel;
             nodeToUpdate.experience = newExperience;
             insert(nodeToUpdate);
-        } else {
-            insert(node);
         }
     }
 
@@ -182,6 +182,24 @@ public class Scoreboard {
             return 0;
         }
         return 1 + Math.max(calculateHeight(node.leftScoreboardNode), calculateHeight(node.rightScoreboardNode));
+    }
+
+    /**
+     * Checks if the Scoreboard is balanced
+     * @param node  The current node
+     * @return  True if the Scoreboard is balanced, false otherwise
+     */
+    public boolean isBalanced(ScoreboardNode node) {
+        if (node == null)
+            return true;
+
+        int balance = Math.abs(calculateHeight(node.leftScoreboardNode) - calculateHeight(node.rightScoreboardNode));
+
+        if (balance > 1) {
+            return false;
+        }
+
+        return isBalanced(node.leftScoreboardNode) && isBalanced(node.rightScoreboardNode);
     }
 
     /**

@@ -1,6 +1,5 @@
 package ch.zhaw.mathify.model;
 
-import ch.zhaw.mathify.UserSampleData;
 import ch.zhaw.mathify.util.JsonMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,10 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -71,8 +67,9 @@ class ScoreboardTest {
         Scoreboard.ScoreboardNode node = new Scoreboard.ScoreboardNode("sarah_jackson", Grade.FOURTH, 6, 22);
         assertNotNull(scoreboard.search(scoreboard.getRoot(), node));
 
-        scoreboard.remove(node);
+        Scoreboard.ScoreboardNode removedNode = scoreboard.remove(node);
 
+        assertEquals(node, removedNode);
         assertEquals(currentSize - 1, scoreboard.size());
         assertNull(scoreboard.search(scoreboard.getRoot(), node));
     }
@@ -93,5 +90,35 @@ class ScoreboardTest {
         assertNotNull(scoreboard.search(scoreboard.getRoot(), node));
         assertEquals(10, scoreboard.search(scoreboard.getRoot(), node).getLevel());
         assertEquals(95, scoreboard.search(scoreboard.getRoot(), node).getExperience());
+    }
+
+    @Test
+        void testBalancing() {
+        int currentSize = scoreboard.size();
+
+        Random random = new Random();
+        int iterationsInsert = random.nextInt(9000) + 1000;
+
+        List<Scoreboard.ScoreboardNode> insertedNodes = new ArrayList<>();
+
+        for (int i = 0; i < iterationsInsert; i++) {
+            int level = random.nextInt(100);
+            int experience = random.nextInt(100);
+            Scoreboard.ScoreboardNode node = new Scoreboard.ScoreboardNode("test" + i, Grade.FIRST, level, experience);
+            scoreboard.insert(node);
+            insertedNodes.add(node);
+        }
+
+        assertEquals(currentSize + iterationsInsert, scoreboard.size());
+
+        int iterationsRemove = random.nextInt(900) + 100;
+
+        for (int i = 0; i < iterationsRemove; i++) {
+            Scoreboard.ScoreboardNode node = insertedNodes.get(i);
+            scoreboard.remove(node);
+        }
+
+        assertEquals(currentSize + iterationsInsert - iterationsRemove, scoreboard.size());
+        assertTrue(scoreboard.isBalanced(scoreboard.getRoot()));
     }
 }
