@@ -5,28 +5,28 @@ import ch.zhaw.mathify.util.JsonMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for the Scoreboard class.
+ */
 class ScoreboardTest {
     private List<User> jsonUsers;
-    private UserSampleData userSampleData;
     private final Scoreboard scoreboard = new Scoreboard();
 
     @BeforeEach
     void setup() {
-        userSampleData = new UserSampleData();
         try {
-            Path path = Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource("users.json")).toURI());
-            String jsonString = Files.readString(path);
+            File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("users.json")).getPath());
+            String jsonString = Files.readString(file.toPath());
             jsonUsers = JsonMapper.map(jsonString, User.class);
             for (User user : jsonUsers) {
                 scoreboard.insert(new Scoreboard.ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
@@ -34,24 +34,21 @@ class ScoreboardTest {
         } catch (IOException e) {
             System.err.println("TEST-ERROR!");
             throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Test
     void testInOrderTraversal() {
         List<Scoreboard.ScoreboardNode> sortedNodes = scoreboard.inOrderTraversal(scoreboard.getRoot());
-        List<User> expectedOrder = Arrays.asList(
-                userSampleData.getSampleUsers().get(3),
-                userSampleData.getSampleUsers().get(1),
-                userSampleData.getSampleUsers().get(0),
-                userSampleData.getSampleUsers().get(2),
-                userSampleData.getSampleUsers().get(4)
+        List<Scoreboard.ScoreboardNode> expectedOrder = new ArrayList<>(sortedNodes);
+        expectedOrder.sort(Comparator
+                .comparingInt(Scoreboard.ScoreboardNode::getLevel)
+                .thenComparingInt(Scoreboard.ScoreboardNode::getExperience)
         );
+
         int counter = 0;
         for (Scoreboard.ScoreboardNode node : sortedNodes) {
-            assertEquals(node.username, expectedOrder.get(counter).getUsername());
+            assertEquals(node.getUsername(), expectedOrder.get(counter).getUsername());
             counter++;
         }
     }
@@ -65,7 +62,7 @@ class ScoreboardTest {
         scoreboard.insert(node);
 
         assertEquals(currentSize + 1, scoreboard.size());
-        assertEquals(node.username, scoreboard.search(scoreboard.getRoot(), node).username);
+        assertEquals(node.getUsername(), scoreboard.search(scoreboard.getRoot(), node).getUsername());
     }
 
     @Test
@@ -85,16 +82,16 @@ class ScoreboardTest {
         int currentSize = scoreboard.size();
         Scoreboard.ScoreboardNode node = new Scoreboard.ScoreboardNode("jane_smith", Grade.SECOND, 8, 44);
         assertNotNull(scoreboard.search(scoreboard.getRoot(), node));
-        assertEquals(8, scoreboard.search(scoreboard.getRoot(), node).level);
-        assertEquals(44, scoreboard.search(scoreboard.getRoot(), node).experience);
+        assertEquals(8, scoreboard.search(scoreboard.getRoot(), node).getLevel());
+        assertEquals(44, scoreboard.search(scoreboard.getRoot(), node).getExperience());
 
         scoreboard.update(node, 10, 95);
-        node.level = 10;
-        node.experience = 95;
+        node.setLevel(10);
+        node.setExperience(95);
 
         assertEquals(currentSize, scoreboard.size());
         assertNotNull(scoreboard.search(scoreboard.getRoot(), node));
-        assertEquals(10, scoreboard.search(scoreboard.getRoot(), node).level);
-        assertEquals(95, scoreboard.search(scoreboard.getRoot(), node).experience);
+        assertEquals(10, scoreboard.search(scoreboard.getRoot(), node).getLevel());
+        assertEquals(95, scoreboard.search(scoreboard.getRoot(), node).getExperience());
     }
 }

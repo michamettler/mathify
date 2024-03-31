@@ -4,17 +4,37 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * This class represents an AVL-tree that stores the user's data in the scoreboard.
+ */
 public class Scoreboard {
     private ScoreboardNode root;
+
+    /**
+     * Creates a Scoreboard and loads the current users from the users.json file
+     */
+    public Scoreboard() {
+        //TODO: Load current users from users.json file
+    }
 
     public ScoreboardNode getRoot() {
         return root;
     }
 
+    /**
+     * Inserts a new node into the Scoreboard
+     * @param node  The node to be inserted
+     */
     public void insert(ScoreboardNode node) {
         root = insertAt(root, node);
     }
 
+    /**
+     * Inserts a new node into the Scoreboard at the specified position
+     * @param currentNode   The current node
+     * @param newNode    The new node to be inserted
+     * @return  The new node
+     */
     private ScoreboardNode insertAt(ScoreboardNode currentNode, ScoreboardNode newNode) {
         if (currentNode == null) {
             return new ScoreboardNode(newNode.username, newNode.grade, newNode.level, newNode.experience);
@@ -26,13 +46,24 @@ public class Scoreboard {
         return balance(currentNode);
     }
 
+    /**
+     * Removes a node from the Scoreboard
+     * @param node  The node to be removed
+     * @return  The removed node
+     */
     public ScoreboardNode remove(ScoreboardNode node) {
         if (root != null) {
             root = removeAt(root, node);
         }
-        return null;
+        return node;
     }
 
+    /**
+     * Removes a node from the Scoreboard at the specified position
+     * @param currentNode   The current node
+     * @param nodeToBeRemoved   The node to be removed
+     * @return  The removed node
+     */
     private ScoreboardNode removeAt(ScoreboardNode currentNode, ScoreboardNode nodeToBeRemoved) {
         if (currentNode.username.equals(nodeToBeRemoved.username)) {
             if (currentNode.leftScoreboardNode == null) {
@@ -50,6 +81,12 @@ public class Scoreboard {
         return balance(currentNode);
     }
 
+    /**
+     * Finds the replacement node for the node to be removed
+     * @param currentNode   The current node
+     * @param replacementNode   The replacement node
+     * @return  The replacement node
+     */
     private ScoreboardNode findReplacement(ScoreboardNode currentNode, ScoreboardNode replacementNode) {
         if (currentNode.rightScoreboardNode == null) {
             replacementNode.username = currentNode.username;
@@ -63,6 +100,12 @@ public class Scoreboard {
         return currentNode;
     }
 
+    /**
+     * Searches for a node in the Scoreboard
+     * @param currentNode   The current node
+     * @param searchNode    The node to be searched for
+     * @return  The searched node
+     */
     public ScoreboardNode search(ScoreboardNode currentNode, ScoreboardNode searchNode) {
         if (currentNode == null) {
             return null;
@@ -75,6 +118,12 @@ public class Scoreboard {
         }
     }
 
+    /**
+     * Updates a node in the Scoreboard
+     * @param node  The node to be updated
+     * @param newLevel  The new level
+     * @param newExperience The new experience
+     */
     public void update(ScoreboardNode node, int newLevel, int newExperience) {
         ScoreboardNode nodeToUpdate = search(root, node);
         if (nodeToUpdate != null && nodeToUpdate.level != newLevel && nodeToUpdate.experience != newExperience) {
@@ -87,14 +136,27 @@ public class Scoreboard {
         }
     }
 
+    /**
+     * Checks if the Scoreboard is empty
+     * @return  True if the Scoreboard is empty, false otherwise
+     */
     public boolean isEmpty() {
         return root == null;
     }
 
+    /**
+     * Returns the size of the Scoreboard
+     * @return  The size of the Scoreboard
+     */
     public int size() {
         return calculateSize(root);
     }
 
+    /**
+     * Calculates the size of the Scoreboard
+     * @param node  The current node
+     * @return  The size of the Scoreboard
+     */
     private int calculateSize(ScoreboardNode node) {
         if (node == null) {
             return 0;
@@ -102,10 +164,19 @@ public class Scoreboard {
         return 1 + calculateSize(node.leftScoreboardNode) + calculateSize(node.rightScoreboardNode);
     }
 
+    /**
+     * Returns the height of the Scoreboard
+     * @return  The height of the Scoreboard
+     */
     public int height() {
         return calculateHeight(root);
     }
 
+    /**
+     * Calculates the height of the Scoreboard
+     * @param node  The current node
+     * @return  The height of the Scoreboard
+     */
     private int calculateHeight(ScoreboardNode node) {
         if (node == null) {
             return 0;
@@ -113,6 +184,11 @@ public class Scoreboard {
         return 1 + Math.max(calculateHeight(node.leftScoreboardNode), calculateHeight(node.rightScoreboardNode));
     }
 
+    /**
+     * Traverses the Scoreboard in in-order
+     * @param node  The current node
+     * @return  The list of nodes in in-order
+     */
     public List<ScoreboardNode> inOrderTraversal(ScoreboardNode node) {
         List<ScoreboardNode> inOrderList = new LinkedList<>();
 
@@ -128,6 +204,11 @@ public class Scoreboard {
         return inOrderList;
     }
 
+    /**
+     * Traverses the Scoreboard in pre-order
+     * @param node  The current node
+     * @return  The list of nodes in pre-order
+     */
     public List<ScoreboardNode> preOrderTraversal(ScoreboardNode node) {
         List<ScoreboardNode> preOrderList = new LinkedList<>();
 
@@ -143,6 +224,11 @@ public class Scoreboard {
         return preOrderList;
     }
 
+    /**
+     * Traverses the Scoreboard in post-order
+     * @param node  The current node
+     * @return  The list of nodes in post-order
+     */
     public List<ScoreboardNode> postOrderTraversal(ScoreboardNode node) {
         List<ScoreboardNode> postOrderList = new LinkedList<>();
 
@@ -158,6 +244,11 @@ public class Scoreboard {
         return postOrderList;
     }
 
+    /**
+     * Traverses the Scoreboard in level-order
+     * @param node  The current node
+     * @return  The list of nodes in level-order
+     */
     public List<ScoreboardNode> levelOrderTraversal(ScoreboardNode node) {
         List<ScoreboardNode> levelOrderList = new LinkedList<>();
         Queue<ScoreboardNode> queue = new LinkedList<>();
@@ -177,10 +268,18 @@ public class Scoreboard {
         return levelOrderList;
     }
 
+    /**
+     * Clears the Scoreboard
+     */
     public void clear() {
         root = null;
     }
 
+    /**
+     * Balances the Scoreboard after insertion or deletion
+     * @param node  The current node
+     * @return  The balanced node
+     */
     private ScoreboardNode balance(ScoreboardNode node) {
         if (node == null) {
             return null;
@@ -201,6 +300,11 @@ public class Scoreboard {
         return node;
     }
 
+    /**
+     * Rotates the Scoreboard to the left
+     * @param node  The current node
+     * @return  The new root
+     */
     private ScoreboardNode rotateLeft(ScoreboardNode node) {
         ScoreboardNode newRoot = node.rightScoreboardNode;
         node.rightScoreboardNode = newRoot.leftScoreboardNode;
@@ -208,6 +312,11 @@ public class Scoreboard {
         return newRoot;
     }
 
+    /**
+     * Rotates the Scoreboard to the right
+     * @param node  The current node
+     * @return  The new root
+     */
     private ScoreboardNode rotateRight(ScoreboardNode node) {
         ScoreboardNode newRoot = node.leftScoreboardNode;
         node.leftScoreboardNode = newRoot.rightScoreboardNode;
@@ -215,24 +324,44 @@ public class Scoreboard {
         return newRoot;
     }
 
+    /**
+     * Rotates the Scoreboard to the left and then to the right
+     * @param node  The current node
+     * @return  The new root
+     */
     private ScoreboardNode rotateLeftRight(ScoreboardNode node) {
         node.leftScoreboardNode = rotateLeft(node.leftScoreboardNode);
         return rotateRight(node);
     }
 
+    /**
+     * Rotates the Scoreboard to the right and then to the left
+     * @param node  The current node
+     * @return  The new root
+     */
     private ScoreboardNode rotateRightLeft(ScoreboardNode node) {
         node.rightScoreboardNode = rotateRight(node.rightScoreboardNode);
         return rotateLeft(node);
     }
 
+    /**
+     * This class represents a node in the Scoreboard
+     */
     public static class ScoreboardNode implements Comparable<ScoreboardNode> {
-        String username;
-        Grade grade;
-        int level;
-        int experience;
-        ScoreboardNode leftScoreboardNode = null;
-        ScoreboardNode rightScoreboardNode = null;
+        private String username;
+        private Grade grade;
+        private int level;
+        private int experience;
+        private ScoreboardNode leftScoreboardNode = null;
+        private ScoreboardNode rightScoreboardNode = null;
 
+        /**
+         * Creates a ScoreboardNode
+         * @param username  The username of the user
+         * @param grade The grade of the user
+         * @param level The level of the user
+         * @param experience    The experience of the user
+         */
         ScoreboardNode(String username, Grade grade, int level, int experience) {
             this.username = username;
             this.grade = grade;
@@ -240,6 +369,11 @@ public class Scoreboard {
             this.experience = experience;
         }
 
+        /**
+         * Compares the current node with another node
+         * @param comparingNode the object to be compared.
+         * @return  0 if level and experience are equal, -1 if the current node is smaller, 1 if the current node is greater
+         */
         @Override
         public int compareTo(ScoreboardNode comparingNode) {
             if (this.level == comparingNode.level && this.experience == comparingNode.experience) {
@@ -251,6 +385,38 @@ public class Scoreboard {
             } else {
                 return 1;
             }
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public Grade getGrade() {
+            return grade;
+        }
+
+        public int getLevel() {
+            return level;
+        }
+
+        public void setLevel(int level) {
+            this.level = level;
+        }
+
+        public void setExperience(int experience) {
+            this.experience = experience;
+        }
+
+        public int getExperience() {
+            return experience;
+        }
+
+        public ScoreboardNode getLeftScoreboardNode() {
+            return leftScoreboardNode;
+        }
+
+        public ScoreboardNode getRightScoreboardNode() {
+            return rightScoreboardNode;
         }
     }
 }
