@@ -56,7 +56,7 @@ public class Router {
                                             }
                                         }
                                     }
-                                    AccessManager.handleAccess(ctx);
+                                    AccessManager.validateEndpointAccess(ctx);
                                 });
                             });
                         }

@@ -10,9 +10,15 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
+/**
+ * This class handles the authentication process for users to access endpoints
+ */
 public class AccessManager {
     private static final Logger LOG = LoggerFactory.getLogger(Router.class);
 
+    /**
+     * Enum containing all the possible rules a user may have
+     */
     public enum Role implements RouteRole {
         ANONYMOUS,
         USER,
@@ -20,7 +26,11 @@ public class AccessManager {
         ADMIN
     }
 
-    public static void handleAccess(Context ctx) {
+    /**
+     * This method checks if the user is allowed to access the endpoint
+     * @param ctx   The context of the request
+     */
+    public static void validateEndpointAccess(Context ctx) {
         var permittedRole = ctx.routeRoles();
         Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
         if (permittedRole.contains((Role.ANONYMOUS))) {
