@@ -1,6 +1,5 @@
 package ch.zhaw.mathify.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.javalin.http.Context;
 import io.javalin.http.Header;
 import io.javalin.http.UnauthorizedResponse;
@@ -13,14 +12,11 @@ import java.util.Optional;
 
 public class AccessManager {
     private static final Logger LOG = LoggerFactory.getLogger(Router.class);
+
     public enum Role implements RouteRole {
-        @JsonProperty("ANONYMOUS")
         ANONYMOUS,
-        @JsonProperty("USER")
         USER,
-        @JsonProperty("SYSTEM_CRUD")
         SYSTEM_CRUD,
-        @JsonProperty("ADMIN")
         ADMIN
     }
 
