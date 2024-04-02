@@ -19,7 +19,7 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.23.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: '2.23.1'
     implementation "com.fasterxml.jackson.core:jackson-databind:2.14.1"
-    implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.10.2'
+    implementation group: 'org.springframework.security', name: 'spring-security-crypto', version: '6.2.3'
     implementation group: 'io.javalin.community.ssl', name: 'ssl-plugin', version: '6.1.3'
 }
 

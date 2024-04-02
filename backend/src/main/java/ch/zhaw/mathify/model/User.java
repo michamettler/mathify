@@ -1,5 +1,6 @@
 package ch.zhaw.mathify.model;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import ch.zhaw.mathify.controller.AccessManager;
 
@@ -55,7 +56,7 @@ public class User {
     }
 
     private static String hashPassword(String password){
-        return BCrypt.withDefaults().hashToString(12, password.toCharArray());
+        return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
     /**
@@ -64,8 +65,7 @@ public class User {
      * @return  true if the password matches the hash
      */
     public static boolean verifyPassword(String password, String hash){
-        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hash);
-        return result.verified;
+        return BCrypt.checkpw(password, hash);
     }
 
     public String getUsername() {
