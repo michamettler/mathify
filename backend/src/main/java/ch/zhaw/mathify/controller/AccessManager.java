@@ -17,7 +17,7 @@ public class AccessManager {
     private static final Logger LOG = LoggerFactory.getLogger(Router.class);
 
     /**
-     * Enum containing all the possible rules a user may have
+     * Enum containing all the possible roles a user may have
      */
     public enum Role implements RouteRole {
         ANONYMOUS,
