@@ -50,6 +50,7 @@ public class UserController implements CrudHandler {
     @Override
     public void create(@NotNull Context context) {
         User user = context.bodyAsClass(User.class);
+        user.setPassword(User.hashPassword(user.getPassword()));
         if (users.stream().anyMatch(u -> u.getGuid().equals(user.getGuid()))) {
             context.status(409);
             context.result("Username already exists!");
@@ -114,6 +115,7 @@ public class UserController implements CrudHandler {
     @Override
     public void update(@NotNull Context context, @NotNull String s) {
         User user = context.bodyAsClass(User.class);
+        user.setPassword(User.hashPassword(user.getPassword()));
         if (users.removeIf(u -> u.getGuid().equals(s))) {
             users.add(user);
             JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);

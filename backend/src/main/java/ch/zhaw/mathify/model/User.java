@@ -51,7 +51,11 @@ public class User {
         return java.util.UUID.randomUUID().toString();
     }
 
-    private static String hashPassword(String password){
+    /**
+     * @param password password to hash
+     * @return hashed password
+     */
+    public static String hashPassword(String password){
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
@@ -91,7 +95,7 @@ public class User {
     public String getGuid() { return guid; }
 
     public void setPassword(String password) {
-        this.password = hashPassword(password);
+        this.password = password;
     }
 
     public String getPassword() {
