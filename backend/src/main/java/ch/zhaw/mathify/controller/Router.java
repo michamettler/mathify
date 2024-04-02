@@ -5,6 +5,7 @@ import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.util.JsonMapper;
 import io.javalin.Javalin;
 import io.javalin.community.ssl.SslPlugin;
+import io.javalin.security.BasicAuthCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static ch.zhaw.mathify.controller.UserController.USERS_JSON_FILE;
@@ -44,12 +44,14 @@ public class Router {
                             config.router.mount(router -> {
                                 router.beforeMatched(ctx -> {
                                     List<User> userList = handler.getUsers();
-                                    if (ctx.basicAuthCredentials() == null) {
+                                    Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
+                                    if (credentials.isEmpty()) {
                                         ctx.attribute("role", AccessManager.Role.ANONYMOUS);
                                     } else {
                                         for (User user : userList) {
-                                            if (user.getUsername().equals((Objects.requireNonNull(ctx.basicAuthCredentials())).getUsername())) {
-                                                    //&& User.verifyPassword(Objects.requireNonNull(ctx.basicAuthCredentials()).getPassword(), user.getPassword())) {
+                                            if (user.getUsername().equals(credentials.get().getUsername())
+                                                    && User.verifyPassword(credentials.get().getPassword(), user.getPassword())) {
+                                                LOG.info(user.getUsername() + " was authenticated successfully");
                                                 ctx.attribute("role", user.getRole());
                                             }
                                         }

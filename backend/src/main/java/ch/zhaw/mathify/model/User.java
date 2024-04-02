@@ -1,7 +1,6 @@
 package ch.zhaw.mathify.model;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import ch.zhaw.mathify.controller.AccessManager;
 
 /**
