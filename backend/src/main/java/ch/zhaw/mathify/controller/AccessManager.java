@@ -40,6 +40,7 @@ public class AccessManager {
             return;
         }
         ctx.header(Header.WWW_AUTHENTICATE, "Basic");
+        ctx.status(401);
         credentials.ifPresentOrElse(
                 user -> LOG.error(user.getUsername() + " is not allowed to access this resource or entered wrong credentials!"),
                 () -> LOG.error("Anonymous user is not allowed to access this resource!")
