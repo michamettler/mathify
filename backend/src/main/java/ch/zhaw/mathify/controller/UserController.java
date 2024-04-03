@@ -47,10 +47,7 @@ public class UserController implements CrudHandler {
      */
     @Override
     public void create(@NotNull Context context) {
-        context.bodyValidator(User.class)
-                .check(user -> user.getUsername() != null && user.getPassword() != null && user.getEmail() != null,
-                        new ValidationError<>("username, password and email must not be null!"))
-                .get();
+        validateUser(context);
 
         User user = context.bodyAsClass(User.class);
         user.setPassword(User.hashPassword(user.getPassword()));
@@ -122,8 +119,11 @@ public class UserController implements CrudHandler {
      */
     @Override
     public void update(@NotNull Context context, @NotNull String s) {
+        validateUser(context);
+
         User user = context.bodyAsClass(User.class);
         user.setPassword(User.hashPassword(user.getPassword()));
+
         if (users.removeIf(u -> u.getGuid().equals(s))) {
             users.add(user);
             JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);
@@ -135,6 +135,13 @@ public class UserController implements CrudHandler {
             context.result("User not found!");
             LOG.error("User not found!");
         }
+    }
+
+    void validateUser(@NotNull Context context) {
+        context.bodyValidator(User.class)
+                .check(user -> user.getUsername() != null && user.getPassword() != null && user.getEmail() != null,
+                        new ValidationError<>("username, password and email must not be null!"))
+                .get();
     }
 
     void setUsers(List<User> users) {

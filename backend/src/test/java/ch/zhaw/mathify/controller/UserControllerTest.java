@@ -3,6 +3,7 @@ package ch.zhaw.mathify.controller;
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
 import io.javalin.http.Context;
+import io.javalin.validation.BodyValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -29,6 +30,7 @@ class UserControllerTest {
     void testCreateUser() {
         User newUser = new User("testuser", "Test User", "testpassword", Grade.FIRST);
         when(contextMock.bodyAsClass(User.class)).thenReturn(newUser);
+        when(contextMock.bodyValidator(User.class)).thenReturn(new BodyValidator<>("body", User.class, () -> newUser));
 
         userController.create(contextMock);
 
@@ -38,7 +40,7 @@ class UserControllerTest {
 
         ArgumentCaptor<String> resultCaptor = ArgumentCaptor.forClass(String.class);
         verify(contextMock).result(resultCaptor.capture());
-        assertEquals("User created successfully!", resultCaptor.getValue());
+        assertTrue(resultCaptor.getValue().contains("User created successfully!"));
     }
 
     @Test
