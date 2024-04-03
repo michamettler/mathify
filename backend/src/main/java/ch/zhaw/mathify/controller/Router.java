@@ -1,6 +1,7 @@
 package ch.zhaw.mathify.controller;
 
 import ch.zhaw.mathify.App;
+import ch.zhaw.mathify.model.Role;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.util.JsonMapper;
 import io.javalin.Javalin;
@@ -15,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 import java.util.Optional;
 
 import static ch.zhaw.mathify.controller.UserController.USERS_JSON_FILE;
@@ -27,28 +27,27 @@ import static io.javalin.apibuilder.ApiBuilder.crud;
 public class Router {
     private static final Logger LOG = LoggerFactory.getLogger(Router.class);
     private Javalin app;
+    private final UserController userController = new UserController();
 
     /**
      * Starts the Javalin instance including the Endpoints
      */
     public void startApplication() {
-        UserController handler = new UserController();
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> closeApplication(handler)));
+        Runtime.getRuntime().addShutdownHook(new Thread(this::closeApplication));
 
         Optional<SslPlugin> sslPluginOptional = doSslPluginConfig();
         app = Javalin.create(config -> {
                             sslPluginOptional.ifPresent(config::registerPlugin);
                             config.router.apiBuilder(() ->
-                                    crud("users/{user-guid}", handler, AccessManager.Role.SYSTEM_CRUD)
+                                    crud("users/{user-guid}", userController, Role.SYSTEM_CRUD)
                             );
                             config.router.mount(router -> {
                                 router.beforeMatched(ctx -> {
-                                    List<User> userList = handler.getUsers();
                                     Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
                                     if (credentials.isEmpty()) {
-                                        ctx.attribute("role", AccessManager.Role.ANONYMOUS);
+                                        ctx.attribute("role", Role.ANONYMOUS);
                                     } else {
-                                        for (User user : userList) {
+                                        for (User user : userController.getUsers()) {
                                             if (user.getUsername().equals(credentials.get().getUsername())
                                                     && User.verifyPassword(credentials.get().getPassword(), user.getPassword())) {
                                                 LOG.info(user.getUsername() + " was authenticated successfully");
@@ -66,16 +65,24 @@ public class Router {
         app.get("/welcome", ctx -> {
             ctx.result("Welcome to Mathify!");
             LOG.info("welcome page was accessed");
-        }, AccessManager.Role.ANONYMOUS);
+        }, Role.ANONYMOUS);
         app.get("/page-not-found", ctx -> {
             ctx.result("Page " + ctx.queryParam("invalid-endpoint") + " not found!");
             LOG.error("Page {} not found!", ctx.queryParam("invalid-endpoint"));
-        }, AccessManager.Role.ANONYMOUS);
+        }, Role.ANONYMOUS);
         app.post("/stop", ctx -> {
             ctx.result("Stopping server...");
             LOG.info("Server was stopped");
-            closeApplication(handler);
-        }, AccessManager.Role.ADMIN);
+            closeApplication();
+        }, Role.ADMIN);
+        app.error(401, ctx -> {
+            Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
+            credentials.ifPresentOrElse(
+                    basicAuthCredentials -> LOG.error("User {} is not allowed to access the {} endpoint or has provided invalid credentials", basicAuthCredentials.getUsername(), ctx.path()),
+                    () -> LOG.error("Anonymous user is not allowed to access the {} endpoint", ctx.path())
+            );
+            ctx.result("Unauthorized access! Please provide valid credentials!");
+        });
         app.error(404, ctx -> ctx.redirect("/page-not-found?invalid-endpoint=" + ctx.path()));
     }
 
@@ -105,10 +112,10 @@ public class Router {
     /**
      * Shuts the Javalin instance including the Endpoints down
      */
-    public void closeApplication(UserController handler) {
+    public void closeApplication() {
         if (app != null) {
             app.stop();
-            JsonMapper.writeUsersToJson(USERS_JSON_FILE, handler.getUsers());
+            JsonMapper.writeUsersToJson(USERS_JSON_FILE, userController.getUsers());
             try {
                 Path source = Paths.get("build/resources/main/users.json");
                 Path target = Paths.get("src/main/resources/users.json");

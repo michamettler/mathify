@@ -1,5 +1,6 @@
 package ch.zhaw.mathify.controller;
 
+import ch.zhaw.mathify.model.Role;
 import io.javalin.http.Context;
 import io.javalin.http.Header;
 import io.javalin.http.UnauthorizedResponse;
@@ -19,25 +20,27 @@ class AccessManagerTest {
     private final BasicAuthCredentials credentials = Mockito.mock(BasicAuthCredentials.class);
     @Test
     void testSuccessfulAuthentication() {
-        when(ctx.routeRoles()).thenReturn(Collections.singleton(AccessManager.Role.USER));
-        when(ctx.attribute("role")).thenReturn(AccessManager.Role.USER);
+        when(ctx.routeRoles()).thenReturn(Collections.singleton(Role.USER));
+        when(ctx.attribute("role")).thenReturn(Role.USER);
         when(ctx.basicAuthCredentials()).thenReturn(credentials);
 
         AccessManager.validateEndpointAccess(ctx);
 
+        verify(ctx, times(1)).status(200);
         verify(ctx, never()).status(401);
         verify(ctx, never()).header(eq(Header.WWW_AUTHENTICATE), anyString());
     }
 
     @Test
     void testUnsuccessfulAuthentication() {
-        when(ctx.routeRoles()).thenReturn(Collections.singleton(AccessManager.Role.USER));
-        when(ctx.attribute("role")).thenReturn(AccessManager.Role.ANONYMOUS);
+        when(ctx.routeRoles()).thenReturn(Collections.singleton(Role.USER));
+        when(ctx.attribute("role")).thenReturn(Role.ANONYMOUS);
         when(ctx.basicAuthCredentials()).thenReturn(credentials);
 
         try {
             AccessManager.validateEndpointAccess(ctx);
         } catch (UnauthorizedResponse e) {
+            verify(ctx, never()).status(200);
             verify(ctx, times(1)).status(401);
             verify(ctx, times(1)).header(eq(Header.WWW_AUTHENTICATE), anyString());
         }
