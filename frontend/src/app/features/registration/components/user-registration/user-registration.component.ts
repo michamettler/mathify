@@ -1,12 +1,18 @@
 import {Component} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
+import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
+import {MatInput, MatInputModule} from "@angular/material/input";
 
 @Component({
   selector: 'app-user-registration',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    MatFormField,
+    FormsModule,
+    MatFormFieldModule, MatInputModule,
+    MatInput
   ],
   templateUrl: './user-registration.component.html',
   styleUrl: './user-registration.component.scss'
