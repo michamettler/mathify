@@ -14,6 +14,7 @@ public class User {
     private String password;
     private String email;
     private Grade grade;
+    private Role role;
 
     /**
      * @param username username of the user
@@ -27,6 +28,7 @@ public class User {
         this.grade = grade;
         this.guid = createGuid();
         this.level = 1;
+        this.role = Role.USER;
     }
 
     /**
@@ -122,5 +124,13 @@ public class User {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
