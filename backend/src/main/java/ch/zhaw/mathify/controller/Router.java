@@ -29,7 +29,7 @@ public class Router {
         app = Javalin.create(config -> {
                             sslPluginOptional.ifPresent(config::registerPlugin);
                             config.router.apiBuilder(() ->
-                                    crud("users/{user-guid}", new UserController())
+                                    crud("/users/{user-guid}", new UserController())
                             );
                         }
                 )
