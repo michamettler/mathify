@@ -4,6 +4,7 @@ import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.util.JsonMapper;
 import io.javalin.apibuilder.CrudHandler;
 import io.javalin.http.Context;
+import io.javalin.validation.ValidationError;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +20,7 @@ import java.util.Objects;
  */
 public class UserController implements CrudHandler {
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
-    public static final File USERS_JSON_FILE = new File(
-            Objects.requireNonNull(
-                    UserController.class.getClassLoader().getResource("users.json")
-            ).getFile());
+    public static final File USERS_JSON_FILE = new File(Objects.requireNonNull(UserController.class.getClassLoader().getResource("users.json")).getFile());
     private List<User> users;
 
     /**
@@ -30,8 +28,8 @@ public class UserController implements CrudHandler {
      */
     public UserController() {
         try {
-            if(!USERS_JSON_FILE.exists()) {
-                if(!USERS_JSON_FILE.createNewFile()) {
+            if (!USERS_JSON_FILE.exists()) {
+                if (!USERS_JSON_FILE.createNewFile()) {
                     LOG.error("Could not create users.json!");
                     throw new IOException("Could not create users.json!");
                 }
@@ -49,36 +47,43 @@ public class UserController implements CrudHandler {
      */
     @Override
     public void create(@NotNull Context context) {
+        validateUser(context);
+
         User user = context.bodyAsClass(User.class);
         user.setPassword(User.hashPassword(user.getPassword()));
-        if (users.stream().anyMatch(u -> u.getGuid().equals(user.getGuid()))) {
+
+        if (users.stream().anyMatch(u -> u.getUsername().equals(user.getUsername()))) {
+            String responseMessage = "Username already exists!";
             context.status(409);
-            context.result("Username already exists!");
-            LOG.error("Username already exists!");
+            context.result(responseMessage);
+            LOG.error(responseMessage);
         } else {
+            String responseMessage = "User created successfully! GUID: " + user.getGuid();
             users.add(user);
             JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);
             context.status(201);
-            context.result("User created successfully!");
-            LOG.info("User created successfully!");
+            context.result(responseMessage);
+            LOG.info(responseMessage);
         }
     }
 
     /**
      * @param context the context of the request
-     * @param s      the username of the user to delete
+     * @param s       the username of the user to delete
      */
     @Override
     public void delete(@NotNull Context context, @NotNull String s) {
         if (users.removeIf(u -> u.getGuid().equals(s))) {
+            String responseMessage = "User deleted successfully!";
             JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);
             context.status(204);
-            context.result("User deleted successfully!");
-            LOG.info("User deleted successfully!");
+            context.result(responseMessage);
+            LOG.info(responseMessage);
         } else {
+            String responseMessage = "User not found!";
             context.status(404);
-            context.result("User not found!");
-            LOG.error("User not found!");
+            context.result(responseMessage);
+            LOG.error(responseMessage);
         }
     }
 
@@ -93,7 +98,7 @@ public class UserController implements CrudHandler {
 
     /**
      * @param context the context of the request
-     * @param s     the username of the user to retrieve
+     * @param s       the username of the user to retrieve
      */
     @Override
     public void getOne(@NotNull Context context, @NotNull String s) {
@@ -110,12 +115,15 @@ public class UserController implements CrudHandler {
 
     /**
      * @param context the context of the request
-     * @param s     the username of the user to update
+     * @param s       the username of the user to update
      */
     @Override
     public void update(@NotNull Context context, @NotNull String s) {
+        validateUser(context);
+
         User user = context.bodyAsClass(User.class);
         user.setPassword(User.hashPassword(user.getPassword()));
+
         if (users.removeIf(u -> u.getGuid().equals(s))) {
             users.add(user);
             JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);
@@ -127,6 +135,13 @@ public class UserController implements CrudHandler {
             context.result("User not found!");
             LOG.error("User not found!");
         }
+    }
+
+    void validateUser(@NotNull Context context) {
+        context.bodyValidator(User.class)
+                .check(user -> user.getUsername() != null && user.getPassword() != null && user.getEmail() != null,
+                        new ValidationError<>("username, password and email must not be null!"))
+                .get();
     }
 
     void setUsers(List<User> users) {
