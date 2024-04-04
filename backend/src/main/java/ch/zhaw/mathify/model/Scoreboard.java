@@ -372,6 +372,10 @@ public class Scoreboard {
             return level;
         }
 
+        public int getExperience() {
+            return experience;
+        }
+
         public void setLevel(int level) {
             this.level = level;
         }
@@ -380,8 +384,5 @@ public class Scoreboard {
             this.experience = experience;
         }
 
-        public int getExperience() {
-            return experience;
-        }
     }
 }
