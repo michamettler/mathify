@@ -26,26 +26,29 @@ import {MatTab, MatTabGroup} from "@angular/material/tabs";
 export class GradeSelectionComponent {
 
   gradeCards = [
-    {grade: 1, text: 'This learning course covers the grade 1, including addition, subtraction and greater '},
-    {grade: 2, text: 'This learning course covers the grade 2, including addition, subtraction and greater '},
-    {grade: 3, text: 'This learning course covers the grade 1, including addition, subtraction and greater '}
+    {grade: 1, text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'},
+    {grade: 2, text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'},
+    {grade: 3, text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'}
   ];
 
   modeCards = [
     {
       icon: 'shuffle',
       mode: 'Mixed Mode',
-      text: 'This learning course covers the grade 1, including addition, subtraction and greater '
+      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+      isEnabled: true
     },
     {
       icon: 'whatshot',
       mode: 'Challenge Mode',
-      text: 'This learning course covers the grade 2, including addition, subtraction and greater '
+      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+      isEnabled: false
     },
     {
       icon: 'build',
       mode: 'Custom Mode',
-      text: 'This learning course covers the grade 1, including addition, subtraction and greater '
+      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+      isEnabled: false
     }
   ];
 

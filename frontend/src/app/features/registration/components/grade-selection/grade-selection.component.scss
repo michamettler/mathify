@@ -4,3 +4,18 @@
   padding-right: 20%;
   padding-top: 15%;
 }
+
+.card-disabled {
+  opacity: 0.5; /* Dim the card */
+  background-color: #f0f0f0; /* Change the background color to a light grey */
+  color: #ccc; /* Make the text color lighter to appear disabled */
+  pointer-events: none; /* Prevents all interactions */
+}
+
+.card-disabled .card-body {
+  cursor: not-allowed;
+}
+
+.card-disabled .material-icons {
+  color: #ccc; /* Grey out the icons too */
+}
