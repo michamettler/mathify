@@ -1,1 +1,40 @@
 <app-header [gradeSelected]="false"></app-header>
+
+<mat-tab-group>
+  <mat-tab label="Grade Selection">
+    <div class="row">
+      <div class="col-sm-4" *ngFor="let card of gradeCards">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">Grade {{ card.grade }}</h2>
+            <p class="card-text">{{ card.text }}</p>
+            <mat-button-toggle-group name="gradeSelection{{ card.grade }}" aria-label="Grade Selection"
+                                     [(ngModel)]="selectedGrade" (change)="onGradeChange($event)">
+              <mat-button-toggle value="{{ card.grade }}">Grade {{ card.grade }}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Game Mode Selection">
+    <div class="row">
+      <div class="col-sm-4" *ngFor="let card of modeCards">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">
+              <i class="material-icons">{{ card.icon }}</i>
+              {{ card.mode }}
+            </h2>
+            <p class="card-text">{{ card.text }}</p>
+            <mat-button-toggle-group name="gradeSelection{{ card.mode }}" aria-label="Game Mode Selection"
+                                     [(ngModel)]="selectedGrade" (change)="OnModeChange($event)">
+              <mat-button-toggle value="{{ card.mode }}">Grade {{ card.mode }}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
