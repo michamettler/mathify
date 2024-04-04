@@ -75,32 +75,39 @@ class ScoreboardTest {
     }
 
     @Test
-    void testBalancing() {
+    void testDynamicInsertionAndRemoval() {
         int currentSize = scoreboard.size();
 
         Random random = new Random();
-        int iterationsInsert = random.nextInt(9000) + 1000;
+        int iterationsInsert = random.nextInt(10000) + 1000;
 
         List<Scoreboard.ScoreboardNode> insertedNodes = new ArrayList<>();
+        int actuallyInserted = 0;
 
         for (int i = 0; i < iterationsInsert; i++) {
-            int level = random.nextInt(100);
+            int level = random.nextInt(100) + 1;
             int experience = random.nextInt(100);
             Scoreboard.ScoreboardNode node = new Scoreboard.ScoreboardNode("test" + i, Grade.FIRST, level, experience);
             scoreboard.insert(node);
-            insertedNodes.add(node);
+            if (scoreboard.search(scoreboard.getRoot(), node).getUsername().equals(node.getUsername())) {
+                actuallyInserted++;
+                insertedNodes.add(node);
+            }
         }
 
-        assertEquals(currentSize + iterationsInsert, scoreboard.size());
+        assertEquals(currentSize + insertedNodes.size(), scoreboard.size());
 
         int iterationsRemove = random.nextInt(900) + 100;
-
+        int actuallyRemoved = 0;
         for (int i = 0; i < iterationsRemove; i++) {
             Scoreboard.ScoreboardNode node = insertedNodes.get(i);
             scoreboard.remove(node);
+            if (scoreboard.search(scoreboard.getRoot(), node) == null) {
+                actuallyRemoved++;
+            }
         }
 
         assertEquals(currentSize + iterationsInsert - iterationsRemove, scoreboard.size());
-        assertTrue(scoreboard.isBalanced(scoreboard.getRoot()));
+        assertEquals(iterationsInsert - iterationsRemove, actuallyInserted - actuallyRemoved);
     }
 }

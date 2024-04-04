@@ -1,6 +1,5 @@
 package ch.zhaw.mathify.model;
 
-import ch.zhaw.mathify.controller.UserController;
 import ch.zhaw.mathify.util.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,19 +17,16 @@ import static ch.zhaw.mathify.controller.UserController.USERS_JSON_FILE;
  */
 public class Scoreboard {
     private ScoreboardNode root;
-    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Scoreboard.class);
 
     /**
      * Creates a Scoreboard and loads the current users from the users.json file
      */
     public Scoreboard() {
         try {
-            if(!USERS_JSON_FILE.exists()) {
-                if(!USERS_JSON_FILE.createNewFile()) {
-                    LOG.error("Could not create users.json!");
-                    throw new IOException("Could not create users.json!");
-                }
-                JsonMapper.writeUsersToJson(USERS_JSON_FILE, List.of());
+            if (!USERS_JSON_FILE.exists()) {
+                LOG.error("users.json does not exist!");
+                throw new IOException("users.json does not exist!");
             }
             List<User> users = JsonMapper.map(Files.readString(USERS_JSON_FILE.toPath()), User.class);
             for (User user : users) {
@@ -48,7 +44,8 @@ public class Scoreboard {
 
     /**
      * Inserts a new node into the Scoreboard
-     * @param node  The node to be inserted
+     *
+     * @param node The node to be inserted
      */
     public void insert(ScoreboardNode node) {
         root = insertAt(root, node);
@@ -56,9 +53,10 @@ public class Scoreboard {
 
     /**
      * Inserts a new node into the Scoreboard at the specified position
-     * @param currentNode   The current node
-     * @param newNode    The new node to be inserted
-     * @return  The new node
+     *
+     * @param currentNode The current node
+     * @param newNode     The new node to be inserted
+     * @return The new node
      */
     private ScoreboardNode insertAt(ScoreboardNode currentNode, ScoreboardNode newNode) {
         if (currentNode == null) {
@@ -70,13 +68,14 @@ public class Scoreboard {
         } else {
             currentNode.rightScoreboardNode = insertAt(currentNode.rightScoreboardNode, newNode);
         }
-        return balance(currentNode);
+        return currentNode;
     }
 
     /**
      * Removes a node from the Scoreboard
-     * @param node  The node to be removed
-     * @return  The removed node
+     *
+     * @param node The node to be removed
+     * @return The removed node
      */
     public ScoreboardNode remove(ScoreboardNode node) {
         if (root != null) {
@@ -87,11 +86,15 @@ public class Scoreboard {
 
     /**
      * Removes a node from the Scoreboard at the specified position
-     * @param currentNode   The current node
-     * @param nodeToBeRemoved   The node to be removed
-     * @return  The removed node
+     *
+     * @param currentNode     The current node
+     * @param nodeToBeRemoved The node to be removed
+     * @return The removed node
      */
     private ScoreboardNode removeAt(ScoreboardNode currentNode, ScoreboardNode nodeToBeRemoved) {
+        if (currentNode == null) {
+            return null;
+        }
         if (currentNode.username.equals(nodeToBeRemoved.username)) {
             if (currentNode.leftScoreboardNode == null) {
                 currentNode = currentNode.rightScoreboardNode;
@@ -100,19 +103,20 @@ public class Scoreboard {
             } else {
                 currentNode.leftScoreboardNode = findReplacement(currentNode.leftScoreboardNode, currentNode);
             }
-        } else if (nodeToBeRemoved.compareTo(currentNode) < 0) {
+        } else if (nodeToBeRemoved.compareTo(currentNode) <= 0) {
             currentNode.leftScoreboardNode = removeAt(currentNode.leftScoreboardNode, nodeToBeRemoved);
         } else {
             currentNode.rightScoreboardNode = removeAt(currentNode.rightScoreboardNode, nodeToBeRemoved);
         }
-        return balance(currentNode);
+        return currentNode;
     }
 
     /**
      * Finds the replacement node for the node to be removed
-     * @param currentNode   The current node
-     * @param replacementNode   The replacement node
-     * @return  The replacement node
+     *
+     * @param currentNode     The current node
+     * @param replacementNode The replacement node
+     * @return The replacement node
      */
     private ScoreboardNode findReplacement(ScoreboardNode currentNode, ScoreboardNode replacementNode) {
         if (currentNode.rightScoreboardNode == null) {
@@ -124,14 +128,15 @@ public class Scoreboard {
         } else {
             currentNode.rightScoreboardNode = findReplacement(currentNode.rightScoreboardNode, replacementNode);
         }
-        return balance(currentNode);
+        return currentNode;
     }
 
     /**
      * Searches for a node in the Scoreboard
-     * @param currentNode   The current node
-     * @param searchNode    The node to be searched for
-     * @return  The searched node
+     *
+     * @param currentNode The current node
+     * @param searchNode  The node to be searched for
+     * @return The searched node
      */
     public ScoreboardNode search(ScoreboardNode currentNode, ScoreboardNode searchNode) {
         if (currentNode == null) {
@@ -147,8 +152,9 @@ public class Scoreboard {
 
     /**
      * Updates a node in the Scoreboard
-     * @param node  The node to be updated
-     * @param newLevel  The new level
+     *
+     * @param node          The node to be updated
+     * @param newLevel      The new level
      * @param newExperience The new experience
      */
     public void update(ScoreboardNode node, int newLevel, int newExperience) {
@@ -163,7 +169,8 @@ public class Scoreboard {
 
     /**
      * Checks if the Scoreboard is empty
-     * @return  True if the Scoreboard is empty, false otherwise
+     *
+     * @return True if the Scoreboard is empty, false otherwise
      */
     public boolean isEmpty() {
         return root == null;
@@ -171,7 +178,8 @@ public class Scoreboard {
 
     /**
      * Returns the size of the Scoreboard
-     * @return  The size of the Scoreboard
+     *
+     * @return The size of the Scoreboard
      */
     public int size() {
         return calculateSize(root);
@@ -179,8 +187,9 @@ public class Scoreboard {
 
     /**
      * Calculates the size of the Scoreboard
-     * @param node  The current node
-     * @return  The size of the Scoreboard
+     *
+     * @param node The current node
+     * @return The size of the Scoreboard
      */
     private int calculateSize(ScoreboardNode node) {
         if (node == null) {
@@ -191,7 +200,8 @@ public class Scoreboard {
 
     /**
      * Returns the height of the Scoreboard
-     * @return  The height of the Scoreboard
+     *
+     * @return The height of the Scoreboard
      */
     public int height() {
         return calculateHeight(root);
@@ -199,8 +209,9 @@ public class Scoreboard {
 
     /**
      * Calculates the height of the Scoreboard
-     * @param node  The current node
-     * @return  The height of the Scoreboard
+     *
+     * @param node The current node
+     * @return The height of the Scoreboard
      */
     private int calculateHeight(ScoreboardNode node) {
         if (node == null) {
@@ -210,27 +221,10 @@ public class Scoreboard {
     }
 
     /**
-     * Checks if the Scoreboard is balanced
-     * @param node  The current node
-     * @return  True if the Scoreboard is balanced, false otherwise
-     */
-    public boolean isBalanced(ScoreboardNode node) {
-        if (node == null)
-            return true;
-
-        int balance = Math.abs(calculateHeight(node.leftScoreboardNode) - calculateHeight(node.rightScoreboardNode));
-
-        if (balance > 1) {
-            return false;
-        }
-
-        return isBalanced(node.leftScoreboardNode) && isBalanced(node.rightScoreboardNode);
-    }
-
-    /**
      * Traverses the Scoreboard in in-order
-     * @param node  The current node
-     * @return  The list of nodes in in-order
+     *
+     * @param node The current node
+     * @return The list of nodes in in-order
      */
     public List<ScoreboardNode> inOrderTraversal(ScoreboardNode node) {
         List<ScoreboardNode> inOrderList = new LinkedList<>();
@@ -249,8 +243,9 @@ public class Scoreboard {
 
     /**
      * Traverses the Scoreboard in pre-order
-     * @param node  The current node
-     * @return  The list of nodes in pre-order
+     *
+     * @param node The current node
+     * @return The list of nodes in pre-order
      */
     public List<ScoreboardNode> preOrderTraversal(ScoreboardNode node) {
         List<ScoreboardNode> preOrderList = new LinkedList<>();
@@ -269,8 +264,9 @@ public class Scoreboard {
 
     /**
      * Traverses the Scoreboard in post-order
-     * @param node  The current node
-     * @return  The list of nodes in post-order
+     *
+     * @param node The current node
+     * @return The list of nodes in post-order
      */
     public List<ScoreboardNode> postOrderTraversal(ScoreboardNode node) {
         List<ScoreboardNode> postOrderList = new LinkedList<>();
@@ -289,8 +285,9 @@ public class Scoreboard {
 
     /**
      * Traverses the Scoreboard in level-order
-     * @param node  The current node
-     * @return  The list of nodes in level-order
+     *
+     * @param node The current node
+     * @return The list of nodes in level-order
      */
     public List<ScoreboardNode> levelOrderTraversal(ScoreboardNode node) {
         List<ScoreboardNode> levelOrderList = new LinkedList<>();
@@ -319,75 +316,6 @@ public class Scoreboard {
     }
 
     /**
-     * Balances the Scoreboard after insertion or deletion
-     * @param node  The current node
-     * @return  The balanced node
-     */
-    private ScoreboardNode balance(ScoreboardNode node) {
-        if (node == null) {
-            return null;
-        }
-        if (calculateHeight(node.leftScoreboardNode) - calculateHeight(node.rightScoreboardNode) == 2) {
-            if (calculateHeight(node.leftScoreboardNode.leftScoreboardNode) >= calculateHeight(node.leftScoreboardNode.rightScoreboardNode)) {
-                node = rotateRight(node);
-            } else {
-                node = rotateLeftRight(node);
-            }
-        } else if (calculateHeight(node.rightScoreboardNode) - calculateHeight(node.leftScoreboardNode) == 2) {
-            if (calculateHeight(node.rightScoreboardNode.rightScoreboardNode) >= calculateHeight(node.rightScoreboardNode.leftScoreboardNode)) {
-                node = rotateLeft(node);
-            } else {
-                node = rotateRightLeft(node);
-            }
-        }
-        return node;
-    }
-
-    /**
-     * Rotates the Scoreboard to the left
-     * @param node  The current node
-     * @return  The new root
-     */
-    private ScoreboardNode rotateLeft(ScoreboardNode node) {
-        ScoreboardNode newRoot = node.rightScoreboardNode;
-        node.rightScoreboardNode = newRoot.leftScoreboardNode;
-        newRoot.leftScoreboardNode = node;
-        return newRoot;
-    }
-
-    /**
-     * Rotates the Scoreboard to the right
-     * @param node  The current node
-     * @return  The new root
-     */
-    private ScoreboardNode rotateRight(ScoreboardNode node) {
-        ScoreboardNode newRoot = node.leftScoreboardNode;
-        node.leftScoreboardNode = newRoot.rightScoreboardNode;
-        newRoot.rightScoreboardNode = node;
-        return newRoot;
-    }
-
-    /**
-     * Rotates the Scoreboard to the left and then to the right
-     * @param node  The current node
-     * @return  The new root
-     */
-    private ScoreboardNode rotateLeftRight(ScoreboardNode node) {
-        node.leftScoreboardNode = rotateLeft(node.leftScoreboardNode);
-        return rotateRight(node);
-    }
-
-    /**
-     * Rotates the Scoreboard to the right and then to the left
-     * @param node  The current node
-     * @return  The new root
-     */
-    private ScoreboardNode rotateRightLeft(ScoreboardNode node) {
-        node.rightScoreboardNode = rotateRight(node.rightScoreboardNode);
-        return rotateLeft(node);
-    }
-
-    /**
      * This class represents a node in the Scoreboard
      */
     public static class ScoreboardNode implements Comparable<ScoreboardNode> {
@@ -400,10 +328,11 @@ public class Scoreboard {
 
         /**
          * Creates a ScoreboardNode
-         * @param username  The username of the user
-         * @param grade The grade of the user
-         * @param level The level of the user
-         * @param experience    The experience of the user
+         *
+         * @param username   The username of the user
+         * @param grade      The grade of the user
+         * @param level      The level of the user
+         * @param experience The experience of the user
          */
         ScoreboardNode(String username, Grade grade, int level, int experience) {
             this.username = username;
@@ -414,8 +343,9 @@ public class Scoreboard {
 
         /**
          * Compares the current node with another node
+         *
          * @param comparingNode the object to be compared.
-         * @return  0 if level and experience are equal, -1 if the current node is smaller, 1 if the current node is greater
+         * @return 0 if level and experience are equal, -1 if the current node is smaller, 1 if the current node is greater
          */
         @Override
         public int compareTo(ScoreboardNode comparingNode) {
@@ -452,14 +382,6 @@ public class Scoreboard {
 
         public int getExperience() {
             return experience;
-        }
-
-        public ScoreboardNode getLeftScoreboardNode() {
-            return leftScoreboardNode;
-        }
-
-        public ScoreboardNode getRightScoreboardNode() {
-            return rightScoreboardNode;
         }
     }
 }
