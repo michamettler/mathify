@@ -1,6 +1,7 @@
 package ch.zhaw.mathify.controller;
 
 import ch.zhaw.mathify.App;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import io.javalin.Javalin;
 import io.javalin.community.ssl.SslPlugin;
 import org.slf4j.Logger;
@@ -34,6 +35,11 @@ public class Router {
                         }
                 )
                 .start(App.getSettings().getHttp().port());
+        app.exception(MismatchedInputException.class, (e, ctx) -> {
+            ctx.result("Invalid JSON format!");
+            LOG.error("Invalid JSON format!");
+            ctx.status(400);
+        });
         app.get("/", ctx -> ctx.redirect("/welcome"));
         app.get("/welcome", ctx -> {
             ctx.result("Welcome to Mathify!");

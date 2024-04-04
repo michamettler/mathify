@@ -139,7 +139,8 @@ public class UserController implements CrudHandler {
 
     void validateUser(@NotNull Context context) {
         context.bodyValidator(User.class)
-                .check(user -> user.getUsername() != null && user.getPassword() != null && user.getEmail() != null,
+                .check(user -> user.getUsername() != null && user.getPassword() != null && user.getEmail() != null
+                        && !user.getUsername().isBlank() && !user.getPassword().isBlank() && !user.getEmail().isBlank(),
                         new ValidationError<>("username, password and email must not be null!"))
                 .get();
     }
