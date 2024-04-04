@@ -20,7 +20,6 @@ public class UserSampleData {
 
     public UserSampleData() {
         users.get(0).setLevel(10);
-        users.get(0).setLevel(10);
         users.get(0).setExperience(55);
         users.get(1).setLevel(8);
         users.get(1).setExperience(44);

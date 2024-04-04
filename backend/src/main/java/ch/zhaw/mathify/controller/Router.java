@@ -1,6 +1,7 @@
 package ch.zhaw.mathify.controller;
 
 import ch.zhaw.mathify.App;
+import ch.zhaw.mathify.model.Scoreboard;
 import ch.zhaw.mathify.model.Role;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.util.JsonMapper;
@@ -27,6 +28,7 @@ import static io.javalin.apibuilder.ApiBuilder.crud;
 public class Router {
     private static final Logger LOG = LoggerFactory.getLogger(Router.class);
     private Javalin app;
+    private final Scoreboard scoreboard = new Scoreboard();
     private final UserController userController = new UserController();
 
     /**
@@ -66,6 +68,10 @@ public class Router {
             ctx.result("Welcome to Mathify!");
             LOG.info("welcome page was accessed");
         }, Role.ANONYMOUS);
+        app.get("/scoreboard", ctx -> {
+            ctx.json(scoreboard.inOrderTraversal(scoreboard.getRoot()));
+            LOG.info("scoreboard page was accessed");
+        }, Role.USER);
         app.get("/page-not-found", ctx -> {
             ctx.result("Page " + ctx.queryParam("invalid-endpoint") + " not found!");
             LOG.error("Page {} not found!", ctx.queryParam("invalid-endpoint"));
