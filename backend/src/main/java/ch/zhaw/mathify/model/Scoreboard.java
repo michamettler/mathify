@@ -16,8 +16,8 @@ import static ch.zhaw.mathify.controller.UserController.USERS_JSON_FILE;
  * This class represents an AVL-tree that stores the user's data in the scoreboard.
  */
 public class Scoreboard {
-    private ScoreboardNode root;
     private static final Logger LOG = LoggerFactory.getLogger(Scoreboard.class);
+    private ScoreboardNode root;
 
     /**
      * Creates a Scoreboard and loads the current users from the users.json file
