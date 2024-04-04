@@ -1,6 +1,6 @@
 package ch.zhaw.mathify.model;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 /**
  * User model with username, level and experience
@@ -14,6 +14,7 @@ public class User {
     private String password;
     private String email;
     private Grade grade;
+    private Role role;
 
     /**
      * @param username username of the user
@@ -27,6 +28,7 @@ public class User {
         this.grade = grade;
         this.guid = createGuid();
         this.level = 1;
+        this.role = Role.USER;
     }
 
     /**
@@ -51,8 +53,12 @@ public class User {
         return java.util.UUID.randomUUID().toString();
     }
 
-    private static String hashPassword(String password){
-        return BCrypt.withDefaults().hashToString(12, password.toCharArray());
+    /**
+     * @param password password to hash
+     * @return hashed password
+     */
+    public static String hashPassword(String password){
+        return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
     /**
@@ -61,8 +67,7 @@ public class User {
      * @return  true if the password matches the hash
      */
     public static boolean verifyPassword(String password, String hash){
-        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hash);
-        return result.verified;
+        return BCrypt.checkpw(password, hash);
     }
 
     public String getUsername() {
@@ -92,7 +97,7 @@ public class User {
     public String getGuid() { return guid; }
 
     public void setPassword(String password) {
-        this.password = hashPassword(password);
+        this.password = password;
     }
 
     public String getPassword() {
@@ -116,5 +121,13 @@ public class User {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
