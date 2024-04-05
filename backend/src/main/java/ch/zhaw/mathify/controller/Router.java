@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
-import static ch.zhaw.mathify.controller.UserController.USERS_JSON_FILE;
+import static ch.zhaw.mathify.repository.UserRepository.USERS_JSON_FILE;
 import static io.javalin.apibuilder.ApiBuilder.crud;
 
 /**

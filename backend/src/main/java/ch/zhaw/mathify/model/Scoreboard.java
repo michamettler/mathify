@@ -1,16 +1,12 @@
 package ch.zhaw.mathify.model;
 
-import ch.zhaw.mathify.util.JsonMapper;
+import ch.zhaw.mathify.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
-import static ch.zhaw.mathify.controller.UserController.USERS_JSON_FILE;
 
 /**
  * This class represents an AVL-tree that stores the user's data in the scoreboard.
@@ -18,23 +14,14 @@ import static ch.zhaw.mathify.controller.UserController.USERS_JSON_FILE;
 public class Scoreboard {
     private static final Logger LOG = LoggerFactory.getLogger(Scoreboard.class);
     private ScoreboardNode root;
+    private final UserRepository userRepository = UserRepository.getInstance();
 
     /**
      * Creates a Scoreboard and loads the current users from the users.json file
      */
     public Scoreboard() {
-        try {
-            if (!USERS_JSON_FILE.exists()) {
-                LOG.error("users.json does not exist!");
-                throw new IOException("users.json does not exist!");
-            }
-            List<User> users = JsonMapper.map(Files.readString(USERS_JSON_FILE.toPath()), User.class);
-            for (User user : users) {
-                insert(new ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
-            }
-            LOG.info("users.json was read successfully");
-        } catch (IOException e) {
-            LOG.error("Could not read users.json!", e);
+        for(User user : userRepository.getUsers()) {
+            insert(new ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
         }
     }
 
