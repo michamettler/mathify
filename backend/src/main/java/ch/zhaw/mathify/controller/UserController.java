@@ -2,19 +2,12 @@ package ch.zhaw.mathify.controller;
 
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.repository.UserRepository;
-import ch.zhaw.mathify.util.JsonMapper;
 import io.javalin.apibuilder.CrudHandler;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationError;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Class responsible for handling user CRUD operations and persisting them to a JSON file

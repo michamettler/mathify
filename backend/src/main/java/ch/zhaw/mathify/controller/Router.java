@@ -1,11 +1,11 @@
 package ch.zhaw.mathify.controller;
 
 import ch.zhaw.mathify.App;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import ch.zhaw.mathify.model.Scoreboard;
 import ch.zhaw.mathify.model.Role;
+import ch.zhaw.mathify.model.Scoreboard;
 import ch.zhaw.mathify.model.User;
-import ch.zhaw.mathify.util.JsonMapper;
+import ch.zhaw.mathify.repository.UserRepository;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import io.javalin.Javalin;
 import io.javalin.community.ssl.SslPlugin;
 import io.javalin.security.BasicAuthCredentials;
@@ -20,7 +20,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
-import static ch.zhaw.mathify.repository.UserRepository.USERS_JSON_FILE;
 import static io.javalin.apibuilder.ApiBuilder.crud;
 
 /**
@@ -31,6 +30,7 @@ public class Router {
     private Javalin app;
     private final Scoreboard scoreboard = new Scoreboard();
     private final UserController userController = new UserController();
+    private final UserRepository userRepository = UserRepository.getInstance();
 
     /**
      * Starts the Javalin instance including the Endpoints
@@ -44,23 +44,21 @@ public class Router {
                             config.router.apiBuilder(() ->
                                     crud("users/{user-guid}", userController, Role.SYSTEM_CRUD)
                             );
-                            config.router.mount(router -> {
-                                router.beforeMatched(ctx -> {
-                                    Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
-                                    if (credentials.isEmpty()) {
-                                        ctx.attribute("role", Role.ANONYMOUS);
-                                    } else {
-                                        for (User user : userController.getUsers()) {
-                                            if (user.getUsername().equals(credentials.get().getUsername())
-                                                    && User.verifyPassword(credentials.get().getPassword(), user.getPassword())) {
-                                                LOG.info(user.getUsername() + " was authenticated successfully");
-                                                ctx.attribute("role", user.getRole());
-                                            }
+                            config.router.mount(router -> router.beforeMatched(ctx -> {
+                                Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
+                                if (credentials.isEmpty()) {
+                                    ctx.attribute("role", Role.ANONYMOUS);
+                                } else {
+                                    for (User user : userRepository.getUsers()) {
+                                        if (user.getUsername().equals(credentials.get().getUsername())
+                                                && User.verifyPassword(credentials.get().getPassword(), user.getPassword())) {
+                                            LOG.info("{} was authenticated successfully", user.getUsername());
+                                            ctx.attribute("role", user.getRole());
                                         }
                                     }
-                                    AccessManager.validateEndpointAccess(ctx);
-                                });
-                            });
+                                }
+                                AccessManager.validateEndpointAccess(ctx);
+                            }));
                         }
                 )
                 .start(App.getSettings().getHttp().port());
@@ -127,7 +125,7 @@ public class Router {
     public void closeApplication() {
         if (app != null) {
             app.stop();
-            JsonMapper.writeUsersToJson(USERS_JSON_FILE, userController.getUsers());
+            userRepository.save();
             try {
                 Path source = Paths.get("build/resources/main/users.json");
                 Path target = Paths.get("src/main/resources/users.json");

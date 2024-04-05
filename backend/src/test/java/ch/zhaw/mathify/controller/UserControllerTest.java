@@ -2,6 +2,7 @@ package ch.zhaw.mathify.controller;
 
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
+import ch.zhaw.mathify.repository.UserRepository;
 import io.javalin.http.Context;
 import io.javalin.validation.BodyValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,17 +19,20 @@ import static org.mockito.Mockito.when;
 class UserControllerTest {
 
     private UserController userController;
+    private UserRepository userRepository;
     private Context contextMock;
 
     @BeforeEach
     void setUp() {
         userController = new UserController();
         contextMock = Mockito.mock(Context.class);
+        userRepository = UserRepository.getInstance();
     }
 
     @Test
     void testCreateUser() {
-        User newUser = new User("testuser", "Test User", "testpassword", Grade.FIRST);
+        userRepository.destroy();
+        User newUser = new User("t", "Test User", "testpassword", Grade.FIRST);
         when(contextMock.bodyAsClass(User.class)).thenReturn(newUser);
         when(contextMock.bodyValidator(User.class)).thenReturn(new BodyValidator<>("body", User.class, () -> newUser));
 
@@ -45,18 +49,18 @@ class UserControllerTest {
 
     @Test
     void testGetAllUsers() {
-        List<User> users = userController.getUsers();
-
+        userRepository.destroy();
         userController.getAll(contextMock);
 
-        verify(contextMock).json(users);
+        verify(contextMock).json(userRepository.getUsers());
     }
 
     @Test
     void testGetOneUser() {
+        userRepository.destroy();
         User testUser = new User("testuser", "Test User", "testpassword", Grade.FIRST);
         testUser.setGuid("testguid");
-        userController.setUsers(List.of(testUser));
+        userRepository.setUsers(List.of(testUser));
         when(contextMock.pathParam("s")).thenReturn("testuser");
 
         userController.getOne(contextMock, "testguid");
@@ -66,14 +70,15 @@ class UserControllerTest {
 
     @Test
     void testDeleteUser() {
+        userRepository.destroy();
         User userToDelete = new User("testuser", "Test User", "testpassword", Grade.FIRST);
         userToDelete.setGuid("testguid");
-        List<User> users = userController.getUsers();
+        List<User> users = userRepository.getUsers();
         users.add(userToDelete);
-        userController.setUsers(users);
+        userRepository.setUsers(users);
 
         userController.delete(contextMock, "testguid");
 
-        assertFalse(userController.getUsers().contains(userToDelete));
+        assertFalse(userRepository.getUsers().contains(userToDelete));
     }
 }
