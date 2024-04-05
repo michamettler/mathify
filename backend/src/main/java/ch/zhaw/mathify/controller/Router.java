@@ -29,7 +29,7 @@ public class Router {
     private static final Logger LOG = LoggerFactory.getLogger(Router.class);
     private Javalin app;
     private final Scoreboard scoreboard = new Scoreboard();
-    private final UserController userController = new UserController();
+    private final UserApiController userApiController = new UserApiController();
     private final UserRepository userRepository = UserRepository.getInstance();
 
     /**
@@ -42,7 +42,7 @@ public class Router {
         app = Javalin.create(config -> {
                             sslPluginOptional.ifPresent(config::registerPlugin);
                             config.router.apiBuilder(() ->
-                                    crud("users/{user-guid}", userController, Role.SYSTEM_CRUD)
+                                    crud("users/{user-guid}", userApiController, Role.SYSTEM_CRUD)
                             );
                             config.router.mount(router -> router.beforeMatched(ctx -> {
                                 Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());

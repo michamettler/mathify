@@ -10,10 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Class responsible for handling user CRUD operations and persisting them to a JSON file
+ * Class responsible for handling user CRUD operations
  */
-public class UserController implements CrudHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+public class UserApiController implements CrudHandler {
+    private static final Logger LOG = LoggerFactory.getLogger(UserApiController.class);
     private final UserRepository userRepository = UserRepository.getInstance();
 
     /**
@@ -25,7 +25,6 @@ public class UserController implements CrudHandler {
 
         User user = context.bodyAsClass(User.class);
         user.setPassword(User.hashPassword(user.getPassword()));
-
         if (userRepository.getUsers().stream().anyMatch(u -> u.getUsername().equals(user.getUsername()))) {
             String responseMessage = "Username already exists!";
             context.status(409);
@@ -47,7 +46,11 @@ public class UserController implements CrudHandler {
      */
     @Override
     public void delete(@NotNull Context context, @NotNull String s) {
-        if (userRepository.getUsers().removeIf(u -> u.getGuid().equals(s))) {
+        if (userRepository.getUsers().stream().anyMatch(u -> u.getGuid().equals(s))) {
+            userRepository.remove(userRepository.getUsers().stream()
+                    .filter(u -> u.getGuid().equals(s))
+                    .findFirst()
+                    .orElse(null));
             String responseMessage = "User deleted successfully!";
             userRepository.save();
             context.status(204);
@@ -98,7 +101,11 @@ public class UserController implements CrudHandler {
         User user = context.bodyAsClass(User.class);
         user.setPassword(User.hashPassword(user.getPassword()));
 
-        if (userRepository.getUsers().removeIf(u -> u.getGuid().equals(s))) {
+        if (userRepository.getUsers().stream().anyMatch(u -> u.getGuid().equals(s))) {
+            userRepository.remove(userRepository.getUsers().stream()
+                    .filter(u -> u.getGuid().equals(s))
+                    .findFirst()
+                    .orElse(null));
             userRepository.add(user);
             userRepository.save();
             context.status(204);
@@ -114,7 +121,7 @@ public class UserController implements CrudHandler {
     void validateUser(@NotNull Context context) {
         context.bodyValidator(User.class)
                 .check(user -> user.getUsername() != null && user.getPassword() != null && user.getEmail() != null
-                        && !user.getUsername().isBlank() && !user.getPassword().isBlank() && !user.getEmail().isBlank(),
+                                && !user.getUsername().isBlank() && !user.getPassword().isBlank() && !user.getEmail().isBlank(),
                         new ValidationError<>("username, password and email must not be null!"))
                 .get();
     }

@@ -16,27 +16,27 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class UserControllerTest {
+class UserApiControllerTest {
 
-    private UserController userController;
+    private UserApiController userApiController;
     private UserRepository userRepository;
     private Context contextMock;
 
     @BeforeEach
     void setUp() {
-        userController = new UserController();
+        userApiController = new UserApiController();
         contextMock = Mockito.mock(Context.class);
         userRepository = UserRepository.getInstance();
     }
 
     @Test
     void testCreateUser() {
-        userRepository.destroy();
-        User newUser = new User("t", "Test User", "testpassword", Grade.FIRST);
+        UserRepository.destroy();
+        User newUser = new User("abcd", "Test User", "testpassword", Grade.FIRST);
         when(contextMock.bodyAsClass(User.class)).thenReturn(newUser);
         when(contextMock.bodyValidator(User.class)).thenReturn(new BodyValidator<>("body", User.class, () -> newUser));
 
-        userController.create(contextMock);
+        userApiController.create(contextMock);
 
         ArgumentCaptor<Integer> statusCaptor = ArgumentCaptor.forClass(Integer.class);
         verify(contextMock).status(statusCaptor.capture());
@@ -49,35 +49,33 @@ class UserControllerTest {
 
     @Test
     void testGetAllUsers() {
-        userRepository.destroy();
-        userController.getAll(contextMock);
+        UserRepository.destroy();
+        userApiController.getAll(contextMock);
 
         verify(contextMock).json(userRepository.getUsers());
     }
 
     @Test
     void testGetOneUser() {
-        userRepository.destroy();
+        UserRepository.destroy();
         User testUser = new User("testuser", "Test User", "testpassword", Grade.FIRST);
         testUser.setGuid("testguid");
-        userRepository.setUsers(List.of(testUser));
+        userRepository.add(testUser);
         when(contextMock.pathParam("s")).thenReturn("testuser");
 
-        userController.getOne(contextMock, "testguid");
+        userApiController.getOne(contextMock, "testguid");
 
         verify(contextMock).json(testUser);
     }
 
     @Test
     void testDeleteUser() {
-        userRepository.destroy();
-        User userToDelete = new User("testuser", "Test User", "testpassword", Grade.FIRST);
+        UserRepository.destroy();
+        User userToDelete = new User("abcd", "Test User", "testpassword", Grade.FIRST);
         userToDelete.setGuid("testguid");
-        List<User> users = userRepository.getUsers();
-        users.add(userToDelete);
-        userRepository.setUsers(users);
+        userRepository.add(userToDelete);
 
-        userController.delete(contextMock, "testguid");
+        userApiController.delete(contextMock, "testguid");
 
         assertFalse(userRepository.getUsers().contains(userToDelete));
     }

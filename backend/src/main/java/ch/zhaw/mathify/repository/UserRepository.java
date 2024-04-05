@@ -1,6 +1,6 @@
 package ch.zhaw.mathify.repository;
 
-import ch.zhaw.mathify.controller.UserController;
+import ch.zhaw.mathify.controller.UserApiController;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.util.JsonMapper;
 import org.slf4j.Logger;
@@ -9,19 +9,28 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class is responsible for managing the users in the system.
+ */
 public final class UserRepository {
     private static final Logger LOG = LoggerFactory.getLogger(UserRepository.class);
-    public static final File USERS_JSON_FILE = new File(Objects.requireNonNull(UserController.class.getClassLoader().getResource("users.json")).getFile());
-    private static UserRepository instance = new UserRepository();
+    public static final File USERS_JSON_FILE = new File(Objects.requireNonNull(UserApiController.class.getClassLoader().getResource("users.json")).getFile());
+    private static UserRepository instance;
     private List<User> users;
 
     private UserRepository() {
         load();
     }
 
+    /**
+     * Returns the singleton instance of the UserRepository.
+     *
+     * @return the singleton instance of the UserRepository
+     */
     public static UserRepository getInstance() {
         if (instance == null) {
             instance = new UserRepository();
@@ -30,18 +39,37 @@ public final class UserRepository {
         return instance;
     }
 
+    /**
+     * Destroys the singleton instance of the UserRepository.
+     */
+    public static void destroy() {
+        instance = null;
+    }
+
+    /**
+     * @param user the user to add
+     */
     public void add(User user) {
-        this.users.add(user);
+        if(user != null) this.users.add(user);
     }
 
+    /**
+     * @param user the user to remove
+     */
     public void remove(User user) {
-        this.users.remove(user);
+        if(user != null) this.users.remove(user);
     }
 
+    /**
+     * Saves the users to the users.json file.
+     */
     public void save() {
         JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);
     }
 
+    /**
+     * Loads the users from the users.json file.
+     */
     public void load() {
         try {
             if (!USERS_JSON_FILE.exists()) {
@@ -58,14 +86,10 @@ public final class UserRepository {
         }
     }
 
+    /**
+     * @return an unmodifiable list of all users
+     */
     public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-    public void destroy() {
-        instance = null;
+        return Collections.unmodifiableList(users);
     }
 }
