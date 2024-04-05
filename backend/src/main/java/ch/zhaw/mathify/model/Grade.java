@@ -17,7 +17,9 @@ public enum Grade {
     @JsonProperty("fifth")
     FIFTH(100000),
     @JsonProperty("sixth")
-    SIXTH(1000000);
+    SIXTH(1000000),
+    @JsonProperty("none")
+    NONE(0);
     private final int max;
 
     Grade(int max) {

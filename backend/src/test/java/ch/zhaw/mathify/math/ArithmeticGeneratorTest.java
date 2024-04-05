@@ -1,9 +1,9 @@
 package ch.zhaw.mathify.math;
 
 import ch.zhaw.mathify.maths.ArithmeticGenerator;
-import ch.zhaw.mathify.model.ArithmeticExercise;
-import ch.zhaw.mathify.model.Exercise;
-import ch.zhaw.mathify.model.ExerciseSubType;
+import ch.zhaw.mathify.model.exercise.ArithmeticExercise;
+import ch.zhaw.mathify.model.exercise.Exercise;
+import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import ch.zhaw.mathify.model.Grade;
 import org.junit.jupiter.api.Test;
 

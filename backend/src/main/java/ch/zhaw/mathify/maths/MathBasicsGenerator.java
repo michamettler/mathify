@@ -1,6 +1,9 @@
 package ch.zhaw.mathify.maths;
 
 import ch.zhaw.mathify.model.*;
+import ch.zhaw.mathify.model.exercise.Exercise;
+import ch.zhaw.mathify.model.exercise.ExerciseSubType;
+import ch.zhaw.mathify.model.exercise.MathBasicsExercise;
 
 import java.util.Arrays;
 import java.util.Random;

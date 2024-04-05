@@ -1,10 +1,10 @@
 package ch.zhaw.mathify.math;
 
 import ch.zhaw.mathify.maths.MathBasicsGenerator;
-import ch.zhaw.mathify.model.Exercise;
-import ch.zhaw.mathify.model.ExerciseSubType;
+import ch.zhaw.mathify.model.exercise.Exercise;
+import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import ch.zhaw.mathify.model.Grade;
-import ch.zhaw.mathify.model.MathBasicsExercise;
+import ch.zhaw.mathify.model.exercise.MathBasicsExercise;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

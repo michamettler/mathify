@@ -2,6 +2,7 @@ package ch.zhaw.mathify.controller;
 
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
+import ch.zhaw.mathify.repository.UserRepository;
 import io.javalin.http.Context;
 import io.javalin.validation.BodyValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,24 +16,27 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class UserControllerTest {
+class UserApiControllerTest {
 
-    private UserController userController;
+    private UserApiController userApiController;
+    private UserRepository userRepository;
     private Context contextMock;
 
     @BeforeEach
     void setUp() {
-        userController = new UserController();
+        userApiController = new UserApiController();
         contextMock = Mockito.mock(Context.class);
+        userRepository = UserRepository.getInstance();
     }
 
     @Test
     void testCreateUser() {
-        User newUser = new User("testuser", "Test User", "testpassword", Grade.FIRST);
+        UserRepository.destroy();
+        User newUser = new User("abcd", "Test User", "testpassword", Grade.FIRST);
         when(contextMock.bodyAsClass(User.class)).thenReturn(newUser);
         when(contextMock.bodyValidator(User.class)).thenReturn(new BodyValidator<>("body", User.class, () -> newUser));
 
-        userController.create(contextMock);
+        userApiController.create(contextMock);
 
         ArgumentCaptor<Integer> statusCaptor = ArgumentCaptor.forClass(Integer.class);
         verify(contextMock).status(statusCaptor.capture());
@@ -45,35 +49,34 @@ class UserControllerTest {
 
     @Test
     void testGetAllUsers() {
-        List<User> users = userController.getUsers();
+        UserRepository.destroy();
+        userApiController.getAll(contextMock);
 
-        userController.getAll(contextMock);
-
-        verify(contextMock).json(users);
+        verify(contextMock).json(userRepository.getUsers());
     }
 
     @Test
     void testGetOneUser() {
+        UserRepository.destroy();
         User testUser = new User("testuser", "Test User", "testpassword", Grade.FIRST);
         testUser.setGuid("testguid");
-        userController.setUsers(List.of(testUser));
+        userRepository.add(testUser);
         when(contextMock.pathParam("s")).thenReturn("testuser");
 
-        userController.getOne(contextMock, "testguid");
+        userApiController.getOne(contextMock, "testguid");
 
         verify(contextMock).json(testUser);
     }
 
     @Test
     void testDeleteUser() {
-        User userToDelete = new User("testuser", "Test User", "testpassword", Grade.FIRST);
+        UserRepository.destroy();
+        User userToDelete = new User("abcd", "Test User", "testpassword", Grade.FIRST);
         userToDelete.setGuid("testguid");
-        List<User> users = userController.getUsers();
-        users.add(userToDelete);
-        userController.setUsers(users);
+        userRepository.add(userToDelete);
 
-        userController.delete(contextMock, "testguid");
+        userApiController.delete(contextMock, "testguid");
 
-        assertFalse(userController.getUsers().contains(userToDelete));
+        assertFalse(userRepository.getUsers().contains(userToDelete));
     }
 }

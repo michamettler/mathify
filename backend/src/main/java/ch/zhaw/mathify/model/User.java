@@ -18,8 +18,12 @@ public class User {
 
     /**
      * @param username username of the user
-     * @param email email of the user
+     * @param email    email of the user
      * @param password password of the user
+     *                 password will be hashed
+     * @param grade    grade of the user
+     *                 <p>
+     *                 Default role is USER
      */
     public User(String username, String email, String password, Grade grade) {
         this.username = username;
@@ -38,6 +42,8 @@ public class User {
         this.guid = createGuid();
         this.level = 1;
         this.experience = 0;
+        this.role = Role.USER;
+        this.grade = Grade.NONE;
     }
 
     /**
@@ -52,7 +58,7 @@ public class User {
         }
     }
 
-    private static String createGuid(){
+    private static String createGuid() {
         return java.util.UUID.randomUUID().toString();
     }
 
@@ -60,16 +66,16 @@ public class User {
      * @param password password to hash
      * @return hashed password
      */
-    public static String hashPassword(String password){
+    public static String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
     /**
      * @param password password to verify
-     * @param hash hash to verify against
-     * @return  true if the password matches the hash
+     * @param hash     hash to verify against
+     * @return true if the password matches the hash
      */
-    public static boolean verifyPassword(String password, String hash){
+    public static boolean verifyPassword(String password, String hash) {
         return BCrypt.checkpw(password, hash);
     }
 
@@ -97,7 +103,9 @@ public class User {
         this.experience = experience;
     }
 
-    public String getGuid() { return guid; }
+    public String getGuid() {
+        return guid;
+    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -114,6 +122,7 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public void setGuid(String guid) {
         this.guid = guid;
     }

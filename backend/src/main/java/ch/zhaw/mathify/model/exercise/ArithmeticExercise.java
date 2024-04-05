@@ -1,4 +1,4 @@
-package ch.zhaw.mathify.model;
+package ch.zhaw.mathify.model.exercise;
 
 /**
  * Represents an arithmetic exercise

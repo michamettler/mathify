@@ -1,7 +1,7 @@
 package ch.zhaw.mathify.controller;
 
 import ch.zhaw.mathify.model.User;
-import ch.zhaw.mathify.util.JsonMapper;
+import ch.zhaw.mathify.repository.UserRepository;
 import io.javalin.apibuilder.CrudHandler;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationError;
@@ -9,38 +9,12 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.List;
-import java.util.Objects;
-
 /**
- * Class responsible for handling user CRUD operations and persisting them to a JSON file
+ * Class responsible for handling user CRUD operations
  */
-public class UserController implements CrudHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
-    public static final File USERS_JSON_FILE = new File(Objects.requireNonNull(UserController.class.getClassLoader().getResource("users.json")).getFile());
-    private List<User> users;
-
-    /**
-     * Constructor to read users from JSON file
-     */
-    public UserController() {
-        try {
-            if (!USERS_JSON_FILE.exists()) {
-                if (!USERS_JSON_FILE.createNewFile()) {
-                    LOG.error("Could not create users.json!");
-                    throw new IOException("Could not create users.json!");
-                }
-                JsonMapper.writeUsersToJson(USERS_JSON_FILE, List.of());
-            }
-            this.users = JsonMapper.map(Files.readString(USERS_JSON_FILE.toPath()), User.class);
-            LOG.info("users.json was read successfully");
-        } catch (IOException e) {
-            LOG.error("Could not read users.json!", e);
-        }
-    }
+public class UserApiController implements CrudHandler {
+    private static final Logger LOG = LoggerFactory.getLogger(UserApiController.class);
+    private final UserRepository userRepository = UserRepository.getInstance();
 
     /**
      * @param context the context of the request
@@ -51,16 +25,15 @@ public class UserController implements CrudHandler {
 
         User user = context.bodyAsClass(User.class);
         user.setPassword(User.hashPassword(user.getPassword()));
-
-        if (users.stream().anyMatch(u -> u.getUsername().equals(user.getUsername()))) {
+        if (userRepository.getUsers().stream().anyMatch(u -> u.getUsername().equals(user.getUsername()))) {
             String responseMessage = "Username already exists!";
             context.status(409);
             context.result(responseMessage);
             LOG.error(responseMessage);
         } else {
             String responseMessage = "User created successfully! GUID: " + user.getGuid();
-            users.add(user);
-            JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);
+            userRepository.add(user);
+            userRepository.save();
             context.status(201);
             context.result(responseMessage);
             LOG.info(responseMessage);
@@ -73,9 +46,13 @@ public class UserController implements CrudHandler {
      */
     @Override
     public void delete(@NotNull Context context, @NotNull String s) {
-        if (users.removeIf(u -> u.getGuid().equals(s))) {
+        if (userRepository.getUsers().stream().anyMatch(u -> u.getGuid().equals(s))) {
+            userRepository.remove(userRepository.getUsers().stream()
+                    .filter(u -> u.getGuid().equals(s))
+                    .findFirst()
+                    .orElse(null));
             String responseMessage = "User deleted successfully!";
-            JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);
+            userRepository.save();
             context.status(204);
             context.result(responseMessage);
             LOG.info(responseMessage);
@@ -92,7 +69,7 @@ public class UserController implements CrudHandler {
      */
     @Override
     public void getAll(@NotNull Context context) {
-        context.json(users);
+        context.json(userRepository.getUsers());
         LOG.info("user list was retrieved via GET /users endpoint");
     }
 
@@ -102,7 +79,7 @@ public class UserController implements CrudHandler {
      */
     @Override
     public void getOne(@NotNull Context context, @NotNull String s) {
-        User user = users.stream().filter(u -> u.getGuid().equals(s)).findFirst().orElse(null);
+        User user = userRepository.getUsers().stream().filter(u -> u.getGuid().equals(s)).findFirst().orElse(null);
         if (user != null) {
             context.json(user);
             LOG.info("user {} was retrieved via GET /users/{} endpoint", s, s);
@@ -124,9 +101,13 @@ public class UserController implements CrudHandler {
         User user = context.bodyAsClass(User.class);
         user.setPassword(User.hashPassword(user.getPassword()));
 
-        if (users.removeIf(u -> u.getGuid().equals(s))) {
-            users.add(user);
-            JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);
+        if (userRepository.getUsers().stream().anyMatch(u -> u.getGuid().equals(s))) {
+            userRepository.remove(userRepository.getUsers().stream()
+                    .filter(u -> u.getGuid().equals(s))
+                    .findFirst()
+                    .orElse(null));
+            userRepository.add(user);
+            userRepository.save();
             context.status(204);
             context.result("User updated successfully!");
             LOG.info("User updated successfully!");
@@ -139,16 +120,9 @@ public class UserController implements CrudHandler {
 
     void validateUser(@NotNull Context context) {
         context.bodyValidator(User.class)
-                .check(user -> user.getUsername() != null && user.getPassword() != null && user.getEmail() != null,
+                .check(user -> user.getUsername() != null && user.getPassword() != null && user.getEmail() != null
+                                && !user.getUsername().isBlank() && !user.getPassword().isBlank() && !user.getEmail().isBlank(),
                         new ValidationError<>("username, password and email must not be null!"))
                 .get();
-    }
-
-    void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public List<User> getUsers() {
-        return users;
     }
 }
