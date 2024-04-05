@@ -62,11 +62,6 @@ public class Router {
                         }
                 )
                 .start(App.getSettings().getHttp().port());
-        app.exception(MismatchedInputException.class, (e, ctx) -> {
-            ctx.result("Invalid JSON format!");
-            LOG.error("Invalid JSON format!");
-            ctx.status(400);
-        });
         app.get("/", ctx -> ctx.redirect("/welcome"));
         app.get("/welcome", ctx -> {
             ctx.result("Welcome to Mathify!");
@@ -92,6 +87,11 @@ public class Router {
                     () -> LOG.error("Anonymous user is not allowed to access the {} endpoint", ctx.path())
             );
             ctx.result("Unauthorized access! Please provide valid credentials!");
+        });
+        app.exception(MismatchedInputException.class, (e, ctx) -> {
+            ctx.result("Invalid JSON format!");
+            LOG.error("Invalid JSON format!");
+            ctx.status(400);
         });
         app.error(404, ctx -> ctx.redirect("/page-not-found?invalid-endpoint=" + ctx.path()));
     }
