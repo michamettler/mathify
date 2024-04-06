@@ -2,6 +2,10 @@ package ch.zhaw.mathify.model.exercise;
 
 import java.util.Arrays;
 
+/**
+ * @param result the result of the exercise
+ * @param exercise the exercise as a string
+ */
 public record MathBasicsExercise(int[] result, String exercise) implements Exercise {
     @Override
     public String toString(){

@@ -48,8 +48,7 @@ public class Router {
         Optional<SslPlugin> sslPluginOptional = doSslPluginConfig();
         app = Javalin.create(config -> {
             sslPluginOptional.ifPresent(config::registerPlugin);
-            config.router.apiBuilder(this::register
-            );
+            config.router.apiBuilder(this::register);
             config.router.mount(this::handleAuthenticationAndAuthorization);
         });
 
