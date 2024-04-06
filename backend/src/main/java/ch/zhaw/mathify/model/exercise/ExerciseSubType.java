@@ -9,6 +9,11 @@ public enum ExerciseSubType {
     MULTIPLICATION,
     SUBTRACTION,
     SORTING,
-    NEIGHBORS
+    NEIGHBORS;
+
+    public static ExerciseSubType valueOfIgnoreCase(String value){
+        return ExerciseSubType.valueOf(value.toUpperCase());
+    }
+
 
 }

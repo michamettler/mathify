@@ -52,4 +52,13 @@ public class JsonMapper {
         LOG.debug("Reading settings.json...");
         return objectMapper.readValue(file, Settings.class);
     }
+
+    /**
+     * @param object object to map
+     * @return json string
+     * @throws JsonProcessingException
+     */
+    public static String toJson(Object object) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(object);
+    }
 }

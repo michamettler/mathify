@@ -1,12 +1,14 @@
 package ch.zhaw.mathify.controller;
 
 import ch.zhaw.mathify.App;
+import ch.zhaw.mathify.controller.apicontroller.ExerciseApiController;
 import ch.zhaw.mathify.controller.apicontroller.UserApiController;
 import ch.zhaw.mathify.model.Role;
 import ch.zhaw.mathify.model.Scoreboard;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import ch.zhaw.mathify.repository.UserRepository;
+import ch.zhaw.mathify.util.JsonMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import io.javalin.Javalin;
 import io.javalin.community.ssl.SslPlugin;
@@ -33,6 +35,7 @@ public class Router {
     private static final Logger LOG = LoggerFactory.getLogger(Router.class);
     private final Scoreboard scoreboard = new Scoreboard();
     private final UserApiController userApiController = new UserApiController();
+    private final ExerciseApiController exerciseApiController = new ExerciseApiController();
     private final UserRepository userRepository = UserRepository.getInstance();
     private Javalin app;
 
@@ -45,41 +48,11 @@ public class Router {
         Optional<SslPlugin> sslPluginOptional = doSslPluginConfig();
         app = Javalin.create(config -> {
             sslPluginOptional.ifPresent(config::registerPlugin);
-            config.router.apiBuilder(() -> {
-                        crud("users/{user-guid}", userApiController, Role.SYSTEM_CRUD);
-                        path("/exercise", () -> {
-                            get("/subtypes", ctx -> ctx.json(ExerciseSubType.values()), Role.USER);
-                        });
-                    }
+            config.router.apiBuilder(this::register
             );
             config.router.mount(this::handleAuthenticationAndAuthorization);
         });
 
-        int port = App.getSettings().getHttp().port();
-        app.start(port);
-
-        register();
-    }
-
-    private void register() {
-        app.get("/", ctx -> ctx.redirect("/welcome"));
-        app.get("/welcome", ctx -> {
-            ctx.result("Welcome to Mathify!");
-            LOG.info("welcome page was accessed");
-        }, Role.ANONYMOUS);
-        app.get("/scoreboard", ctx -> {
-            ctx.json(scoreboard.inOrderTraversal(scoreboard.getRoot()));
-            LOG.info("scoreboard page was accessed");
-        }, Role.USER);
-        app.get("/page-not-found", ctx -> {
-            ctx.result("Page " + ctx.queryParam("invalid-endpoint") + " not found!");
-            LOG.error("Page {} not found!", ctx.queryParam("invalid-endpoint"));
-        }, Role.ANONYMOUS);
-        app.post("/stop", ctx -> {
-            ctx.result("Stopping server...");
-            LOG.info("Server was stopped");
-            closeApplication();
-        }, Role.ADMIN);
         app.error(401, ctx -> {
             Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
             credentials.ifPresentOrElse(
@@ -94,6 +67,36 @@ public class Router {
             ctx.status(400);
         });
         app.error(404, ctx -> ctx.redirect("/page-not-found?invalid-endpoint=" + ctx.path()));
+
+        int port = App.getSettings().getHttp().port();
+        app.start(port);
+    }
+
+    private void register() {
+        get("/", ctx -> ctx.redirect("/welcome"));
+        get("/welcome", ctx -> {
+            ctx.result("Welcome to Mathify!");
+            LOG.info("welcome page was accessed");
+        }, Role.ANONYMOUS);
+        crud("/users/{user-guid}", userApiController, Role.SYSTEM_CRUD, Role.ADMIN);
+        path("/exercise", () -> {
+            get(exerciseApiController::getExerciseFromSubtypeAndGrade, Role.USER, Role.ADMIN);
+            get("/subtypes", ctx -> ctx.json(JsonMapper.toJson(ExerciseSubType.values())), Role.USER, Role.ADMIN);
+
+        });
+        get("/scoreboard", ctx -> {
+            ctx.json(scoreboard.inOrderTraversal(scoreboard.getRoot()));
+            LOG.info("scoreboard page was accessed");
+        }, Role.USER);
+        get("/page-not-found", ctx -> {
+            ctx.result("Page " + ctx.queryParam("invalid-endpoint") + " not found!");
+            LOG.error("Page {} not found!", ctx.queryParam("invalid-endpoint"));
+        }, Role.ANONYMOUS);
+        post("/stop", ctx -> {
+            ctx.result("Stopping server...");
+            LOG.info("Server was stopped");
+            closeApplication();
+        }, Role.ADMIN);
     }
 
     private void handleAuthenticationAndAuthorization(JavalinDefaultRouting router) {
