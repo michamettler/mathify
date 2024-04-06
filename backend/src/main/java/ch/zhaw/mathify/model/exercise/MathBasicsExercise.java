@@ -2,7 +2,7 @@ package ch.zhaw.mathify.model.exercise;
 
 import java.util.Arrays;
 
-public record MathBasicsExercise(int[] result, String exercise) implements Exercise{
+public record MathBasicsExercise(int[] result, String exercise) implements Exercise {
     @Override
     public String toString(){
         return exercise;

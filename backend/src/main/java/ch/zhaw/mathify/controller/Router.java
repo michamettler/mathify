@@ -1,9 +1,11 @@
 package ch.zhaw.mathify.controller;
 
 import ch.zhaw.mathify.App;
+import ch.zhaw.mathify.controller.apicontroller.UserApiController;
 import ch.zhaw.mathify.model.Role;
 import ch.zhaw.mathify.model.Scoreboard;
 import ch.zhaw.mathify.model.User;
+import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import ch.zhaw.mathify.repository.UserRepository;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import io.javalin.Javalin;
@@ -22,7 +24,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
-import static io.javalin.apibuilder.ApiBuilder.crud;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 /**
  * Class responsible for creating endpoints to communicate between Front- and Backend
@@ -43,8 +45,12 @@ public class Router {
         Optional<SslPlugin> sslPluginOptional = doSslPluginConfig();
         app = Javalin.create(config -> {
             sslPluginOptional.ifPresent(config::registerPlugin);
-            config.router.apiBuilder(() ->
-                    crud("users/{user-guid}", userApiController, Role.SYSTEM_CRUD)
+            config.router.apiBuilder(() -> {
+                        crud("users/{user-guid}", userApiController, Role.SYSTEM_CRUD);
+                        path("/exercise", () -> {
+                            get("/subtypes", ctx -> ctx.json(ExerciseSubType.values()), Role.USER);
+                        });
+                    }
             );
             config.router.mount(this::handleAuthenticationAndAuthorization);
         });
@@ -77,7 +83,7 @@ public class Router {
         app.error(401, ctx -> {
             Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
             credentials.ifPresentOrElse(
-                    basicAuthCredentials -> LOG.error("User {} is not allowed to access the {} endpoint or has provided invalid credentials", basicAuthCredentials.getUsername(), ctx.path()),
+                    basicAuthCredentials -> LOG.error("User {} is not allowed to access the {} endpoint", basicAuthCredentials.getUsername(), ctx.path()),
                     () -> LOG.error("Anonymous user is not allowed to access the {} endpoint", ctx.path())
             );
             ctx.result("Unauthorized access! Please provide valid credentials!");

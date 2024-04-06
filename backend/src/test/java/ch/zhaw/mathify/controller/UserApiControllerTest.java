@@ -1,5 +1,6 @@
 package ch.zhaw.mathify.controller;
 
+import ch.zhaw.mathify.controller.apicontroller.UserApiController;
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.repository.UserRepository;
@@ -9,8 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
