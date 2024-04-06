@@ -49,7 +49,7 @@ public class Router {
                                 if (credentials.isEmpty()) {
                                     ctx.attribute("role", Role.ANONYMOUS);
                                 } else {
-                                    for (User user : userRepository.getUsers()) {
+                                    for (User user : userRepository.get()) {
                                         if (user.getUsername().equals(credentials.get().getUsername())
                                                 && User.verifyPassword(credentials.get().getPassword(), user.getPassword())) {
                                             LOG.info("{} was authenticated successfully", user.getUsername());

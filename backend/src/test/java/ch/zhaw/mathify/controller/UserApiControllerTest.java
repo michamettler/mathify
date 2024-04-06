@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -52,7 +50,7 @@ class UserApiControllerTest {
         UserRepository.destroy();
         userApiController.getAll(contextMock);
 
-        verify(contextMock).json(userRepository.getUsers());
+        verify(contextMock).json(userRepository.get());
     }
 
     @Test
@@ -77,6 +75,6 @@ class UserApiControllerTest {
 
         userApiController.delete(contextMock, "testguid");
 
-        assertFalse(userRepository.getUsers().contains(userToDelete));
+        assertFalse(userRepository.get().contains(userToDelete));
     }
 }
