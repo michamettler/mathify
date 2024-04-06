@@ -20,7 +20,7 @@ public class Scoreboard {
      * Creates a Scoreboard and loads the current users from the users.json file
      */
     public Scoreboard() {
-        for(User user : userRepository.getUsers()) {
+        for(User user : userRepository.get()) {
             insert(new ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
         }
     }
