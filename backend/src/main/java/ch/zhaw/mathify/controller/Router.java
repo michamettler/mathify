@@ -8,6 +8,8 @@ import ch.zhaw.mathify.repository.UserRepository;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import io.javalin.Javalin;
 import io.javalin.community.ssl.SslPlugin;
+import io.javalin.http.Context;
+import io.javalin.router.JavalinDefaultRouting;
 import io.javalin.security.BasicAuthCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +29,10 @@ import static io.javalin.apibuilder.ApiBuilder.crud;
  */
 public class Router {
     private static final Logger LOG = LoggerFactory.getLogger(Router.class);
-    private Javalin app;
     private final Scoreboard scoreboard = new Scoreboard();
     private final UserApiController userApiController = new UserApiController();
     private final UserRepository userRepository = UserRepository.getInstance();
+    private Javalin app;
 
     /**
      * Starts the Javalin instance including the Endpoints
@@ -40,28 +42,20 @@ public class Router {
 
         Optional<SslPlugin> sslPluginOptional = doSslPluginConfig();
         app = Javalin.create(config -> {
-                            sslPluginOptional.ifPresent(config::registerPlugin);
-                            config.router.apiBuilder(() ->
-                                    crud("users/{user-guid}", userApiController, Role.SYSTEM_CRUD)
-                            );
-                            config.router.mount(router -> router.beforeMatched(ctx -> {
-                                Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
-                                if (credentials.isEmpty()) {
-                                    ctx.attribute("role", Role.ANONYMOUS);
-                                } else {
-                                    for (User user : userRepository.getUsers()) {
-                                        if (user.getUsername().equals(credentials.get().getUsername())
-                                                && User.verifyPassword(credentials.get().getPassword(), user.getPassword())) {
-                                            LOG.info("{} was authenticated successfully", user.getUsername());
-                                            ctx.attribute("role", user.getRole());
-                                        }
-                                    }
-                                }
-                                AccessManager.validateEndpointAccess(ctx);
-                            }));
-                        }
-                )
-                .start(App.getSettings().getHttp().port());
+            sslPluginOptional.ifPresent(config::registerPlugin);
+            config.router.apiBuilder(() ->
+                    crud("users/{user-guid}", userApiController, Role.SYSTEM_CRUD)
+            );
+            config.router.mount(this::handleAuthenticationAndAuthorization);
+        });
+
+        int port = App.getSettings().getHttp().port();
+        app.start(port);
+
+        register();
+    }
+
+    private void register() {
         app.get("/", ctx -> ctx.redirect("/welcome"));
         app.get("/welcome", ctx -> {
             ctx.result("Welcome to Mathify!");
@@ -95,6 +89,30 @@ public class Router {
         });
         app.error(404, ctx -> ctx.redirect("/page-not-found?invalid-endpoint=" + ctx.path()));
     }
+
+    private void handleAuthenticationAndAuthorization(JavalinDefaultRouting router) {
+        router.beforeMatched(ctx -> {
+            Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
+            if (credentials.isEmpty()) {
+                ctx.attribute("role", Role.ANONYMOUS);
+            } else {
+                authenticateUser(credentials.get(), ctx);
+            }
+            AccessManager.validateEndpointAccess(ctx);
+        });
+    }
+
+    private void authenticateUser(BasicAuthCredentials credentials, Context ctx) {
+        for (User user : userRepository.getUsers()) {
+            if (user.getUsername().equals(credentials.getUsername()) &&
+                    User.verifyPassword(credentials.getPassword(), user.getPassword())) {
+                LOG.info("{} was authenticated successfully", user.getUsername());
+                ctx.attribute("role", user.getRole());
+                return;
+            }
+        }
+    }
+
 
     private Optional<SslPlugin> doSslPluginConfig() {
         File certFile = Paths.get(App.getSettings().getHttps().cert()).toFile();
