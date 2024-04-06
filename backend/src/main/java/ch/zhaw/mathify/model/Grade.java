@@ -26,6 +26,14 @@ public enum Grade {
         this.max = max;
     }
 
+    /**
+     * @param value the value to parse
+     * @return the corresponding grade
+     */
+    public static Grade valueOfIgnoreCase(String value){
+        return Grade.valueOf(value.toUpperCase());
+    }
+
     public int getMax() {
         return max;
     }

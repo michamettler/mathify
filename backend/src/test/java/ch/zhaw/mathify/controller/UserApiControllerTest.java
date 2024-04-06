@@ -1,5 +1,6 @@
 package ch.zhaw.mathify.controller;
 
+import ch.zhaw.mathify.controller.apicontroller.UserApiController;
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.repository.UserRepository;

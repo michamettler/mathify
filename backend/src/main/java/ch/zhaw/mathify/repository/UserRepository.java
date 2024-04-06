@@ -1,6 +1,6 @@
 package ch.zhaw.mathify.repository;
 
-import ch.zhaw.mathify.controller.UserApiController;
+import ch.zhaw.mathify.controller.apicontroller.UserApiController;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.util.JsonMapper;
 import org.slf4j.Logger;

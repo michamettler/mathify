@@ -11,6 +11,9 @@ import java.util.Set;
  * This class handles the authentication process for users to access endpoints
  */
 public class AccessManager {
+    private AccessManager() {
+    }
+
     /**
      * This method checks if the user is allowed to access the endpoint
      * @param ctx   The context of the request

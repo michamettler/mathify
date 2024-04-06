@@ -11,6 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * This class is used to map json strings to objects and vice versa.
+ */
 public class JsonMapper {
     private static final Logger LOG = LoggerFactory.getLogger(JsonMapper.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -51,5 +54,14 @@ public class JsonMapper {
     public static Settings readSettingsFromJson(File file) throws IOException {
         LOG.debug("Reading settings.json...");
         return objectMapper.readValue(file, Settings.class);
+    }
+
+    /**
+     * @param object object to map
+     * @return json string
+     * @throws JsonProcessingException
+     */
+    public static String toJson(Object object) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(object);
     }
 }
