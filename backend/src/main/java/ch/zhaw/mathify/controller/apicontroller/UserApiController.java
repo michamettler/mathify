@@ -25,7 +25,7 @@ public class UserApiController implements CrudHandler {
 
         User user = context.bodyAsClass(User.class);
         user.setPassword(User.hashPassword(user.getPassword()));
-        if (userRepository.getUsers().stream().anyMatch(u -> u.getUsername().equals(user.getUsername()))) {
+        if (userRepository.get().stream().anyMatch(u -> u.getUsername().equals(user.getUsername()))) {
             String responseMessage = "Username already exists!";
             context.status(409);
             context.result(responseMessage);
@@ -46,8 +46,8 @@ public class UserApiController implements CrudHandler {
      */
     @Override
     public void delete(@NotNull Context context, @NotNull String s) {
-        if (userRepository.getUsers().stream().anyMatch(u -> u.getGuid().equals(s))) {
-            userRepository.remove(userRepository.getUsers().stream()
+        if (userRepository.get().stream().anyMatch(u -> u.getGuid().equals(s))) {
+            userRepository.remove(userRepository.get().stream()
                     .filter(u -> u.getGuid().equals(s))
                     .findFirst()
                     .orElse(null));
@@ -69,7 +69,7 @@ public class UserApiController implements CrudHandler {
      */
     @Override
     public void getAll(@NotNull Context context) {
-        context.json(userRepository.getUsers());
+        context.json(userRepository.get());
         LOG.info("user list was retrieved via GET /users endpoint");
     }
 
@@ -79,7 +79,7 @@ public class UserApiController implements CrudHandler {
      */
     @Override
     public void getOne(@NotNull Context context, @NotNull String s) {
-        User user = userRepository.getUsers().stream().filter(u -> u.getGuid().equals(s)).findFirst().orElse(null);
+        User user = userRepository.get().stream().filter(u -> u.getGuid().equals(s)).findFirst().orElse(null);
         if (user != null) {
             context.json(user);
             LOG.info("user {} was retrieved via GET /users/{} endpoint", s, s);
@@ -101,8 +101,8 @@ public class UserApiController implements CrudHandler {
         User user = context.bodyAsClass(User.class);
         user.setPassword(User.hashPassword(user.getPassword()));
 
-        if (userRepository.getUsers().stream().anyMatch(u -> u.getGuid().equals(s))) {
-            userRepository.remove(userRepository.getUsers().stream()
+        if (userRepository.get().stream().anyMatch(u -> u.getGuid().equals(s))) {
+            userRepository.remove(userRepository.get().stream()
                     .filter(u -> u.getGuid().equals(s))
                     .findFirst()
                     .orElse(null));

@@ -51,7 +51,7 @@ class UserApiControllerTest {
         UserRepository.destroy();
         userApiController.getAll(contextMock);
 
-        verify(contextMock).json(userRepository.getUsers());
+        verify(contextMock).json(userRepository.get());
     }
 
     @Test
@@ -76,6 +76,6 @@ class UserApiControllerTest {
 
         userApiController.delete(contextMock, "testguid");
 
-        assertFalse(userRepository.getUsers().contains(userToDelete));
+        assertFalse(userRepository.get().contains(userToDelete));
     }
 }

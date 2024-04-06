@@ -51,7 +51,6 @@ public class Router {
             config.router.apiBuilder(this::register);
             config.router.mount(this::handleAuthenticationAndAuthorization);
         });
-
         app.error(401, ctx -> {
             Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
             credentials.ifPresentOrElse(
@@ -111,7 +110,7 @@ public class Router {
     }
 
     private void authenticateUser(BasicAuthCredentials credentials, Context ctx) {
-        for (User user : userRepository.getUsers()) {
+        for (User user : userRepository.get()) {
             if (user.getUsername().equals(credentials.getUsername()) &&
                     User.verifyPassword(credentials.getPassword(), user.getPassword())) {
                 LOG.info("{} was authenticated successfully", user.getUsername());
