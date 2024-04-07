@@ -5,6 +5,8 @@ import {NgForOf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
+import {Router} from "@angular/router";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-grade-selection',
@@ -19,6 +21,7 @@ import {MatTab, MatTabGroup} from "@angular/material/tabs";
     MatGridTile,
     MatTabGroup,
     MatTab,
+    MatButton,
   ],
   templateUrl: './grade-selection.component.html',
   styleUrl: './grade-selection.component.scss'
@@ -64,19 +67,24 @@ export class GradeSelectionComponent {
   selectedGrade: number | null = null;
   selectedMode: string | null = null;
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   onGradeChange(event: any) {
     this.selectedGrade = event.value;
     console.log('Selected Grade:', this.selectedGrade);
-    // Additional actions based on the grade selection...
   }
 
   OnModeChange(event: any) {
     this.selectedMode = event.value;
     console.log('Selected Mode:', this.selectedMode);
-    // Additional actions based on the grade selection...
   }
 
+  isGameReadyToStart() {
+    return this.selectedGrade !== null && this.selectedMode !== null;
+  }
+
+  startGame() {
+    this.router.navigate(['/scoreboard']);
+  }
 }
