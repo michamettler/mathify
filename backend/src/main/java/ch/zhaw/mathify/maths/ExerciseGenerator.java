@@ -22,7 +22,7 @@ public class ExerciseGenerator {
             case ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION -> {
                 return ArithmeticGenerator.generate(grade, exerciseSubType);
             }
-            case NEIGHBORS, SORTING -> {
+            case NEIGHBORS, SORTING, COMPARISON -> {
                 return MathBasicsGenerator.generate(grade, exerciseSubType);
             }
             default -> throw new IllegalArgumentException("Unknown exercise subtype");

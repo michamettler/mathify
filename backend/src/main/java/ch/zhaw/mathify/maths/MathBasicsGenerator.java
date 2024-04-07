@@ -15,11 +15,12 @@ import java.util.Random;
 public class MathBasicsGenerator {
 
     private static final Random random = new Random();
+
     private MathBasicsGenerator() {
     }
 
     /**
-     * @param grade The grade of the exercise
+     * @param grade   The grade of the exercise
      * @param subType The sub type of the exercise
      * @return A new exercise
      */
@@ -27,6 +28,7 @@ public class MathBasicsGenerator {
         return switch (subType) {
             case SORTING -> generateSorting(grade);
             case NEIGHBORS -> generateNeighbors(grade);
+            case COMPARISON -> generateComparison(grade);
             default -> throw new IllegalArgumentException("Sub type " + subType + " is not supported!");
         };
     }
@@ -42,9 +44,21 @@ public class MathBasicsGenerator {
         return new MathBasicsExercise(res, arrayUnsorted);
     }
 
-    private static Exercise generateNeighbors(Grade grade){
+    private static Exercise generateNeighbors(Grade grade) {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
         return new MathBasicsExercise(new int[]{a - 1, a, a + 1}, "Find the neighbors of " + a + "!");
+    }
+
+    private static Exercise generateComparison(Grade grade) {
+        int max = grade.getMax();
+        int a, b, c;
+        do {
+            a = random.nextInt(max + 1);
+            b = random.nextInt(max + 1);
+            c = random.nextInt(max + 1);
+        } while (a == b || a == c || b == c);
+        int[] result = {Math.max(a, Math.max(b, c))};
+        return new MathBasicsExercise(result, "Find the biggest number in the list: " + a + ", " + b + ", " + c);
     }
 }
