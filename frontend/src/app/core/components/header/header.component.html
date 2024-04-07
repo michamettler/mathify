@@ -7,20 +7,20 @@
   <div class="navbar-links d-flex flex-row justify-content-start">
     <ul class="navbar-nav mr-auto d-flex flex-row">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Grade Selection</a>
+        <a class="nav-link" href="/grade-selection">Grade Selection</a>
       </li>
       <li class="nav-item">
         <div *ngIf="gradeSelected">
-          <a class="nav-link" href="#">Scoreboard</a>
+          <a class="nav-link" href="/scoreboard">Scoreboard</a>
         </div>
         <div *ngIf="!gradeSelected">
-          <a class="nav-link disabled" href="#">Scoreboard</a>
+          <a class="nav-link disabled" href="/scoreboard">Scoreboard</a>
         </div>
       </li>
     </ul>
     <!-- Use ml-auto on the form to push it to the right -->
     <form class="ml-auto form-inline my-2 my-lg-0">
-      <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
+      <button class="btn btn-outline-danger my-2 my-sm-0" (click)="logout()">Logout</button>
     </form>
   </div>
 </nav>

@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {NgIf} from "@angular/common";
+import {UserRegistrationService} from "../../../features/registration/services/user-registration.service";
 
 @Component({
   selector: 'app-header',
@@ -12,4 +13,11 @@ import {NgIf} from "@angular/common";
 })
 export class HeaderComponent {
   @Input() gradeSelected: boolean = false;
+
+  constructor(private userRegistrationService: UserRegistrationService) {
+  }
+
+  logout() {
+    this.userRegistrationService.logout();
+  }
 }
