@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class AuthService {
 
   private isAuthenticated = false;
-  private authSecretKey = 'Bearer Token';
+  private authSecretKey = '' ;
 
   constructor() {
     this.isAuthenticated = !!localStorage.getItem(this.authSecretKey);
@@ -15,7 +15,7 @@ export class AuthService {
   login(username: string, password: string): boolean {
     //TODO call login sevice
     if (true) {
-      this.isAuthenticated = true;
+      localStorage.setItem(this.authSecretKey, 'test_token'); // TODO replace with token from backend
       return true;
     } else {
       return false;
@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   isAuthenticatedUser(): boolean {
-    return this.isAuthenticated;
+    return !!localStorage.getItem(this.authSecretKey);
   }
 
   logout(): void {
