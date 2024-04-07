@@ -30,7 +30,7 @@
             </h2>
             <p class="card-text">{{ card.text }}</p>
             <mat-button-toggle-group (change)="OnModeChange($event)"
-                                     [(ngModel)]="selectedGrade"
+                                     [(ngModel)]="selectedMode"
                                      [disabled]="!card.isEnabled"
                                      aria-label="Game Mode Selection"
                                      name="gradeSelection{{ card.mode }}">
