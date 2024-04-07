@@ -25,6 +25,9 @@ public class ExerciseGenerator {
             case NEIGHBORS, SORTING, COMPARISON -> {
                 return MathBasicsGenerator.generate(grade, exerciseSubType);
             }
+            case NUMBERCOMPLETION -> {
+                return MathIntermediateGenerator.generate(grade, exerciseSubType);
+            }
             default -> throw new IllegalArgumentException("Unknown exercise subtype");
         }
     }
