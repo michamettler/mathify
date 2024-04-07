@@ -11,7 +11,8 @@ public enum ExerciseSubType {
     SORTING,
     NEIGHBORS,
     COMPARISON,
-    NUMBERCOMPLETION;
+    NUMBERCOMPLETION,
+    TENSCOMPARISON;
 
     /**
      * @param value the value to get the enum for

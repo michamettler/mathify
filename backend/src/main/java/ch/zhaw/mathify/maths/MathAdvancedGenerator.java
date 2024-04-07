@@ -3,18 +3,19 @@ package ch.zhaw.mathify.maths;
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.exercise.Exercise;
 import ch.zhaw.mathify.model.exercise.ExerciseSubType;
-import ch.zhaw.mathify.model.exercise.MathIntermediateExercise;
+import ch.zhaw.mathify.model.exercise.MathAdvancedExercise;
 
 import java.util.Random;
 
 /**
- * Generates exercises for the math intermediate category
- * (number completion, ...)
+ * Generates exercises for the math advanced category
+ * (tens comparison, ...)
  */
-public class MathIntermediateGenerator {
+public class MathAdvancedGenerator {
+
     private static final Random random = new Random();
 
-    private MathIntermediateGenerator() {
+    private MathAdvancedGenerator() {
     }
 
     /**
@@ -24,19 +25,19 @@ public class MathIntermediateGenerator {
      */
     public static Exercise generate(Grade grade, ExerciseSubType subType) {
         return switch (subType) {
-            case NUMBERCOMPLETION -> generateNumberCompletion(grade);
+            case TENSCOMPARISON -> generateTensComparison(grade);
             default -> throw new IllegalArgumentException("Sub type " + subType + " is not supported!");
         };
     }
 
-    private static Exercise generateNumberCompletion(Grade grade) {
+    private static Exercise generateTensComparison(Grade grade) {
         int max = grade.getMax();
-        int a = random.nextInt(max + 1);
+        int a = random.nextInt(9) * 10 + 10;
         int b;
         do {
-            b = random.nextInt(max + 1);
-        } while (b <= a);
-        int[] result = {b - a};
-        return new MathIntermediateExercise(result, "What number do you add to " + a + " to make " + b + "?");
+            b = random.nextInt(9) * 10 + 10;
+        } while (b == a);
+        int[] result = {Math.max(a, b)};
+        return new MathAdvancedExercise(result, "Which tens number is bigger: " + a + " or " + b + "?");
     }
 }
