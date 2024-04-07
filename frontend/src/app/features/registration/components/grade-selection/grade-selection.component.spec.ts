@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GradeSelectionComponent } from './grade-selection.component';
+import {GradeSelectionComponent} from './grade-selection.component';
 
 describe('GradeSelectionComponent', () => {
   let component: GradeSelectionComponent;
@@ -10,8 +10,8 @@ describe('GradeSelectionComponent', () => {
     await TestBed.configureTestingModule({
       imports: [GradeSelectionComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(GradeSelectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ScoreboardOverviewComponent } from './scoreboard-overview.component';
+import {ScoreboardOverviewComponent} from './scoreboard-overview.component';
 
 describe('ScoreboardOverviewComponent', () => {
   let component: ScoreboardOverviewComponent;
@@ -10,8 +10,8 @@ describe('ScoreboardOverviewComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ScoreboardOverviewComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ScoreboardOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

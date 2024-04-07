@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #3F51B5;">
   <a class="navbar-brand" href="#">Mathify</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+          data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
     <span class="navbar-toggler-icon"></span>
   </button>
 
@@ -20,7 +21,7 @@
     </ul>
     <!-- Use ml-auto on the form to push it to the right -->
     <form class="ml-auto form-inline my-2 my-lg-0">
-      <button class="btn btn-outline-danger my-2 my-sm-0" (click)="logout()">Logout</button>
+      <button (click)="logout()" class="btn btn-outline-danger my-2 my-sm-0">Logout</button>
     </form>
   </div>
 </nav>
