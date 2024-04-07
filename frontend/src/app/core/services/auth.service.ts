@@ -1,15 +1,13 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private isAuthenticated = false;
-  private authSecretKey = '' ;
+  private authSecretKey = '';
 
   constructor() {
-    this.isAuthenticated = !!localStorage.getItem(this.authSecretKey);
   }
 
   login(username: string, password: string): boolean {
@@ -28,6 +26,5 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem(this.authSecretKey);
-    this.isAuthenticated = false;
   }
 }
