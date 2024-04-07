@@ -4,6 +4,8 @@ import {Router} from "@angular/router";
 import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {AuthService} from "../../../../core/services/auth.service";
+import {UserRegistrationService} from "../../services/user-registration.service";
 
 @Component({
   selector: 'app-user-registration',
@@ -23,21 +25,28 @@ export class UserRegistrationComponent {
   userName: string = '';
   password: string = '';
 
-  constructor(private router: Router, private _snackBar: MatSnackBar) {
+  constructor(private router: Router, private authService: AuthService, private _snackBar: MatSnackBar,
+              private userRegistrationService: UserRegistrationService) {
   }
 
   login(): void {
     console.log('Login', this.userName, this.password);
-    //TODO send data to backend
     if (this.userName && this.password) {
-      this.router.navigate(['/grade-selection']);
+      if (this.authService.login(this.userName, this.password)) {
+        this.router.navigate(['/grade-selection']);
+      } else {
+        //TODO error message
+      }
     }
   }
 
   register(): void {
     console.log('Register', this.userName, this.password);
-    //TODO send data to backend
-    this._snackBar.open("User has been created! You can now log in.", "dismiss", {verticalPosition: 'top', horizontalPosition: 'end'});
+    this.userRegistrationService.register(this.userName, this.password);
+    this._snackBar.open("User has been created! You can now log in.", "dismiss", {
+      verticalPosition: 'top',
+      horizontalPosition: 'end'
+    });
   }
 
 }
