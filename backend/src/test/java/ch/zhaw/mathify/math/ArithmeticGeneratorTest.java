@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Tests for the arithmetic generator
+ */
 class ArithmeticGeneratorTest {
     @Test
     void testGenerateAdditionFirstGrade() {
