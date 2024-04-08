@@ -69,7 +69,7 @@ export class GradeSelectionComponent {
   selectedMode: string | null = null;
 
   constructor(private router: Router, private titleService:Title) {
-    this.titleService.setTitle('Grade and Mode Selection');
+    this.titleService.setTitle('Mathify!');
   }
 
   onGradeChange(event: any) {
