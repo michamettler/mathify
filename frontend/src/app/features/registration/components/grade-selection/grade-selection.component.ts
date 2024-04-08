@@ -7,6 +7,7 @@ import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {Router} from "@angular/router";
 import {MatButton} from "@angular/material/button";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-grade-selection',
@@ -67,7 +68,8 @@ export class GradeSelectionComponent {
   selectedGrade: number | null = null;
   selectedMode: string | null = null;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private titleService:Title) {
+    this.titleService.setTitle('Grade and Mode Selection');
   }
 
   onGradeChange(event: any) {

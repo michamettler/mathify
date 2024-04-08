@@ -5,6 +5,7 @@ import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserRegistrationService} from "../../services/user-registration.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-user-registration',
@@ -25,7 +26,9 @@ export class UserRegistrationComponent {
   password: string = '';
 
   constructor(private router: Router, private _snackBar: MatSnackBar,
-              private userRegistrationService: UserRegistrationService) {
+              private userRegistrationService: UserRegistrationService,
+              private titleService: Title) {
+    titleService.setTitle('Login');
   }
 
   login(): void {
