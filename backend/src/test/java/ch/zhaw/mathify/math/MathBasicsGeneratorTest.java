@@ -44,4 +44,32 @@ class MathBasicsGeneratorTest {
         assertTrue(a != b && a != c && b != c);
         assertEquals(mathBasicsExercise.result()[0], Math.max(a, Math.max(b, c)));
     }
+
+    @Test
+    void testNumberCompletion() {
+        Exercise exercise = MathBasicsGenerator.generate(Grade.FIRST, ExerciseSubType.NUMBERCOMPLETION);
+        MathBasicsExercise mathBasicsExercise = (MathBasicsExercise) exercise;
+
+        String[] parts = mathBasicsExercise.exercise().split(" to make ");
+        String[] prompt = parts[0].split(" add to ");
+        int a = Integer.parseInt(prompt[1]);
+        int b = Integer.parseInt(parts[1].substring(0, parts[1].length() - 1));
+        int c = b - a;
+        assertTrue(b > a);
+        assertEquals(c, mathBasicsExercise.result()[0]);
+    }
+
+    @Test
+    void testTensComparison() {
+        Exercise exercise = MathBasicsGenerator.generate(Grade.FIRST, ExerciseSubType.TENSCOMPARISON);
+        MathBasicsExercise mathBasicsExercise = (MathBasicsExercise) exercise;
+
+        String[] prompt = mathBasicsExercise.exercise().split(" is bigger: ");
+        String[] numbers = prompt[1].split(" or ");
+        int a = Integer.parseInt(numbers[0]);
+        int b = Integer.parseInt(numbers[1].replace("?", ""));
+
+        assertTrue(a != b);
+        assertEquals(mathBasicsExercise.result()[0], Math.max(a, b));
+    }
 }

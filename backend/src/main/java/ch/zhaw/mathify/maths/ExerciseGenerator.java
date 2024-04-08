@@ -22,14 +22,8 @@ public class ExerciseGenerator {
             case ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION -> {
                 return ArithmeticGenerator.generate(grade, exerciseSubType);
             }
-            case NEIGHBORS, SORTING, COMPARISON -> {
+            case NEIGHBORS, SORTING, COMPARISON, NUMBERCOMPLETION, TENSCOMPARISON -> {
                 return MathBasicsGenerator.generate(grade, exerciseSubType);
-            }
-            case NUMBERCOMPLETION -> {
-                return MathIntermediateGenerator.generate(grade, exerciseSubType);
-            }
-            case TENSCOMPARISON -> {
-                return MathAdvancedGenerator.generate(grade, exerciseSubType);
             }
             default -> throw new IllegalArgumentException("Unknown exercise subtype");
         }
