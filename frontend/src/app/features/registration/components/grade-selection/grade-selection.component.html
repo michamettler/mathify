@@ -1,0 +1,48 @@
+<app-header [gradeSelected]="false"></app-header>
+
+<mat-tab-group>
+  <mat-tab label="Grade Selection">
+    <div class="row">
+      <div *ngFor="let card of gradeCards" class="col-sm-4">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">Grade {{ card.grade }}</h2>
+            <p class="card-text">{{ card.text }}</p>
+            <mat-button-toggle-group (change)="onGradeChange($event)"
+                                     [(ngModel)]="selectedGrade"
+                                     aria-label="Grade Selection"
+                                     name="gradeSelection{{ card.grade }}">
+              <mat-button-toggle value="{{ card.grade }}">Grade {{ card.grade }}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Game Mode Selection">
+    <div class="row">
+      <div *ngFor="let card of modeCards" class="col-sm-4">
+        <div [class.card-disabled]="!card.isEnabled" class="card">
+          <div class="card-body">
+            <h2 class="card-title">
+              <i class="material-icons">{{ card.icon }}</i>
+              {{ card.mode }}
+            </h2>
+            <p class="card-text">{{ card.text }}</p>
+            <mat-button-toggle-group (change)="OnModeChange($event)"
+                                     [(ngModel)]="selectedMode"
+                                     [disabled]="!card.isEnabled"
+                                     aria-label="Game Mode Selection"
+                                     name="gradeSelection{{ card.mode }}">
+              <mat-button-toggle value="{{ card.mode }}">Grade {{ card.mode }}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="playButton">
+      <button (click)="startGame()" [disabled]="!isGameReadyToStart()" color="primary" mat-raised-button>Play</button>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+

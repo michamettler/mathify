@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MathExerciseViewComponent } from './math-exercise-view.component';
+import {MathExerciseViewComponent} from './math-exercise-view.component';
 
 describe('MathExerciseViewComponent', () => {
   let component: MathExerciseViewComponent;
@@ -10,8 +10,8 @@ describe('MathExerciseViewComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MathExerciseViewComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(MathExerciseViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,18 +1,18 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {HeaderComponent} from './header.component';
+import {GradeSelectionComponent} from './grade-selection.component';
 
-describe('HeaderComponent', () => {
-  let component: HeaderComponent;
-  let fixture: ComponentFixture<HeaderComponent>;
+describe('GradeSelectionComponent', () => {
+  let component: GradeSelectionComponent;
+  let fixture: ComponentFixture<GradeSelectionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent]
+      imports: [GradeSelectionComponent]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(HeaderComponent);
+    fixture = TestBed.createComponent(GradeSelectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,24 @@
+.navbar {
+  background-color: #3F51B5;
+  color: #fff;
+}
+
+.navbar-links {
+  width: 100% !important;
+}
+
+.navbar-nav {
+  width: 92% !important;
+}
+
+.navbar-brand {
+  margin-left: 20px !important;
+}
+
+.navbar a, .navbar a.nav-link {
+  color: #fff;
+}
+
+.navbar a.nav-link.disabled {
+  color: rgba(255, 255, 255, 0.5);
+}

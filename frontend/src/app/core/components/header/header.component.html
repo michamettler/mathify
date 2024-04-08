@@ -1,1 +1,27 @@
-<p>header works!</p>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #3F51B5;">
+  <a class="navbar-brand" href="#">Mathify!</a>
+  <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+          data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-links d-flex flex-row justify-content-start">
+    <ul class="navbar-nav mr-auto d-flex flex-row">
+      <li class="nav-item active">
+        <a class="nav-link" href="/grade-selection">Grade Selection</a>
+      </li>
+      <li class="nav-item">
+        <div *ngIf="gradeSelected">
+          <a class="nav-link" href="/scoreboard">Scoreboard</a>
+        </div>
+        <div *ngIf="!gradeSelected">
+          <a class="nav-link disabled" href="/scoreboard">Scoreboard</a>
+        </div>
+      </li>
+    </ul>
+    <!-- Use ml-auto on the form to push it to the right -->
+    <form class="ml-auto form-inline my-2 my-lg-0">
+      <button (click)="logout()" class="btn btn-outline-danger my-2 my-sm-0">Logout</button>
+    </form>
+  </div>
+</nav>
