@@ -30,3 +30,4 @@ WORKDIR /opt/repository
 
 # Build the application using Gradle
 RUN gradle build
+CMD ["gradle", "run"]
