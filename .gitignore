@@ -54,4 +54,5 @@
 
 # Backend
 */.gradle/
+*/build/
 */bin/
