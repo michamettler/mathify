@@ -31,6 +31,9 @@ COPY NO_CHECKIN /etc/ssl
 # Set working directory
 WORKDIR /opt/repository
 
+# Delete NO_CHECKIN folder
+RUN rm -rf NO_CHECKIN
+
 # Build the application using Gradle
 RUN gradle build
 CMD ["gradle", "run"]
