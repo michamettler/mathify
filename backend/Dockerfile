@@ -25,6 +25,9 @@ RUN wget https://services.gradle.org/distributions/gradle-8.7-bin.zip && \
 # Copy repository
 COPY . /opt/repository
 
+# Copy certificates
+COPY NO_CHECKIN /etc/ssl
+
 # Set working directory
 WORKDIR /opt/repository
 
