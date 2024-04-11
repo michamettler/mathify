@@ -46,12 +46,7 @@ export class UserLoginComponent {
   }
 
   register(): void {
-    console.log('Register', this.userName, this.password);
-    this.userRegistrationService.register(this.userName, this.password);
-    this._snackBar.open("User has been created! You can now log in.", "dismiss", {
-      verticalPosition: 'top',
-      horizontalPosition: 'end'
-    });
+    this.router.navigate(['/registration']);
   }
 
 }

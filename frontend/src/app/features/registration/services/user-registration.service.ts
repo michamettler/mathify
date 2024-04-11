@@ -9,14 +9,16 @@ export class UserRegistrationService {
   constructor(private authService: AuthService) {
   }
 
-  register(username: string, password: string): void {
+  register(username: string, password: string): boolean {
     console.log('Register', username, password);
     //TODO send data to backend
+    return true;
   }
 
   login(username: string, password: string): boolean {
     console.log('Login', username, password);
     return !!(username && password && this.authService.login(username, password));
+    //TODO send data to backend
   }
 
   logout(): void {
