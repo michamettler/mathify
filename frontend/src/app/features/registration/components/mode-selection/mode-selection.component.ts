@@ -24,10 +24,10 @@ import {Title} from "@angular/platform-browser";
     MatTab,
     MatButton,
   ],
-  templateUrl: './grade-selection.component.html',
-  styleUrl: './grade-selection.component.scss'
+  templateUrl: './mode-selection.component.html',
+  styleUrl: './mode-selection.component.scss'
 })
-export class GradeSelectionComponent {
+export class ModeSelectionComponent {
 
   gradeCards = [
     {
