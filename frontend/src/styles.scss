@@ -3,5 +3,66 @@
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.login {
+  display: flex;
+  height: 100vh;
+
+  .sidenav {
+    height: 100%;
+    width: 30%;
+    background-color: #3F51B5;
+    overflow-x: hidden;
+    padding-top: 20px;
+
+    .login-form {
+      margin-top: 20%;
+    }
+
+    .login-main-text {
+      margin-top: 20%;
+      padding: 60px;
+      color: #fff;
+    }
+
+    .login-main-text h2 {
+      font-weight: 300;
+    }
+  }
+
+  .main {
+    padding: 0px 10px;
+    height: 100%;
+    width: 70%;
+
+    .button-group {
+      padding-top: 10px;
+    }
+
+    .btn-login {
+      background-color: #3F51B5 !important;
+      color: #fff;
+      margin-right: 5px;
+    }
+
+    mat-form-field {
+      margin-right: 12px;
+      padding-bottom: 50px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-top: 30%;
+    }
+  }
+}
+
+

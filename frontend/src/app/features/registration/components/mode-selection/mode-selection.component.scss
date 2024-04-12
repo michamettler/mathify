@@ -19,6 +19,12 @@
   pointer-events: none; /* Prevents all interactions */
 }
 
+.grade-selection {
+  padding-top: 10%;
+  width: 100% !important;
+  text-align: center;
+}
+
 .card-disabled .card-body {
   cursor: not-allowed;
 }
