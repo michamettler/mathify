@@ -12,14 +12,14 @@
           <div class="form-group">
             <mat-form-field>
               <mat-label>User Name</mat-label>
-              <input matInput name="username" placeholder="Username">
+              <input matInput formControlName="username" placeholder="Username">
               @if (form.get('username')?.errors?.['required']) {
                 <mat-error>Please choose a username</mat-error>
               }
             </mat-form-field>
             <mat-form-field>
               <mat-label>Password</mat-label>
-              <input matInput name="password" placeholder="Password" type="password">
+              <input matInput formControlName="password" placeholder="Password" type="password">
               @if (form.get('password')?.errors?.['required']) {
                 <mat-error>Please choose a password</mat-error>
               }

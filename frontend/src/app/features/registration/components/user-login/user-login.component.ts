@@ -1,12 +1,15 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {MatError, MatFormField, MatFormFieldModule} from "@angular/material/form-field";
+import {MatError, MatFormField, MatFormFieldModule, MatLabel} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserRegistrationService} from "../../services/user-registration.service";
 import {Title} from "@angular/platform-browser";
 import {User} from "../../../../../model/user";
+import {NgIf} from "@angular/common";
+import {MatOption} from "@angular/material/autocomplete";
+import {MatSelect} from "@angular/material/select";
 
 @Component({
   selector: 'app-user-registration',
@@ -14,12 +17,13 @@ import {User} from "../../../../../model/user";
   imports: [
     FormsModule,
     MatFormField,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatInput,
+    MatLabel,
     MatError,
     ReactiveFormsModule,
+    NgIf,
+    MatOption,
+    MatSelect
   ],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.scss'
@@ -33,7 +37,7 @@ export class UserLoginComponent {
   constructor(private router: Router, private _snackBar: MatSnackBar,
               private userRegistrationService: UserRegistrationService,
               private titleService: Title) {
-    titleService.setTitle('Login');
+    this.titleService.setTitle('Login');
   }
 
   login(): void {
