@@ -2,12 +2,15 @@ import {Component} from '@angular/core';
 import {HeaderComponent} from "../../../../core/components/header/header.component";
 import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {NgForOf} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import {FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {Router} from "@angular/router";
 import {MatButton} from "@angular/material/button";
 import {Title} from "@angular/platform-browser";
+import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatOption, MatSelect} from "@angular/material/select";
+import {Grade} from "../../../../../model/grade";
 
 @Component({
   selector: 'app-grade-selection',
@@ -23,6 +26,12 @@ import {Title} from "@angular/platform-browser";
     MatTabGroup,
     MatTab,
     MatButton,
+    MatFormField,
+    MatSelect,
+    MatOption,
+    ReactiveFormsModule,
+    MatLabel,
+    MatError,
   ],
   templateUrl: './mode-selection.component.html',
   styleUrl: './mode-selection.component.scss'
@@ -42,6 +51,12 @@ export class ModeSelectionComponent {
       grade: 3,
       text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'
     }
+  ]
+
+  grades: Grade[] = [
+    { title: 'Grade 1', number: 1 },
+    { title: 'Grade 2', number: 2 },
+    { title: 'Grade 3', number: 3 }
   ];
 
   modeCards = [
@@ -65,16 +80,12 @@ export class ModeSelectionComponent {
     }
   ];
 
-  selectedGrade: number | null = null;
+  gradeControl: FormControl<Grade | null> = new FormControl<Grade | null>(this.grades[0], Validators.required);
+
   selectedMode: string | null = null;
 
-  constructor(private router: Router, private titleService:Title) {
+  constructor(private router: Router, private titleService: Title) {
     this.titleService.setTitle('Mathify!');
-  }
-
-  onGradeChange(event: any) {
-    this.selectedGrade = event.value;
-    console.log('Selected Grade:', this.selectedGrade);
   }
 
   OnModeChange(event: any) {
@@ -83,7 +94,7 @@ export class ModeSelectionComponent {
   }
 
   isGameReadyToStart() {
-    return this.selectedGrade !== null && this.selectedMode !== null;
+    return this.gradeControl.value && this.selectedMode;
   }
 
   startGame() {

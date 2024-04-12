@@ -10,6 +10,7 @@ import {NgIf} from "@angular/common";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
 import {User} from "../../../../../model/user";
+import {Grade} from "../../../../../model/grade";
 
 @Component({
   selector: 'app-user-registration',
@@ -44,7 +45,7 @@ export class UserRegistrationComponent {
     repeatPassword: new FormControl('', Validators.required),
   });
 
-  gradeControl = new FormControl('', Validators.required);
+  gradeControl: FormControl<Grade | null> = new FormControl<Grade | null>(null, Validators.required);
 
   constructor(private router: Router, private _snackBar: MatSnackBar,
               private userRegistrationService: UserRegistrationService,
@@ -64,7 +65,7 @@ export class UserRegistrationComponent {
         username: this.form.get('username')?.value,
         password: this.form.get('password')?.value,
         email: this.form.get('email')?.value,
-        grade: this.gradeControl.get('grade')?.value
+        grade: this.gradeControl.value?.number
       }
       this.userRegistrationService.register(user);
       this._snackBar.open("User has been created! You can now log in.", "dismiss", {
