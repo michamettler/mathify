@@ -54,4 +54,6 @@
 
 # Backend
 */.gradle/
+*/build/
 */bin/
+/backend/NO_CHECKIN
