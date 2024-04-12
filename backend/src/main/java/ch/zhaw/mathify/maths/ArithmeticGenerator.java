@@ -37,7 +37,7 @@ public class ArithmeticGenerator {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
         int b = getRandomFactor(a);
-        return new ArithmeticExercise((double) a / b, a + " / " + b);
+        return new ArithmeticExercise((double) a / b, a + " / " + b, ExerciseSubType.DIVISION);
     }
 
     private static Exercise generateMultiplication(Grade grade) {
@@ -45,21 +45,21 @@ public class ArithmeticGenerator {
         int max = (int) Math.sqrt(grade.getMax());
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max + 1);
-        return new ArithmeticExercise(a * b, a + " * " + b);
+        return new ArithmeticExercise(a * b, a + " * " + b, ExerciseSubType.MULTIPLICATION);
     }
 
     private static Exercise generateSubtraction(Grade grade) {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
         int b = random.nextInt(a + 1);
-        return new ArithmeticExercise(a - b, a + " - " + b);
+        return new ArithmeticExercise(a - b, a + " - " + b, ExerciseSubType.SUBTRACTION);
     }
 
     private static Exercise generateAddition(Grade grade) {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max - a + 1);
-        return new ArithmeticExercise(a + b, a + " + " + b);
+        return new ArithmeticExercise(a + b, a + " + " + b, ExerciseSubType.ADDITION);
     }
 
     private static int getRandomFactor(int num) {

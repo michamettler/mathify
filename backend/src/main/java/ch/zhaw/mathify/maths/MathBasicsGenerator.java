@@ -41,13 +41,13 @@ public class MathBasicsGenerator {
         int[] res = {a, b, c};
         String arrayUnsorted = Arrays.toString(res);
         Arrays.sort(res);
-        return new MathBasicsExercise(res, arrayUnsorted);
+        return new MathBasicsExercise(res, arrayUnsorted, ExerciseSubType.SORTING);
     }
 
     private static Exercise generateNeighbors(Grade grade) {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
-        return new MathBasicsExercise(new int[]{a - 1, a, a + 1}, "Find the neighbors of " + a + "!");
+        return new MathBasicsExercise(new int[]{a - 1, a, a + 1}, "Find the neighbors of " + a + "!", ExerciseSubType.NEIGHBORS);
     }
 
     private static Exercise generateComparison(Grade grade) {
@@ -59,7 +59,7 @@ public class MathBasicsGenerator {
             c = random.nextInt(max + 1);
         } while (a == b || a == c || b == c);
         int[] result = {Math.max(a, Math.max(b, c))};
-        return new MathBasicsExercise(result, "Find the biggest number in the list: " + a + ", " + b + ", " + c);
+        return new MathBasicsExercise(result, "Find the biggest number in the list: " + a + ", " + b + ", " + c, ExerciseSubType.COMPARISON);
     }
 
     private static Exercise generateNumberCompletion(Grade grade) {
@@ -70,7 +70,7 @@ public class MathBasicsGenerator {
             b = random.nextInt(max + 1);
         } while (b <= a);
         int[] result = {b - a};
-        return new MathBasicsExercise(result, "What number do you add to " + a + " to make " + b + "?");
+        return new MathBasicsExercise(result, "What number do you add to " + a + " to make " + b + "?", ExerciseSubType.NUMBERCOMPLETION);
     }
 
     private static Exercise generateTensComparison(Grade grade) {
@@ -81,6 +81,6 @@ public class MathBasicsGenerator {
             b = random.nextInt(9) * 10 + 10;
         } while (b == a);
         int[] result = {Math.max(a, b)};
-        return new MathBasicsExercise(result, "Which tens number is bigger: " + a + " or " + b + "?");
+        return new MathBasicsExercise(result, "Which tens number is bigger: " + a + " or " + b + "?", ExerciseSubType.TENSCOMPARISON);
     }
 }

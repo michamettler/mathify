@@ -21,6 +21,4 @@ public enum ExerciseSubType {
     public static ExerciseSubType valueOfIgnoreCase(String value){
         return ExerciseSubType.valueOf(value.toUpperCase());
     }
-
-
 }
