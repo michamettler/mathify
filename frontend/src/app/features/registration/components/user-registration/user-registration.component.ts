@@ -7,6 +7,9 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserRegistrationService} from "../../services/user-registration.service";
 import {Title} from "@angular/platform-browser";
 import {NgIf} from "@angular/common";
+import {MatOption} from "@angular/material/autocomplete";
+import {MatSelect} from "@angular/material/select";
+import {User} from "../../../../../model/user";
 
 @Component({
   selector: 'app-user-registration',
@@ -18,7 +21,9 @@ import {NgIf} from "@angular/common";
     MatLabel,
     MatError,
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    MatOption,
+    MatSelect
   ],
   templateUrl: './user-registration.component.html',
   styleUrl: './user-registration.component.scss'
@@ -26,13 +31,20 @@ import {NgIf} from "@angular/common";
 export class UserRegistrationComponent {
 
   passwordMismatch: boolean = false;
+  grades = [
+    {name: 'Grade 1', number: 1},
+    {name: 'Grade 2', number: 2},
+    {name: 'Grade 3', number: 3},
+  ];
 
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
-    repeatPassword: new FormControl('', Validators.required)
+    repeatPassword: new FormControl('', Validators.required),
   });
+
+  gradeControl = new FormControl('', Validators.required);
 
   constructor(private router: Router, private _snackBar: MatSnackBar,
               private userRegistrationService: UserRegistrationService,
@@ -48,7 +60,13 @@ export class UserRegistrationComponent {
     }
 
     if (this.form.valid) {
-      this.userRegistrationService.register(this.form.get('passwordForm')?.value, this.form.get('passwordForm')?.value);
+      let user: User = {
+        username: this.form.get('username')?.value,
+        password: this.form.get('password')?.value,
+        email: this.form.get('email')?.value,
+        grade: this.gradeControl.get('grade')?.value
+      }
+      this.userRegistrationService.register(user);
       this._snackBar.open("User has been created! You can now log in.", "dismiss", {
         verticalPosition: 'top',
         horizontalPosition: 'end'

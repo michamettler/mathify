@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
-import {FormsModule} from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
+import {MatError, MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserRegistrationService} from "../../services/user-registration.service";
 import {Title} from "@angular/platform-browser";
+import {User} from "../../../../../model/user";
 
 @Component({
   selector: 'app-user-registration',
@@ -16,14 +17,18 @@ import {Title} from "@angular/platform-browser";
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatInput
+    MatInput,
+    MatError,
+    ReactiveFormsModule,
   ],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.scss'
 })
 export class UserLoginComponent {
-  userName: string = '';
-  password: string = '';
+  form = new FormGroup({
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+  });
 
   constructor(private router: Router, private _snackBar: MatSnackBar,
               private userRegistrationService: UserRegistrationService,
@@ -32,16 +37,20 @@ export class UserLoginComponent {
   }
 
   login(): void {
-    console.log('Login', this.userName, this.password);
-    if (this.userRegistrationService.login(this.userName, this.password)) {
-      this.router.navigate(['/grade-selection']);
-    } else {
-      this.userName = '';
-      this.password = '';
-      this._snackBar.open("Login failed! Please try again.", "dismiss", {
-        verticalPosition: 'top',
-        horizontalPosition: 'end'
-      });
+    if(this.form.valid) {
+      let user: User = {
+        username: this.form.get('username')?.value,
+        password: this.form.get('password')?.value,
+      }
+
+      if (this.userRegistrationService.login(user)) {
+        this.router.navigate(['/grade-selection']);
+      } else {
+        this._snackBar.open("Login failed! Please try again.", "dismiss", {
+          verticalPosition: 'top',
+          horizontalPosition: 'end'
+        });
+      }
     }
   }
 

@@ -12,33 +12,45 @@
             <mat-form-field>
               <mat-label>Username</mat-label>
               <input matInput formControlName="username" placeholder="Username">
-              <mat-error *ngIf="form.get('username')?.errors?.['required']">
-                Username is required
-              </mat-error>
+              @if (form.get('username')?.errors?.['required']) {
+                <mat-error>Please choose a username</mat-error>
+              }
             </mat-form-field>
             <mat-form-field>
               <mat-label>Email</mat-label>
               <input matInput formControlName="email" placeholder="Enter your email">
-              <mat-error *ngIf="form.get('email')?.errors?.['required']">
-                Email is required
-              </mat-error>
-              <mat-error *ngIf="form.get('email')?.errors?.['email']">
-                Not a valid email format
-              </mat-error>
+              @if (form.get('email')?.errors?.['required']) {
+                <mat-error>Please choose an email</mat-error>
+              }
+              @if (form.get('email')?.errors?.['email']) {
+                <mat-error>The email format is not valid</mat-error>
+              }
             </mat-form-field>
             <mat-form-field>
               <mat-label>Password</mat-label>
               <input matInput formControlName="password" placeholder="Password" type="password">
-              <mat-error *ngIf="form.get('password')?.errors?.['required']">
-                Password is required
-              </mat-error>
+              @if (form.get('password')?.errors?.['required']) {
+                <mat-error>Please choose a password</mat-error>
+              }
             </mat-form-field>
             <mat-form-field>
               <mat-label>Repeat Password</mat-label>
               <input matInput formControlName="repeatPassword" placeholder="Repeat Password" type="password">
-              <mat-error *ngIf="passwordMismatch">
-                Passwords do not match
-              </mat-error>
+              @if (passwordMismatch) {
+                <mat-error>Passwords do not match</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Grade</mat-label>
+              <mat-select [formControl]="gradeControl" required>
+                <mat-option>--</mat-option>
+                @for (grade of grades; track grade) {
+                  <mat-option [value]="grade">{{ grade.number }}</mat-option>
+                }
+              </mat-select>
+              @if (gradeControl.hasError('required')) {
+                <mat-error>Please choose a grade</mat-error>
+              }
             </mat-form-field>
           </div>
           <div class="button-group">
