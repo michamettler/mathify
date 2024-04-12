@@ -45,7 +45,7 @@
               <mat-select [formControl]="gradeControl" required>
                 <mat-option>--</mat-option>
                 @for (grade of grades; track grade) {
-                  <mat-option [value]="grade">{{ grade.number }}</mat-option>
+                  <mat-option [value]="grade">{{ grade.title }}</mat-option>
                 }
               </mat-select>
               @if (gradeControl.hasError('required')) {

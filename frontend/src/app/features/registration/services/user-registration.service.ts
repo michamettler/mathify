@@ -1,24 +1,56 @@
 import {Injectable} from '@angular/core';
 import {AuthService} from "../../../core/services/auth.service";
-import {FormControl, ɵFormGroupRawValue, ɵGetProperty, ɵTypedOrUntyped} from "@angular/forms";
 import {User} from "../../../../model/user";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {catchError, Observable, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserRegistrationService {
 
-  constructor(private authService: AuthService) {
+  private apiUrl = 'https://localhost:8443';
+
+  constructor(private http: HttpClient, private authService: AuthService) {
   }
 
-  register(user: User): boolean {
-    //TODO send data to backend
-    return true;
+  login(user: User): Observable<any> {
+    let url = `${this.apiUrl}/login`;
+    if (user.username && user.password) {
+      let params = new HttpParams()
+        .set('username', user.username)
+        .set('password', user.password);
+
+      return this.http.get(url, {params: params})
+        .pipe(
+          catchError(this.handleError('login'))
+        );
+    } else {
+      throw new Error('User information missing!');
+    }
   }
 
-  login(user: User): boolean {
-    //TODO retrieve token from backend
-    return !!(user.username && user.password && this.authService.login(user.username, user.password));
+  register(user: User): Observable<any> {
+    let url = `${this.apiUrl}/users`;
+    if (user.username && user.password && user.email && user.grade) {
+      return this.http.post(url, {
+        username: user.username,
+        password: user.password,
+        email: user.email,
+        grade: user.grade
+      }).pipe(
+        catchError(this.handleError('register'))
+      );
+    } else {
+      throw new Error('User information missing!');
+    }
+  }
+
+  private handleError(operation = 'operation') {
+    return (error: any): Observable<any> => {
+      console.error(`${operation} failed: ${error.message}`);
+      return throwError(() => new Error(`${operation} failed: ${error.message}`));
+    };
   }
 
   logout(): void {
