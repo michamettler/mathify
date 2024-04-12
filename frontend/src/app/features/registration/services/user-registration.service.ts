@@ -9,7 +9,7 @@ export class UserRegistrationService {
   constructor(private authService: AuthService) {
   }
 
-  register(username: string, password: string): boolean {
+  register(username: string | undefined, password: string | undefined): boolean {
     console.log('Register', username, password);
     //TODO send data to backend
     return true;
