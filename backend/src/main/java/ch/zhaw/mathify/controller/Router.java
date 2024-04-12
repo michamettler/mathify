@@ -107,8 +107,8 @@ public class Router {
             Base64.Encoder base64Encoder = Base64.getUrlEncoder();
             byte[] randomBytes = new byte[24];
             secureRandom.nextBytes(randomBytes);
-            LOG.info("{} logged in successfully", credentials.get().getUsername());
             ctx.result(base64Encoder.encodeToString(randomBytes));
+            LOG.info("{} logged in successfully", credentials.get().getUsername());
             ctx.status(200);
             return;
         }
