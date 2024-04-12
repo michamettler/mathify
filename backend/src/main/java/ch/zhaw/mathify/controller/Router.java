@@ -24,6 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Optional;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -82,6 +84,7 @@ public class Router {
             get("/subtypes", ctx -> ctx.json(JsonMapper.toJson(ExerciseSubType.values())), Role.USER, Role.ADMIN);
 
         });
+        get("/login", this::createUserToken, Role.ANONYMOUS);
         get("/scoreboard", ctx -> {
             ctx.json(scoreboard.inOrderTraversal(scoreboard.getRoot()));
             LOG.info("scoreboard page was accessed");
@@ -97,6 +100,23 @@ public class Router {
         }, Role.ADMIN);
     }
 
+    private void createUserToken(Context ctx) {
+        Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
+        if (credentials.isPresent() && authenticateUser(credentials.get(), ctx)) {
+            SecureRandom secureRandom = new SecureRandom();
+            Base64.Encoder base64Encoder = Base64.getUrlEncoder();
+            byte[] randomBytes = new byte[24];
+            secureRandom.nextBytes(randomBytes);
+            ctx.result(base64Encoder.encodeToString(randomBytes));
+            LOG.info("{} logged in successfully", credentials.get().getUsername());
+            ctx.status(200);
+            return;
+        }
+        ctx.result("Please provide valid credentials!");
+        LOG.error("invalid credentials have been provided during the login attempt");
+        ctx.status(401);
+    }
+
     private void handleAuthenticationAndAuthorization(JavalinDefaultRouting router) {
         router.beforeMatched(ctx -> {
             Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
@@ -109,15 +129,16 @@ public class Router {
         });
     }
 
-    private void authenticateUser(BasicAuthCredentials credentials, Context ctx) {
+    private boolean authenticateUser(BasicAuthCredentials credentials, Context ctx) {
         for (User user : userRepository.get()) {
             if (user.getUsername().equals(credentials.getUsername()) &&
                     User.verifyPassword(credentials.getPassword(), user.getPassword())) {
                 LOG.info("{} was authenticated successfully", user.getUsername());
                 ctx.attribute("role", user.getRole());
-                return;
+                return true;
             }
         }
+        return false;
     }
 
 
