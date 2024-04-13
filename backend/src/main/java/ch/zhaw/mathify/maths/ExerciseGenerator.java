@@ -18,14 +18,12 @@ public class ExerciseGenerator {
      * @return A randomly generated exercise
      */
     public static Exercise generate(Grade grade, ExerciseSubType exerciseSubType) {
-        switch (exerciseSubType.getExerciseSubTypeCategory()) {
-            case ExerciseSubType.ExerciseSubTypeCategory.ARITHMETIC -> {
-                return ArithmeticGenerator.generate(grade, exerciseSubType);
-            }
-            case ExerciseSubType.ExerciseSubTypeCategory.MATHBASICS -> {
-                return MathBasicsGenerator.generate(grade, exerciseSubType);
-            }
-            default -> throw new IllegalArgumentException("Unknown exercise subtype");
+        if (exerciseSubType == null) {
+            throw new IllegalArgumentException("Exercise subtype must not be null");
         }
+        if (grade == null) {
+            throw new IllegalArgumentException("Grade must not be null");
+        }
+        return MathsGenerator.generate(grade, exerciseSubType);
     }
 }

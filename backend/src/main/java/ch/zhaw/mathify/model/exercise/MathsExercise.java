@@ -6,7 +6,7 @@ import java.util.Arrays;
  * @param result the result of the exercise
  * @param exercise the exercise as a string
  */
-public record MathBasicsExercise(int[] result, String exercise, ExerciseSubType exerciseSubType) implements Exercise {
+public record MathsExercise(double[] result, String exercise, ExerciseSubType exerciseSubType) implements Exercise {
     @Override
     public String toString(){
         return exercise;
@@ -17,7 +17,7 @@ public record MathBasicsExercise(int[] result, String exercise, ExerciseSubType 
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof MathBasicsExercise other)) {
+        if (!(obj instanceof MathsExercise other)) {
             return false;
         }
         return Arrays.equals(result, other.result) && exercise.equals(other.exercise);

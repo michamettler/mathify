@@ -1,6 +1,5 @@
 package ch.zhaw.mathify.controller.apicontroller;
 
-import ch.zhaw.mathify.maths.ArithmeticGenerator;
 import ch.zhaw.mathify.maths.ExerciseGenerator;
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.exercise.ExerciseSubType;

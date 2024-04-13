@@ -14,19 +14,10 @@ public record ExerciseDto(String exercise, String result, String exerciseSubType
      * @return the exercise
      */
     Exercise fromDto() {
-        return switch (ExerciseSubType.valueOf(this.exerciseSubType()).getExerciseSubTypeCategory()) {
-            case ExerciseSubType.ExerciseSubTypeCategory.ARITHMETIC ->
-                    new ArithmeticExercise(
-                            Double.parseDouble(this.result()),
-                            this.exercise(),
-                            ExerciseSubType.valueOf(this.exerciseSubType())
-                    );
-            case ExerciseSubType.ExerciseSubTypeCategory.MATHBASICS ->
-                    new MathBasicsExercise(
-                            Arrays.stream(this.result().split(",")).mapToInt(Integer::parseInt).toArray(),
-                            this.exercise(),
-                            ExerciseSubType.valueOf(this.exerciseSubType())
-                    );
-        };
+        return new MathsExercise(
+                Arrays.stream(this.result().split(",")).mapToDouble(Double::parseDouble).toArray(),
+                this.exercise(),
+                ExerciseSubType.valueOf(this.exerciseSubType())
+        );
     }
 }
