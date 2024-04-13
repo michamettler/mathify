@@ -57,7 +57,10 @@ public class Router {
             config.router.apiBuilder(this::register);
             config.router.mount(this::handleAuthenticationAndAuthorization);
         });
-        app.before(ctx -> ctx.header("Access-Control-Allow-Origin", "*"));
+        app.before(ctx -> ctx.header("Access-Control-Allow-Origin", "http://localhost:4200"));
+        app.before(ctx -> ctx.header("Access-Control-Allow-Credentials", "true"));
+        app.before(ctx -> ctx.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"));
+        app.before(ctx -> ctx.header("Access-Control-Allow-Headers", "Content-Type, application/json"));
         app.error(401, ctx -> {
             Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
             credentials.ifPresentOrElse(basicAuthCredentials -> LOG.error("User {} is not allowed to access the {} endpoint", basicAuthCredentials.getUsername(), ctx.path()), () -> LOG.error("Anonymous user is not allowed to access the {} endpoint", ctx.path()));
