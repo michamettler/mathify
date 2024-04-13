@@ -18,7 +18,7 @@ public class ExerciseGenerator {
      * @return A randomly generated exercise
      */
     public static Exercise generate(Grade grade, ExerciseSubType exerciseSubType) {
-        if(grade == null || exerciseSubType == null) {
+        if (grade == null || exerciseSubType == null) {
             throw new IllegalArgumentException("Grade and exerciseSubType must not be null");
         }
         return MathsGenerator.generate(grade, exerciseSubType);
