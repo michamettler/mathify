@@ -18,11 +18,8 @@ public class ExerciseGenerator {
      * @return A randomly generated exercise
      */
     public static Exercise generate(Grade grade, ExerciseSubType exerciseSubType) {
-        if (exerciseSubType == null) {
-            throw new IllegalArgumentException("Exercise subtype must not be null");
-        }
-        if (grade == null) {
-            throw new IllegalArgumentException("Grade must not be null");
+        if(grade == null || exerciseSubType == null) {
+            throw new IllegalArgumentException("Grade and exerciseSubType must not be null");
         }
         return MathsGenerator.generate(grade, exerciseSubType);
     }
