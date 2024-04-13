@@ -51,7 +51,7 @@ public class Router {
         app = Javalin.create(config -> {
             sslPluginOptional.ifPresent(config::registerPlugin);
             config.bundledPlugins.enableCors(cors -> cors.addRule(rule -> {
-                rule.allowHost("localhost:4200");
+                rule.allowHost("localhost");
                 rule.allowCredentials = true;
             }));
             config.router.apiBuilder(this::register);
