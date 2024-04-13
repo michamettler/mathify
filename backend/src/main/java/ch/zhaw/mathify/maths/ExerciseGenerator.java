@@ -18,11 +18,11 @@ public class ExerciseGenerator {
      * @return A randomly generated exercise
      */
     public static Exercise generate(Grade grade, ExerciseSubType exerciseSubType) {
-        switch (exerciseSubType) {
-            case ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION -> {
+        switch (exerciseSubType.getExerciseSubTypeCategory()) {
+            case ExerciseSubType.ExerciseSubTypeCategory.ARITHMETIC -> {
                 return ArithmeticGenerator.generate(grade, exerciseSubType);
             }
-            case NEIGHBORS, SORTING, COMPARISON, NUMBERCOMPLETION, TENSCOMPARISON -> {
+            case ExerciseSubType.ExerciseSubTypeCategory.MATHBASICS -> {
                 return MathBasicsGenerator.generate(grade, exerciseSubType);
             }
             default -> throw new IllegalArgumentException("Unknown exercise subtype");
