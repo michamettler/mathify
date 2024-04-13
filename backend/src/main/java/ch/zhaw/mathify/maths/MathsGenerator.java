@@ -28,7 +28,7 @@ public class MathsGenerator {
             case NEIGHBORS -> generateNeighbors(grade);
             case COMPARISON -> generateComparison(grade);
             case NUMBERCOMPLETION -> generateNumberCompletion(grade);
-            case TENSCOMPARISON -> generateTensComparison(grade);
+            case TENSCOMPARISON -> generateTensComparison();
             case ADDITION -> generateAddition(grade);
             case SUBTRACTION -> generateSubtraction(grade);
             case MULTIPLICATION -> generateMultiplication(grade);
@@ -77,7 +77,7 @@ public class MathsGenerator {
         return new MathsExercise(result, "What number do you add to " + a + " to make " + b + "?", ExerciseSubType.NUMBERCOMPLETION);
     }
 
-    private static Exercise generateTensComparison(Grade grade) {
+    private static Exercise generateTensComparison() {
         int a = random.nextInt(9) * 10 + 10;
         int b;
         do {
@@ -92,7 +92,7 @@ public class MathsGenerator {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
         int b = getRandomFactor(a);
-        return new MathsExercise(new double[]{ (double) a / b}, a + " / " + b, ExerciseSubType.DIVISION);
+        return new MathsExercise(new double[]{(double) a / b}, a + " / " + b, ExerciseSubType.DIVISION);
     }
 
     private static Exercise generateMultiplication(Grade grade) {
