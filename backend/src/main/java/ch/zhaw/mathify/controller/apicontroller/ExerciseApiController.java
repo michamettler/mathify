@@ -1,6 +1,5 @@
 package ch.zhaw.mathify.controller.apicontroller;
 
-import ch.zhaw.mathify.maths.ArithmeticGenerator;
 import ch.zhaw.mathify.maths.ExerciseGenerator;
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.exercise.ExerciseSubType;
@@ -22,11 +21,10 @@ public class ExerciseApiController {
             ExerciseSubType exerciseSubType = ExerciseSubType.valueOfIgnoreCase(exerciseSubTypeOptional.get());
             Grade grade = Grade.valueOfIgnoreCase(gradeOptional.get());
 
-            ctx.json(ExerciseGenerator.generate(grade, exerciseSubType));
+            ctx.json(ExerciseGenerator.generate(grade, exerciseSubType).toDto());
         } else {
             LOG.error("Missing query parameters");
             ctx.status(400);
         }
-
     }
 }
