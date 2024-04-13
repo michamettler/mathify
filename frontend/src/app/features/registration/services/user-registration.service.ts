@@ -9,7 +9,7 @@ import {catchError, Observable, throwError} from "rxjs";
 })
 export class UserRegistrationService {
 
-  private apiUrl = 'https://localhost:8443';
+  private apiUrl = 'https://localhost';
 
   constructor(private http: HttpClient, private authService: AuthService) {
   }
