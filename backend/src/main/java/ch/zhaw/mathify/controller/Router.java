@@ -82,6 +82,7 @@ public class Router {
         path("/exercise", () -> {
             get(exerciseApiController::getExerciseFromSubtypeAndGrade, Role.USER, Role.ADMIN);
             get("/subtypes", ctx -> ctx.json(JsonMapper.toJson(ExerciseSubType.values())), Role.USER, Role.ADMIN);
+            post("/verify", exerciseApiController::handleResult, Role.USER, Role.ADMIN);
 
         });
         get("/login", this::createUserToken, Role.ANONYMOUS);

@@ -1,19 +1,46 @@
 package ch.zhaw.mathify.model.exercise;
 
+import org.slf4j.Logger;
+
 import java.util.Arrays;
 
 /**
- * @param result the result of the exercise
+ * @param result   the result of the exercise
  * @param exercise the exercise as a string
  */
-public record MathsExercise(double[] result, String exercise, ExerciseSubType exerciseSubType) implements Exercise {
+public record MathsExercise(double[] result, double[] userResult, String exercise,
+                            ExerciseSubType exerciseSubType) implements Exercise {
+    private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(MathsExercise.class);
+
+    /**
+     * Verifies the result of the user
+     *
+     * @param userResult the result of the user
+     * @return true if the user result is correct
+     */
+    public boolean verifyResult() {
+        LOG.info("Verifying result...");
+        return Arrays.equals(result, userResult);
+    }
+
+    /**
+     * Converts the exercise to a dto
+     *
+     * @return the exercise as a dto
+     */
     @Override
-    public String toString(){
+    public ExerciseDto toDto() {
+        LOG.info("Converting exercise to dto...");
+        return new ExerciseDto(Arrays.toString(result), Arrays.toString(userResult), exercise, exerciseSubType.toString());
+    }
+
+    @Override
+    public String toString() {
         return exercise;
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == this) {
             return true;
         }
@@ -24,16 +51,7 @@ public record MathsExercise(double[] result, String exercise, ExerciseSubType ex
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return Arrays.hashCode(result) + exercise.hashCode();
-    }
-
-    /**
-     * Converts the exercise to a dto
-     * @return the exercise as a dto
-     */
-    @Override
-    public ExerciseDto toDto() {
-        return new ExerciseDto(exercise, Arrays.toString(result), exerciseSubType.toString());
     }
 }

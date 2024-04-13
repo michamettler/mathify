@@ -45,13 +45,13 @@ public class MathsGenerator {
         double[] res = {a, b, c};
         String arrayUnsorted = Arrays.toString(res);
         Arrays.sort(res);
-        return new MathsExercise(res, arrayUnsorted, ExerciseSubType.SORTING);
+        return new MathsExercise(res, new double[10], arrayUnsorted, ExerciseSubType.SORTING);
     }
 
     private static Exercise generateNeighbors(Grade grade) {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
-        return new MathsExercise(new double[]{a - 1, a, a + 1}, "Find the neighbors of " + a + "!", ExerciseSubType.NEIGHBORS);
+        return new MathsExercise(new double[]{a - 1, a, a + 1}, new double[10], "Find the neighbors of " + a + "!", ExerciseSubType.NEIGHBORS);
     }
 
     private static Exercise generateComparison(Grade grade) {
@@ -63,7 +63,7 @@ public class MathsGenerator {
             c = random.nextInt(max + 1);
         } while (a == b || a == c || b == c);
         double[] result = {Math.max(a, Math.max(b, c))};
-        return new MathsExercise(result, "Find the biggest number in the list: " + a + ", " + b + ", " + c, ExerciseSubType.COMPARISON);
+        return new MathsExercise(result, new double[10],"Find the biggest number in the list: " + a + ", " + b + ", " + c, ExerciseSubType.COMPARISON);
     }
 
     private static Exercise generateNumberCompletion(Grade grade) {
@@ -74,7 +74,7 @@ public class MathsGenerator {
             b = random.nextInt(max + 1);
         } while (b <= a);
         double[] result = {b - a};
-        return new MathsExercise(result, "What number do you add to " + a + " to make " + b + "?", ExerciseSubType.NUMBERCOMPLETION);
+        return new MathsExercise(result, new double[10],"What number do you add to " + a + " to make " + b + "?", ExerciseSubType.NUMBERCOMPLETION);
     }
 
     private static Exercise generateTensComparison() {
@@ -84,7 +84,7 @@ public class MathsGenerator {
             b = random.nextInt(9) * 10 + 10;
         } while (b == a);
         double[] result = {Math.max(a, b)};
-        return new MathsExercise(result, "Which tens number is bigger: " + a + " or " + b + "?", ExerciseSubType.TENSCOMPARISON);
+        return new MathsExercise(result, new double[10], "Which tens number is bigger: " + a + " or " + b + "?", ExerciseSubType.TENSCOMPARISON);
     }
 
     private static Exercise generateDivision(Grade grade) {
@@ -92,7 +92,7 @@ public class MathsGenerator {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
         int b = getRandomFactor(a);
-        return new MathsExercise(new double[]{(double) a / b}, a + " / " + b, ExerciseSubType.DIVISION);
+        return new MathsExercise(new double[]{(double) a / b}, new double[10], a + " / " + b, ExerciseSubType.DIVISION);
     }
 
     private static Exercise generateMultiplication(Grade grade) {
@@ -100,21 +100,21 @@ public class MathsGenerator {
         int max = (int) Math.sqrt(grade.getMax());
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max + 1);
-        return new MathsExercise(new double[]{a * b}, a + " * " + b, ExerciseSubType.MULTIPLICATION);
+        return new MathsExercise(new double[]{a * b}, new double[10], a + " * " + b, ExerciseSubType.MULTIPLICATION);
     }
 
     private static Exercise generateSubtraction(Grade grade) {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
         int b = random.nextInt(a + 1);
-        return new MathsExercise(new double[]{a - b}, a + " - " + b, ExerciseSubType.SUBTRACTION);
+        return new MathsExercise(new double[]{a - b}, new double[10], a + " - " + b, ExerciseSubType.SUBTRACTION);
     }
 
     private static Exercise generateAddition(Grade grade) {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max - a + 1);
-        return new MathsExercise(new double[]{a + b}, a + " + " + b, ExerciseSubType.ADDITION);
+        return new MathsExercise(new double[]{a + b}, new double[10], a + " + " + b, ExerciseSubType.ADDITION);
     }
 
     private static int getRandomFactor(int num) {

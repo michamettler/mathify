@@ -5,4 +5,5 @@ package ch.zhaw.mathify.model.exercise;
  */
 public interface Exercise {
     ExerciseDto toDto();
+    boolean verifyResult();
 }
