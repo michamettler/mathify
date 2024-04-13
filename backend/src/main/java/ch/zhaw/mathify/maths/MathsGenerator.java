@@ -42,16 +42,17 @@ public class MathsGenerator {
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max + 1);
         int c = random.nextInt(max + 1);
-        double[] res = {a, b, c};
-        String arrayUnsorted = Arrays.toString(res);
-        Arrays.sort(res);
-        return new MathsExercise(res, new double[3], arrayUnsorted, ExerciseSubType.SORTING);
+        double[] result = {a, b, c};
+        String arrayUnsorted = Arrays.toString(result);
+        Arrays.sort(result);
+        return new MathsExercise(result, new double[result.length], arrayUnsorted, ExerciseSubType.SORTING);
     }
 
     private static Exercise generateNeighbors(Grade grade) {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
-        return new MathsExercise(new double[]{a - 1, a, a + 1}, new double[3], "Find the neighbors of " + a + "!", ExerciseSubType.NEIGHBORS);
+        double[] result = {a - 1, a + 1};
+        return new MathsExercise(result, new double[result.length], "Find the neighbors of " + a + "!", ExerciseSubType.NEIGHBORS);
     }
 
     private static Exercise generateComparison(Grade grade) {
@@ -63,7 +64,7 @@ public class MathsGenerator {
             c = random.nextInt(max + 1);
         } while (a == b || a == c || b == c);
         double[] result = {Math.max(a, Math.max(b, c))};
-        return new MathsExercise(result, new double[3],"Find the biggest number in the list: " + a + ", " + b + ", " + c, ExerciseSubType.COMPARISON);
+        return new MathsExercise(result, new double[result.length],"Find the biggest number in the list: " + a + ", " + b + ", " + c, ExerciseSubType.COMPARISON);
     }
 
     private static Exercise generateNumberCompletion(Grade grade) {
@@ -74,7 +75,7 @@ public class MathsGenerator {
             b = random.nextInt(max + 1);
         } while (b <= a);
         double[] result = {b - a};
-        return new MathsExercise(result, new double[1],"What number do you add to " + a + " to make " + b + "?", ExerciseSubType.NUMBERCOMPLETION);
+        return new MathsExercise(result, new double[result.length],"What number do you add to " + a + " to make " + b + "?", ExerciseSubType.NUMBERCOMPLETION);
     }
 
     private static Exercise generateTensComparison() {
@@ -84,7 +85,7 @@ public class MathsGenerator {
             b = random.nextInt(9) * 10 + 10;
         } while (b == a);
         double[] result = {Math.max(a, b)};
-        return new MathsExercise(result, new double[1], "Which tens number is bigger: " + a + " or " + b + "?", ExerciseSubType.TENSCOMPARISON);
+        return new MathsExercise(result, new double[result.length], "Which tens number is bigger: " + a + " or " + b + "?", ExerciseSubType.TENSCOMPARISON);
     }
 
     private static Exercise generateDivision(Grade grade) {
@@ -92,7 +93,8 @@ public class MathsGenerator {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
         int b = getRandomFactor(a);
-        return new MathsExercise(new double[]{(double) a / b}, new double[1], a + " / " + b, ExerciseSubType.DIVISION);
+        double[] result = {(double) a / b};
+        return new MathsExercise(result, new double[result.length], a + " / " + b, ExerciseSubType.DIVISION);
     }
 
     private static Exercise generateMultiplication(Grade grade) {
@@ -100,21 +102,24 @@ public class MathsGenerator {
         int max = (int) Math.sqrt(grade.getMax());
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max + 1);
-        return new MathsExercise(new double[]{a * b}, new double[1], a + " * " + b, ExerciseSubType.MULTIPLICATION);
+        double[] result = {a * b};
+        return new MathsExercise(result, new double[result.length], a + " * " + b, ExerciseSubType.MULTIPLICATION);
     }
 
     private static Exercise generateSubtraction(Grade grade) {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
         int b = random.nextInt(a + 1);
-        return new MathsExercise(new double[]{a - b}, new double[1], a + " - " + b, ExerciseSubType.SUBTRACTION);
+        double[] result = {a - b};
+        return new MathsExercise(result, new double[result.length], a + " - " + b, ExerciseSubType.SUBTRACTION);
     }
 
     private static Exercise generateAddition(Grade grade) {
         int max = grade.getMax();
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max - a + 1);
-        return new MathsExercise(new double[]{a + b}, new double[1], a + " + " + b, ExerciseSubType.ADDITION);
+        double[] result = {a + b};
+        return new MathsExercise(result, new double[result.length], a + " + " + b, ExerciseSubType.ADDITION);
     }
 
     private static int getRandomFactor(int num) {
