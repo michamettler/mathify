@@ -5,5 +5,5 @@ export interface User {
   guid?: string | null;
   password?: string | null;
   email?: string | null;
-  grade?: number | null;
+  grade?: string | null;
 }

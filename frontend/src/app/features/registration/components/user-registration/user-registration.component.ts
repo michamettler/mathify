@@ -11,6 +11,7 @@ import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
 import {User} from "../../../../../model/user";
 import {Grade} from "../../../../../model/grade";
+import {HttpClientModule} from "@angular/common/http";
 
 @Component({
   selector: 'app-user-registration',
@@ -22,6 +23,7 @@ import {Grade} from "../../../../../model/grade";
     MatLabel,
     MatError,
     ReactiveFormsModule,
+    HttpClientModule,
     NgIf,
     MatOption,
     MatSelect
@@ -32,10 +34,10 @@ import {Grade} from "../../../../../model/grade";
 export class UserRegistrationComponent {
 
   passwordMismatch: boolean = false;
-  grades = [
-    {name: 'Grade 1', number: 1},
-    {name: 'Grade 2', number: 2},
-    {name: 'Grade 3', number: 3},
+  grades: Grade[] = [
+    {title: 'Grade 1', value: 'first'},
+    {title: 'Grade 2', value: 'second'},
+    {title: 'Grade 3', value: 'third'},
   ];
 
   form = new FormGroup({
@@ -65,14 +67,27 @@ export class UserRegistrationComponent {
         username: this.form.get('username')?.value,
         password: this.form.get('password')?.value,
         email: this.form.get('email')?.value,
-        grade: this.gradeControl.value?.number
+        grade: this.gradeControl.value?.value
       }
-      this.userRegistrationService.register(user);
-      this._snackBar.open("User has been created! You can now log in.", "dismiss", {
-        verticalPosition: 'top',
-        horizontalPosition: 'end'
+
+      this.userRegistrationService.register(user).subscribe({
+        next: (response) => {
+          console.log('Login successful', response);
+          this._snackBar.open("User has been created! You can now log in.", "dismiss", {
+            verticalPosition: 'top',
+            horizontalPosition: 'end'
+          });
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error('Login failed:', error);
+          this._snackBar.open("Registration failed!\n" + error, "dismiss", {
+            verticalPosition: 'top',
+            horizontalPosition: 'end'
+          });
+        }
       });
-      this.router.navigate(['/login']);
+
     }
   }
 

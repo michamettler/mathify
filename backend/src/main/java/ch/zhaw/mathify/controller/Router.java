@@ -55,11 +55,8 @@ public class Router {
         });
         app.error(401, ctx -> {
             Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
-            credentials.ifPresentOrElse(
-                    basicAuthCredentials -> LOG.error("User {} is not allowed to access the {} endpoint", basicAuthCredentials.getUsername(), ctx.path()),
-                    () -> LOG.error("Anonymous user is not allowed to access the {} endpoint", ctx.path())
-            );
-            ctx.result("Unauthorized access! Please provide valid credentials!");
+            credentials.ifPresentOrElse(basicAuthCredentials -> LOG.error("User {} is not allowed to access the {} endpoint", basicAuthCredentials.getUsername(), ctx.path()), () -> LOG.error("Anonymous user is not allowed to access the {} endpoint", ctx.path()));
+            ctx.html("Unauthorized access! Please provide valid credentials!");
         });
         app.exception(MismatchedInputException.class, (e, ctx) -> {
             ctx.result("Invalid JSON format!");
@@ -132,8 +129,7 @@ public class Router {
 
     private boolean authenticateUser(BasicAuthCredentials credentials, Context ctx) {
         for (User user : userRepository.get()) {
-            if (user.getUsername().equals(credentials.getUsername()) &&
-                    User.verifyPassword(credentials.getPassword(), user.getPassword())) {
+            if (user.getUsername().equals(credentials.getUsername()) && User.verifyPassword(credentials.getPassword(), user.getPassword())) {
                 LOG.info("{} was authenticated successfully", user.getUsername());
                 ctx.attribute("role", user.getRole());
                 return true;

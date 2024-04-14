@@ -13,7 +13,7 @@ body {
 
 .login {
   display: flex;
-  height: 100vh;
+  height: 100%;
 
   .sidenav {
     height: 100%;
@@ -42,10 +42,6 @@ body {
     height: 100%;
     width: 70%;
 
-    .button-group {
-      padding-top: 10px;
-    }
-
     .btn-login {
       background-color: #3F51B5 !important;
       color: #fff;
@@ -60,7 +56,7 @@ body {
     .form-group {
       display: flex;
       flex-direction: column;
-      margin-top: 30%;
+      margin-top: 20%;
     }
   }
 }

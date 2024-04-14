@@ -54,9 +54,9 @@ export class ModeSelectionComponent {
   ]
 
   grades: Grade[] = [
-    { title: 'Grade 1', number: 1 },
-    { title: 'Grade 2', number: 2 },
-    { title: 'Grade 3', number: 3 }
+    {title: 'Grade 1', value: 'first'},
+    {title: 'Grade 2', value: 'second'},
+    {title: 'Grade 3', value: 'third'},
   ];
 
   modeCards = [

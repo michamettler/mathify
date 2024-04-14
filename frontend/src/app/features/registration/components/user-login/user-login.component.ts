@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {MatError, MatFormField, MatFormFieldModule, MatLabel} from "@angular/material/form-field";
-import {MatInput, MatInputModule} from "@angular/material/input";
+import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserRegistrationService} from "../../services/user-registration.service";
 import {Title} from "@angular/platform-browser";
@@ -10,6 +10,8 @@ import {User} from "../../../../../model/user";
 import {NgIf} from "@angular/common";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
+import {HttpClientModule} from "@angular/common/http";
+import {AuthService} from "../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-user-registration',
@@ -21,6 +23,7 @@ import {MatSelect} from "@angular/material/select";
     MatLabel,
     MatError,
     ReactiveFormsModule,
+    HttpClientModule,
     NgIf,
     MatOption,
     MatSelect
@@ -36,25 +39,32 @@ export class UserLoginComponent {
 
   constructor(private router: Router, private _snackBar: MatSnackBar,
               private userRegistrationService: UserRegistrationService,
-              private titleService: Title) {
+              private titleService: Title,
+              private authService: AuthService) {
     this.titleService.setTitle('Login');
   }
 
   login(): void {
-    if(this.form.valid) {
+    if (this.form.valid) {
       let user: User = {
         username: this.form.get('username')?.value,
         password: this.form.get('password')?.value,
       }
 
-      if (this.userRegistrationService.login(user)) {
-        this.router.navigate(['/grade-selection']);
-      } else {
-        this._snackBar.open("Login failed! Please try again.", "dismiss", {
-          verticalPosition: 'top',
-          horizontalPosition: 'end'
-        });
-      }
+      this.userRegistrationService.login(user).subscribe({
+        next: (response) => {
+          console.log('Login successful');
+          this.authService.login(response);
+          this.router.navigate(['/mode-selection']);
+        },
+        error: (error) => {
+          console.error('Login failed:', error);
+          this._snackBar.open("Login failed! Please try again.\n" + error, "dismiss", {
+            verticalPosition: 'top',
+            horizontalPosition: 'end'
+          });
+        }
+      });
     }
   }
 
