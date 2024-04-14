@@ -7,6 +7,8 @@ import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import ch.zhaw.mathify.util.JsonMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.RestAssured;
+import io.restassured.config.RestAssuredConfig;
+import io.restassured.config.SSLConfig;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +36,8 @@ public class RouterTest {
         } catch (SettingsNotFoundException e) {
             fail();
         }
-        RestAssured.baseURI = "http://localhost:8080";
+        RestAssured.baseURI = "https://localhost:8443";
+        RestAssured.config = RestAssuredConfig.newConfig().sslConfig(SSLConfig.sslConfig().relaxedHTTPSValidation());
     }
 
     @Test
