@@ -23,6 +23,9 @@ import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for the Router class.
+ */
 public class RouterTest {
     @BeforeAll
     public static void startApplication() {
