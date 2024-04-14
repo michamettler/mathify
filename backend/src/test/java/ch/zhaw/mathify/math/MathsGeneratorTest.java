@@ -261,4 +261,60 @@ class MathsGeneratorTest {
         assertTrue(MathsExercise.result()[0] <= 1000000);
     }
 
+    @Test
+    void testGenerateDoublingThirdGrade() {
+        Exercise exercise = MathsGenerator.generate(Grade.THIRD, ExerciseSubType.DOUBLING);
+        assertInstanceOf(MathsExercise.class, exercise);
+        MathsExercise MathsExercise = (MathsExercise) exercise;
+        assertTrue(MathsExercise.exercise().matches("Double the following number: \\d+"));
+        int number = Integer.parseInt(MathsExercise.exercise().replaceAll("[^0-9]+", "")) * 2;
+        assertEquals(MathsExercise.result()[0], number);
+    }
+
+    @Test
+    void testGenerateHalvingFourthGrade() {
+        Exercise exercise = MathsGenerator.generate(Grade.FOURTH, ExerciseSubType.HALVING);
+        assertInstanceOf(MathsExercise.class, exercise);
+        MathsExercise MathsExercise = (MathsExercise) exercise;
+        assertTrue(MathsExercise.exercise().matches("Halve the following number: \\d+"));
+        int number = Integer.parseInt(MathsExercise.exercise().replaceAll("[^0-9]+", "")) / 2;
+        assertEquals(MathsExercise.result()[0], number);
+    }
+
+    @Test
+    void testGenerateThreeStepAdditionFifthGrade() {
+        Exercise exercise = MathsGenerator.generate(Grade.FIFTH, ExerciseSubType.THREESTEPADDITION);
+        assertInstanceOf(MathsExercise.class, exercise);
+        MathsExercise MathsExercise = (MathsExercise) exercise;
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+ \\+ \\d+"));
+        String[] numbers = ((MathsExercise) exercise).exercise().split("\\s*\\+\\s*");
+        int result = Integer.parseInt(numbers[0]) + Integer.parseInt(numbers[1]) + Integer.parseInt(numbers[2]);
+        assertEquals(MathsExercise.result()[0], result);
+    }
+
+    @Test
+    void testGenerateThreeStepSubtractionSixthGrade() {
+        Exercise exercise = MathsGenerator.generate(Grade.SIXTH, ExerciseSubType.THREESTEPSUBTRACTION);
+        assertInstanceOf(MathsExercise.class, exercise);
+        MathsExercise MathsExercise = (MathsExercise) exercise;
+        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+ - \\d+"));
+        String[] numbers = ((MathsExercise) exercise).exercise().split("\\s*-\\s*");
+        int result = Integer.parseInt(numbers[0]) - Integer.parseInt(numbers[1]) - Integer.parseInt(numbers[2]);
+        assertEquals(MathsExercise.result()[0], result);
+    }
+
+    @Test
+    void testGenerateMultiplicationTableFirstGrade() {
+        Exercise exercise = MathsGenerator.generate(Grade.FIRST, ExerciseSubType.MULTIPLICATIONTABLE);
+        assertInstanceOf(MathsExercise.class, exercise);
+        MathsExercise MathsExercise = (MathsExercise) exercise;
+        assertTrue(MathsExercise.exercise().matches("Generate the multiplication table for \\d+"));
+        double[] result = new double[10];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = Integer.parseInt(MathsExercise.exercise().replaceAll("[^0-9]+", "")) * (i + 1);
+        }
+        for (int i = 0; i < result.length; i++) {
+            assertEquals(MathsExercise.result()[i], result[i]);
+        }
+    }
 }
