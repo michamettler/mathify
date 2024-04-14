@@ -11,7 +11,7 @@ import java.util.Arrays;
  *                        (e.g. the sorted array)
  * @param userResult      the result of the user
  * @param exercise        the exercise as a string
- * @param exerciseSubType the sub type of the exercise
+ * @param exerciseSubType the subtype of the exercise
  */
 public record MathsExercise(double[] result, double[] userResult, String exercise,
                             ExerciseSubType exerciseSubType) implements Exercise {
@@ -20,7 +20,6 @@ public record MathsExercise(double[] result, double[] userResult, String exercis
     /**
      * Verifies the result of the user
      *
-     * @param userResult the result of the user
      * @return true if the user result is correct
      */
     public boolean verifyResult() {

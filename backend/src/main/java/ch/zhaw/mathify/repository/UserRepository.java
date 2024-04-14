@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * This class is responsible for managing the users in the system.
  */
-public final class UserRepository implements Repository<User>{
+public final class UserRepository implements Repository<User> {
     private static final Logger LOG = LoggerFactory.getLogger(UserRepository.class);
     public static final File USERS_JSON_FILE = new File(Objects.requireNonNull(UserApiController.class.getClassLoader().getResource("users.json")).getFile());
     private static UserRepository instance;
@@ -50,14 +50,14 @@ public final class UserRepository implements Repository<User>{
      * @param user the user to add
      */
     public void add(User user) {
-        if(user != null) this.users.add(user);
+        if (user != null) this.users.add(user);
     }
 
     /**
      * @param user the user to remove
      */
     public void remove(User user) {
-        if(user != null) this.users.remove(user);
+        if (user != null) this.users.remove(user);
     }
 
     /**
