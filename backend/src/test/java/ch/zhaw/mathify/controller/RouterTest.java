@@ -32,7 +32,7 @@ public class RouterTest {
         try {
             App.run();
         } catch (SettingsNotFoundException e) {
-            System.out.println("OH NO");
+            fail();
         }
         RestAssured.baseURI = "http://localhost:8080";
     }
