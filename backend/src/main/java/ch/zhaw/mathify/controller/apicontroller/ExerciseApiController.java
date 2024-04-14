@@ -18,6 +18,7 @@ public class ExerciseApiController {
 
     /**
      * Generates an exercise with the given exerciseSubType and grade.
+     *
      * @param ctx Context of the request
      */
     public void getExerciseFromSubtypeAndGrade(Context ctx) {
@@ -38,6 +39,7 @@ public class ExerciseApiController {
 
     /**
      * Handles the result of an exercise.
+     *
      * @param ctx Context of the request
      */
     public void handleResult(Context ctx) {

@@ -19,7 +19,7 @@ public class MathsGenerator {
 
     /**
      * @param grade   The grade of the exercise
-     * @param subType The sub type of the exercise
+     * @param subType The subtype of the exercise
      * @return A new exercise
      */
     public static Exercise generate(Grade grade, ExerciseSubType subType) {

@@ -1,8 +1,6 @@
 package ch.zhaw.mathify.model;
 
 import ch.zhaw.mathify.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,15 +10,14 @@ import java.util.Queue;
  * This class represents an AVL-tree that stores the user's data in the scoreboard.
  */
 public class Scoreboard {
-    private static final Logger LOG = LoggerFactory.getLogger(Scoreboard.class);
     private ScoreboardNode root;
-    private final UserRepository userRepository = UserRepository.getInstance();
 
     /**
      * Creates a Scoreboard and loads the current users from the users.json file
      */
     public Scoreboard() {
-        for(User user : userRepository.get()) {
+        UserRepository userRepository = UserRepository.getInstance();
+        for (User user : userRepository.get()) {
             insert(new ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
         }
     }

@@ -33,6 +33,7 @@ public class Settings {
     public record HttpSettingsModel(int port) {
         /**
          * Constructor necessary for deserialization (required = true will be checked here)
+         *
          * @param port the port to listen on
          */
         @JsonCreator

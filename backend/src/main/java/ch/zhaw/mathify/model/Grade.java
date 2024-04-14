@@ -30,7 +30,7 @@ public enum Grade {
      * @param value the value to parse
      * @return the corresponding grade
      */
-    public static Grade valueOfIgnoreCase(String value){
+    public static Grade valueOfIgnoreCase(String value) {
         return Grade.valueOf(value.toUpperCase());
     }
 

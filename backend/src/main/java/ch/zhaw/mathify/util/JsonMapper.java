@@ -59,7 +59,7 @@ public class JsonMapper {
     /**
      * @param object object to map
      * @return json string
-     * @throws JsonProcessingException
+     * @throws JsonProcessingException if the conversion to JSON fails
      */
     public static String toJson(Object object) throws JsonProcessingException {
         return objectMapper.writeValueAsString(object);

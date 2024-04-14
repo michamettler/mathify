@@ -42,13 +42,13 @@ public class UserApiController implements CrudHandler {
 
     /**
      * @param context the context of the request
-     * @param s       the username of the user to delete
+     * @param guid    the guid of the user to delete
      */
     @Override
-    public void delete(@NotNull Context context, @NotNull String s) {
-        if (userRepository.get().stream().anyMatch(u -> u.getGuid().equals(s))) {
+    public void delete(@NotNull Context context, @NotNull String guid) {
+        if (userRepository.get().stream().anyMatch(u -> u.getGuid().equals(guid))) {
             userRepository.remove(userRepository.get().stream()
-                    .filter(u -> u.getGuid().equals(s))
+                    .filter(u -> u.getGuid().equals(guid))
                     .findFirst()
                     .orElse(null));
             String responseMessage = "User deleted successfully!";
@@ -75,14 +75,14 @@ public class UserApiController implements CrudHandler {
 
     /**
      * @param context the context of the request
-     * @param s       the username of the user to retrieve
+     * @param guid    the guid of the user to retrieve
      */
     @Override
-    public void getOne(@NotNull Context context, @NotNull String s) {
-        User user = userRepository.get().stream().filter(u -> u.getGuid().equals(s)).findFirst().orElse(null);
+    public void getOne(@NotNull Context context, @NotNull String guid) {
+        User user = userRepository.get().stream().filter(u -> u.getGuid().equals(guid)).findFirst().orElse(null);
         if (user != null) {
             context.json(user);
-            LOG.info("user {} was retrieved via GET /users/{} endpoint", s, s);
+            LOG.info("user {} was retrieved via GET /users/{} endpoint", guid, guid);
         } else {
             context.status(404);
             context.result("User not found!");
@@ -92,18 +92,18 @@ public class UserApiController implements CrudHandler {
 
     /**
      * @param context the context of the request
-     * @param s       the username of the user to update
+     * @param guid    the guid of the user to update
      */
     @Override
-    public void update(@NotNull Context context, @NotNull String s) {
+    public void update(@NotNull Context context, @NotNull String guid) {
         validateUser(context);
 
         User user = context.bodyAsClass(User.class);
         user.setPassword(User.hashPassword(user.getPassword()));
 
-        if (userRepository.get().stream().anyMatch(u -> u.getGuid().equals(s))) {
+        if (userRepository.get().stream().anyMatch(u -> u.getGuid().equals(guid))) {
             userRepository.remove(userRepository.get().stream()
-                    .filter(u -> u.getGuid().equals(s))
+                    .filter(u -> u.getGuid().equals(guid))
                     .findFirst()
                     .orElse(null));
             userRepository.add(user);
