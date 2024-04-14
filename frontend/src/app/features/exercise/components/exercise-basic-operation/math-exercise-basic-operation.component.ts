@@ -34,7 +34,7 @@ export class MathExerciseBasicOperationComponent implements OnInit {
   exercise: string = '';
   userAnswer = '';
   solution: string = '';
-  exerciseType: string = "addition";
+  exerciseType: 'addition' | 'subtraction' = this.getRandomSubtype();
   showSolution: boolean = false;
   showHint: boolean = false;
   hint: string = "Remember to multiply, not add.";
@@ -54,7 +54,7 @@ export class MathExerciseBasicOperationComponent implements OnInit {
     this.mathExerciseService.retrieveExercise(this.user, this.exerciseType).subscribe({
       next: (response) => {
         this.exercise = response.exercise
-        this.solution = response.solution
+        this.solution = response.result
       }
     });
   }
@@ -65,6 +65,11 @@ export class MathExerciseBasicOperationComponent implements OnInit {
 
   toggleHint(): void {
     this.showHint = !this.showHint;
+  }
+
+  getRandomSubtype(): 'addition' | 'subtraction' {
+    const randomNumber = Math.floor(Math.random() * 2) + 1;
+    return randomNumber === 1 ? 'addition' : 'subtraction';
   }
 
 }
