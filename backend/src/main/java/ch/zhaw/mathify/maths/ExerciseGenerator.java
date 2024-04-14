@@ -18,14 +18,9 @@ public class ExerciseGenerator {
      * @return A randomly generated exercise
      */
     public static Exercise generate(Grade grade, ExerciseSubType exerciseSubType) {
-        switch (exerciseSubType) {
-            case ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION -> {
-                return ArithmeticGenerator.generate(grade, exerciseSubType);
-            }
-            case NEIGHBORS, SORTING, COMPARISON, NUMBERCOMPLETION, TENSCOMPARISON -> {
-                return MathBasicsGenerator.generate(grade, exerciseSubType);
-            }
-            default -> throw new IllegalArgumentException("Unknown exercise subtype");
+        if (grade == null || exerciseSubType == null) {
+            throw new IllegalArgumentException("Grade and exerciseSubType must not be null");
         }
+        return MathsGenerator.generate(grade, exerciseSubType);
     }
 }

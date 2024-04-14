@@ -14,6 +14,7 @@ public enum ExerciseSubType {
     NUMBERCOMPLETION,
     TENSCOMPARISON;
 
+
     /**
      * @param value the value to get the enum for
      * @return the enum for the given value
@@ -21,6 +22,4 @@ public enum ExerciseSubType {
     public static ExerciseSubType valueOfIgnoreCase(String value){
         return ExerciseSubType.valueOf(value.toUpperCase());
     }
-
-
 }
