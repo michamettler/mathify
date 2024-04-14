@@ -98,6 +98,6 @@ export class ModeSelectionComponent {
   }
 
   startGame() {
-    this.router.navigate(['/scoreboard']);
+    this.router.navigate(['/exercise']);
   }
 }
