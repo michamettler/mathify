@@ -9,7 +9,7 @@ import {catchError, Observable, throwError} from "rxjs";
 })
 export class UserRegistrationService {
 
-  private apiUrl = 'https://localhost';
+  private apiUrl = 'https://localhost/api';
 
   constructor(private http: HttpClient, private authService: AuthService) {
   }
@@ -31,14 +31,14 @@ export class UserRegistrationService {
   }
 
   register(user: User): Observable<any> {
-    let url = `${this.apiUrl}/users`;
+    let url = `${this.apiUrl}users`;
     if (user.username && user.password && user.email && user.grade) {
       return this.http.post(url, {
         username: user.username,
         password: user.password,
         email: user.email,
         grade: user.grade
-      }).pipe(
+      }, {responseType: 'text'}).pipe(
         catchError(this.handleError('register'))
       );
     } else {
