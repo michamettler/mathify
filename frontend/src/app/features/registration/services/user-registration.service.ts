@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {AuthService} from "../../../core/services/auth.service";
 import {User} from "../../../../model/user";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {catchError, Observable, throwError} from "rxjs";
 
 @Injectable({
@@ -11,22 +10,22 @@ export class UserRegistrationService {
 
   private apiUrl = 'https://localhost/api';
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient) {
   }
 
   login(user: User): Observable<any> {
-    let url = `${this.apiUrl}/login`;
+    let url = `${this.apiUrl}login`;
     if (user.username && user.password) {
-      let params = new HttpParams()
-        .set('username', user.username)
-        .set('password', user.password);
-
-      return this.http.get(url, {params: params})
+      const authData = btoa(user.username + ':' + user.password);
+      const headers = new HttpHeaders({
+        'Authorization': 'Basic ' + authData
+      });
+      return this.http.get(url, {headers: headers, responseType: 'text'})
         .pipe(
           catchError(this.handleError('login'))
         );
     } else {
-      throw new Error('User information missing!');
+      return throwError(() => new Error('User information missing!'));
     }
   }
 
@@ -38,7 +37,7 @@ export class UserRegistrationService {
         password: user.password,
         email: user.email,
         grade: user.grade
-      }).pipe(
+      }, {responseType: 'text'}).pipe(
         catchError(this.handleError('register'))
       );
     } else {
@@ -53,7 +52,4 @@ export class UserRegistrationService {
     };
   }
 
-  logout(): void {
-    this.authService.logout();
-  }
 }

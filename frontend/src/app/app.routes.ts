@@ -13,6 +13,6 @@ export const routes: Routes = [
   {path: '', component: UserLoginComponent},
   {path: 'login', component: UserLoginComponent},
   {path: 'registration', component: UserRegistrationComponent},
-  {path: 'grade-selection', component: ModeSelectionComponent, canActivate: [AuthGuard]},
+  {path: 'mode-selection', component: ModeSelectionComponent, canActivate: [AuthGuard]},
   {path: 'scoreboard', component: ScoreboardOverviewComponent, canActivate: [AuthGuard]}
 ]

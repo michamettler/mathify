@@ -11,6 +11,7 @@ import {NgIf} from "@angular/common";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
 import {HttpClientModule} from "@angular/common/http";
+import {AuthService} from "../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-user-registration',
@@ -38,12 +39,13 @@ export class UserLoginComponent {
 
   constructor(private router: Router, private _snackBar: MatSnackBar,
               private userRegistrationService: UserRegistrationService,
-              private titleService: Title) {
+              private titleService: Title,
+              private authService: AuthService) {
     this.titleService.setTitle('Login');
   }
 
   login(): void {
-    if(this.form.valid) {
+    if (this.form.valid) {
       let user: User = {
         username: this.form.get('username')?.value,
         password: this.form.get('password')?.value,
@@ -51,8 +53,9 @@ export class UserLoginComponent {
 
       this.userRegistrationService.login(user).subscribe({
         next: (response) => {
-          console.log('Login successful', response);
-          this.router.navigate(['/grade-selection']);
+          console.log('Login successful');
+          this.authService.login(response);
+          this.router.navigate(['/mode-selection']);
         },
         error: (error) => {
           console.error('Login failed:', error);
