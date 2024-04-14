@@ -38,7 +38,7 @@ export class UserRegistrationService {
         password: user.password,
         email: user.email,
         grade: user.grade
-      }, {responseType: 'text'}).pipe(
+      }).pipe(
         catchError(this.handleError('register'))
       );
     } else {
