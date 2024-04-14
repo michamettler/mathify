@@ -5,8 +5,13 @@ import org.slf4j.Logger;
 import java.util.Arrays;
 
 /**
- * @param result   the result of the exercise
- * @param exercise the exercise as a string
+ * Represents a maths exercise
+ *
+ * @param result          the result of the exercise
+ *                        (e.g. the sorted array)
+ * @param userResult      the result of the user
+ * @param exercise        the exercise as a string
+ * @param exerciseSubType the sub type of the exercise
  */
 public record MathsExercise(double[] result, double[] userResult, String exercise,
                             ExerciseSubType exerciseSubType) implements Exercise {

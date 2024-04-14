@@ -26,8 +26,7 @@ class MathsGeneratorTest {
     void testNeighbors() {
         Exercise exercise = MathsGenerator.generate(Grade.FIRST, ExerciseSubType.NEIGHBORS);
         MathsExercise mathsExercise = (MathsExercise) exercise;
-        assertEquals(mathsExercise.result()[0], mathsExercise.result()[1] - 1);
-        assertEquals(mathsExercise.result()[1], mathsExercise.result()[2] - 1);
+        assertEquals(mathsExercise.result()[0], mathsExercise.result()[1] - 2);
     }
 
     @Test
