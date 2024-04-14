@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {ExerciseBasicOperationComponent} from "../exercise-basic-operation/exercise-basic-operation.component";
+import {MathExerciseBasicOperationComponent} from "../exercise-basic-operation/math-exercise-basic-operation.component";
 
 @Component({
   selector: 'app-math-exercise-view',
   standalone: true,
   imports: [
-    ExerciseBasicOperationComponent
+    MathExerciseBasicOperationComponent
   ],
   templateUrl: './math-exercise-view.component.html',
   styleUrl: './math-exercise-view.component.scss'

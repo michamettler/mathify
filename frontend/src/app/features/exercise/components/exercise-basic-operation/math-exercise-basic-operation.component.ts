@@ -8,6 +8,8 @@ import {MatInput} from "@angular/material/input";
 import {HeaderComponent} from "../../../../core/components/header/header.component";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {User} from "../../../../../model/user";
+import {MathExerciseService} from "../../services/math-exercise.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-exercise-basic-operation',
@@ -25,29 +27,37 @@ import {User} from "../../../../../model/user";
     HeaderComponent,
     MatProgressBar
   ],
-  templateUrl: './exercise-basic-operation.component.html',
-  styleUrl: './exercise-basic-operation.component.scss'
+  templateUrl: './math-exercise-basic-operation.component.html',
+  styleUrl: './math-exercise-basic-operation.component.scss'
 })
-export class ExerciseBasicOperationComponent implements OnInit {
-  exercise: string = "Calculate 6 * 7";
+export class MathExerciseBasicOperationComponent implements OnInit {
+  exercise: string = '';
   userAnswer = '';
-  solution: string = "42";
-  exerciseType: string = "Multiplication";
+  solution: string = '';
+  exerciseType: string = "addition";
   showSolution: boolean = false;
   showHint: boolean = false;
   hint: string = "Remember to multiply, not add.";
 
-  score: number = 40
-  level: string = 'Basic'
-  @Input() user: User | undefined = undefined;
+  @Input() user: User = { //TODO read from session
+    grade: 'first',
+    username: 'System_Admin',
+    password: 'fg6i7i4bMa',
+    level: 1,
+    experience: 30
+  };
 
-  constructor() {
+  constructor(private mathExerciseService: MathExerciseService, private router: Router) {
   }
 
   ngOnInit(): void {
-
+    this.mathExerciseService.retrieveExercise(this.user, this.exerciseType).subscribe({
+      next: (response) => {
+        this.exercise = response.exercise
+        this.solution = response.solution
+      }
+    });
   }
-
 
   displaySolution(): void {
     this.showSolution = true;
