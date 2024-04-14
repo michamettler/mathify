@@ -50,7 +50,7 @@ public class MathsGenerator {
 
     private static Exercise generateNeighbors(Grade grade) {
         int max = grade.getMax();
-        int a = random.nextInt(max + 1);
+        int a = random.nextInt(1,max + 1);
         double[] result = {a - 1, a + 1};
         return new MathsExercise(result, new double[result.length], "Find the neighbors of " + a + "!", ExerciseSubType.NEIGHBORS);
     }
