@@ -8,11 +8,15 @@ import {
 import {
   UserRegistrationComponent
 } from "./features/registration/components/user-registration/user-registration.component";
+import {
+  MathExerciseViewComponent
+} from "./features/exercise/components/math-exercise-view/math-exercise-view.component";
 
 export const routes: Routes = [
   {path: '', component: UserLoginComponent},
   {path: 'login', component: UserLoginComponent},
   {path: 'registration', component: UserRegistrationComponent},
   {path: 'mode-selection', component: ModeSelectionComponent, canActivate: [AuthGuard]},
-  {path: 'scoreboard', component: ScoreboardOverviewComponent, canActivate: [AuthGuard]}
+  {path: 'scoreboard', component: ScoreboardOverviewComponent, canActivate: [AuthGuard]},
+  {path: 'exercise', component: MathExerciseViewComponent, canActivate: [AuthGuard]}
 ]

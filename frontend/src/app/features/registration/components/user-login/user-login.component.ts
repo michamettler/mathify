@@ -12,6 +12,7 @@ import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
 import {HttpClientModule} from "@angular/common/http";
 import {AuthService} from "../../../../core/services/auth.service";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-user-registration',
@@ -26,7 +27,8 @@ import {AuthService} from "../../../../core/services/auth.service";
     HttpClientModule,
     NgIf,
     MatOption,
-    MatSelect
+    MatSelect,
+    MatButton
   ],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.scss'

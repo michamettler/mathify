@@ -1,9 +1,12 @@
 import {Component} from '@angular/core';
+import {MathExerciseBasicOperationComponent} from "../math-exercise-basic-operation/math-exercise-basic-operation.component";
 
 @Component({
   selector: 'app-math-exercise-view',
   standalone: true,
-  imports: [],
+  imports: [
+    MathExerciseBasicOperationComponent
+  ],
   templateUrl: './math-exercise-view.component.html',
   styleUrl: './math-exercise-view.component.scss'
 })
