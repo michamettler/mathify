@@ -19,11 +19,13 @@ Mathify revolutionizes the way primary students from grade 1 to 6 engage with ma
 ## 🚀 Getting started (Beta-Release)
 1. Clone the repository
 2. Open the project in your desired IDE (IntelliJ, Eclipse or else)
-3. run `gradle build`
-4. run `gradle run`
-4. click login button in separate window
-5. type in name and grade
-6. play and have fun
+3. Open Docker Desktop
+4. Copy self-signed certs to backend/NO_CHECKIN and frontend/NO_CHECKIN
+5. run `docker compose up --build`in your local terminal
+6. Open https://localhost/
+7. click login button in separate window
+8. type in name and grade
+9. play and have fun
 
 ## 🔑 Key Features
 1. Intuitive User Interface: Experience seamless navigation through Mathify's quizzes with a user interface that combines aesthetic appeal with functionality. Designed for ease of use, it ensures learners of young age can interact with the platform without any hassle.
