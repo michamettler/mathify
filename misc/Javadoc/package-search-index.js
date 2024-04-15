@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ch.zhaw.mathify"},{"l":"ch.zhaw.mathify.controller"},{"l":"ch.zhaw.mathify.controller.apicontroller"},{"l":"ch.zhaw.mathify.maths"},{"l":"ch.zhaw.mathify.model"},{"l":"ch.zhaw.mathify.model.exercise"},{"l":"ch.zhaw.mathify.repository"},{"l":"ch.zhaw.mathify.util"}];updateSearchResults();
