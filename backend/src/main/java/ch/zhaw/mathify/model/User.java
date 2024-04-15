@@ -1,5 +1,7 @@
 package ch.zhaw.mathify.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 /**
@@ -7,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
  * Every 100exp, the level will increase by one
  */
 public class User {
+    private static final Logger LOG = LoggerFactory.getLogger(User.class);
     private String username;
     private int level;
     private int experience;
@@ -51,6 +54,7 @@ public class User {
      *            if exp >= 100, level will increase by 1
      */
     public void addExp(int exp) {
+        LOG.debug("Adding {} experience to {}", exp, this.username);
         this.experience += exp;
         if (this.experience >= 100) {
             this.experience -= 100;
@@ -59,6 +63,7 @@ public class User {
     }
 
     private static String createGuid() {
+        LOG.debug("Creating GUID");
         return java.util.UUID.randomUUID().toString();
     }
 
@@ -67,6 +72,7 @@ public class User {
      * @return hashed password
      */
     public static String hashPassword(String password) {
+        LOG.debug("Hashing password");
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
@@ -76,6 +82,7 @@ public class User {
      * @return true if the password matches the hash
      */
     public static boolean verifyPassword(String password, String hash) {
+        LOG.debug("Verifying password");
         return BCrypt.checkpw(password, hash);
     }
 

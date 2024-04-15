@@ -32,6 +32,7 @@ public final class UserRepository implements Repository<User> {
      * @return the singleton instance of the UserRepository
      */
     public static UserRepository getInstance() {
+        LOG.debug("Getting UserRepository instance");
         if (instance == null) {
             instance = new UserRepository();
         }
@@ -43,6 +44,7 @@ public final class UserRepository implements Repository<User> {
      * Destroys the singleton instance of the UserRepository.
      */
     public static void destroy() {
+        LOG.debug("Destroying UserRepository instance");
         instance = null;
     }
 
@@ -50,6 +52,7 @@ public final class UserRepository implements Repository<User> {
      * @param user the user to add
      */
     public void add(User user) {
+        LOG.debug("Adding user: {}", user);
         if (user != null) this.users.add(user);
     }
 
@@ -57,6 +60,7 @@ public final class UserRepository implements Repository<User> {
      * @param user the user to remove
      */
     public void remove(User user) {
+        LOG.debug("Removing user: {}", user);
         if (user != null) this.users.remove(user);
     }
 
@@ -64,6 +68,7 @@ public final class UserRepository implements Repository<User> {
      * Saves the users to the users.json file.
      */
     public void save() {
+        LOG.debug("Saving users to users.json");
         JsonMapper.writeUsersToJson(USERS_JSON_FILE, users);
     }
 
@@ -71,6 +76,7 @@ public final class UserRepository implements Repository<User> {
      * Loads the users from the users.json file.
      */
     public void load() {
+        LOG.debug("Loading users from users.json");
         try {
             if (!USERS_JSON_FILE.exists()) {
                 if (!USERS_JSON_FILE.createNewFile()) {

@@ -99,6 +99,7 @@ public class Router {
     }
 
     private void createUserToken(Context ctx) {
+        LOG.info("Creating user token...");
         Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
         if (credentials.isPresent() && authenticateUser(credentials.get(), ctx)) {
             SecureRandom secureRandom = new SecureRandom();

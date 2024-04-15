@@ -1,6 +1,7 @@
 package ch.zhaw.mathify.model.exercise;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
@@ -12,7 +13,7 @@ import java.util.Arrays;
  * @param exerciseSubType the exercise subtype
  */
 public record ExerciseDto(String result, String userResult, String exercise, String exerciseSubType) {
-    private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(ExerciseDto.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExerciseDto.class);
 
     /**
      * Converts a dto to an exercise

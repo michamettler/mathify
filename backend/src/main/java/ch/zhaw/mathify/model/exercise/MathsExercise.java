@@ -1,6 +1,7 @@
 package ch.zhaw.mathify.model.exercise;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
@@ -15,7 +16,7 @@ import java.util.Arrays;
  */
 public record MathsExercise(double[] result, double[] userResult, String exercise,
                             ExerciseSubType exerciseSubType) implements Exercise {
-    private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(MathsExercise.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MathsExercise.class);
 
     /**
      * Verifies the result of the user

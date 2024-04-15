@@ -1,6 +1,8 @@
 package ch.zhaw.mathify.model;
 
 import ch.zhaw.mathify.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.Queue;
  * This class represents an AVL-tree that stores the user's data in the scoreboard.
  */
 public class Scoreboard {
+    private static final Logger LOG = LoggerFactory.getLogger(Scoreboard.class);
     private ScoreboardNode root;
 
     /**
@@ -32,6 +35,7 @@ public class Scoreboard {
      * @param node The node to be inserted
      */
     public void insert(ScoreboardNode node) {
+        LOG.debug("Inserting {} into the scoreboard", node.username);
         root = insertAt(root, node);
     }
 
@@ -43,6 +47,7 @@ public class Scoreboard {
      * @return The new node
      */
     private ScoreboardNode insertAt(ScoreboardNode currentNode, ScoreboardNode newNode) {
+        LOG.debug("Inserting (at) {} into the scoreboard", newNode.username);
         if (currentNode == null) {
             return new ScoreboardNode(newNode.username, newNode.grade, newNode.level, newNode.experience);
         } else if (newNode.username.equals(currentNode.username)) {
@@ -62,6 +67,7 @@ public class Scoreboard {
      * @return The removed node
      */
     public ScoreboardNode remove(ScoreboardNode node) {
+        LOG.debug("Removing {} from the scoreboard", node.username);
         if (root != null) {
             root = removeAt(root, node);
         }
@@ -76,6 +82,7 @@ public class Scoreboard {
      * @return The removed node
      */
     private ScoreboardNode removeAt(ScoreboardNode currentNode, ScoreboardNode nodeToBeRemoved) {
+        LOG.debug("Removing (at) {} from the scoreboard", nodeToBeRemoved.username);
         if (currentNode == null) {
             return null;
         }
@@ -103,6 +110,7 @@ public class Scoreboard {
      * @return The replacement node
      */
     private ScoreboardNode findReplacement(ScoreboardNode currentNode, ScoreboardNode replacementNode) {
+        LOG.debug("Finding replacement for {}", replacementNode.username);
         if (currentNode.rightScoreboardNode == null) {
             replacementNode.username = currentNode.username;
             replacementNode.grade = currentNode.grade;
@@ -123,6 +131,7 @@ public class Scoreboard {
      * @return The searched node
      */
     public ScoreboardNode search(ScoreboardNode currentNode, ScoreboardNode searchNode) {
+        LOG.debug("Searching for {} in the scoreboard", searchNode.username);
         if (currentNode == null) {
             return null;
         } else if (searchNode.username.equals(currentNode.username)) {
@@ -142,6 +151,7 @@ public class Scoreboard {
      * @param newExperience The new experience
      */
     public void update(ScoreboardNode node, int newLevel, int newExperience) {
+        LOG.debug("Updating {} in the scoreboard", node.username);
         ScoreboardNode nodeToUpdate = search(root, node);
         if (nodeToUpdate != null) {
             remove(node);
@@ -176,6 +186,7 @@ public class Scoreboard {
      * @return The size of the Scoreboard
      */
     private int calculateSize(ScoreboardNode node) {
+        LOG.debug("Calculating size of the scoreboard");
         if (node == null) {
             return 0;
         }
@@ -198,6 +209,7 @@ public class Scoreboard {
      * @return The height of the Scoreboard
      */
     private int calculateHeight(ScoreboardNode node) {
+        LOG.debug("Calculating height of the scoreboard");
         if (node == null) {
             return 0;
         }
@@ -211,6 +223,7 @@ public class Scoreboard {
      * @return The list of nodes in in-order
      */
     public List<ScoreboardNode> inOrderTraversal(ScoreboardNode node) {
+        LOG.debug("Traversing the scoreboard in in-order");
         List<ScoreboardNode> inOrderList = new LinkedList<>();
 
         if (node != null) {
@@ -232,6 +245,7 @@ public class Scoreboard {
      * @return The list of nodes in pre-order
      */
     public List<ScoreboardNode> preOrderTraversal(ScoreboardNode node) {
+        LOG.debug("Traversing the scoreboard in pre-order");
         List<ScoreboardNode> preOrderList = new LinkedList<>();
 
         if (node != null) {
@@ -253,6 +267,7 @@ public class Scoreboard {
      * @return The list of nodes in post-order
      */
     public List<ScoreboardNode> postOrderTraversal(ScoreboardNode node) {
+        LOG.debug("Traversing the scoreboard in post-order");
         List<ScoreboardNode> postOrderList = new LinkedList<>();
 
         if (node != null) {
@@ -274,6 +289,7 @@ public class Scoreboard {
      * @return The list of nodes in level-order
      */
     public List<ScoreboardNode> levelOrderTraversal(ScoreboardNode node) {
+        LOG.debug("Traversing the scoreboard in level-order");
         List<ScoreboardNode> levelOrderList = new LinkedList<>();
         Queue<ScoreboardNode> queue = new LinkedList<>();
         if (node != null) {
@@ -296,6 +312,7 @@ public class Scoreboard {
      * Clears the Scoreboard
      */
     public void clear() {
+        LOG.debug("Clearing the scoreboard");
         root = null;
     }
 
