@@ -1,0 +1,8 @@
+ch.zhaw.mathify
+ch.zhaw.mathify.controller
+ch.zhaw.mathify.controller.apicontroller
+ch.zhaw.mathify.maths
+ch.zhaw.mathify.model
+ch.zhaw.mathify.model.exercise
+ch.zhaw.mathify.repository
+ch.zhaw.mathify.util
