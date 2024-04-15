@@ -4,6 +4,8 @@ import ch.zhaw.mathify.model.Role;
 import io.javalin.http.Context;
 import io.javalin.http.Header;
 import io.javalin.security.RouteRole;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
@@ -11,6 +13,7 @@ import java.util.Set;
  * This class handles the authentication process for users to access endpoints
  */
 public class AccessManager {
+    private static final Logger LOG = LoggerFactory.getLogger(AccessManager.class);
     private AccessManager() {
     }
 
@@ -29,6 +32,7 @@ public class AccessManager {
             ctx.status(200);
             return;
         }
+        LOG.warn("Unauthorized access to endpoint: {}", ctx.path());
         ctx.header(Header.WWW_AUTHENTICATE, "Basic");
         ctx.status(401);
     }
