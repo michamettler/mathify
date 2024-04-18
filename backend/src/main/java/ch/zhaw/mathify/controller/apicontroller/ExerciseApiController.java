@@ -33,11 +33,15 @@ public class ExerciseApiController {
 
                 ctx.json(ExerciseGenerator.generate(grade, exerciseSubType).toDto());
             } catch (IllegalArgumentException e) {
-                LOG.error("Invalid query parameters - Exercise sub type or grade not found");
+                String responseMessage = "Invalid query parameters - Exercise sub type or grade not found";
+                LOG.error(responseMessage);
+                ctx.result(responseMessage);
                 ctx.status(400);
             }
         } else {
-            LOG.error("Missing query parameters");
+            String responseMessage = "Missing query parameters";
+            LOG.error(responseMessage);
+            ctx.result(responseMessage);
             ctx.status(400);
         }
     }
@@ -51,7 +55,9 @@ public class ExerciseApiController {
         LOG.info("Handling result...");
         ExerciseDto exerciseDto = ctx.bodyAsClass(ExerciseDto.class);
         if (exerciseDto == null) {
-            LOG.error("Invalid request body");
+            String responseMessage = "Invalid request body";
+            LOG.error(responseMessage);
+            ctx.result(responseMessage);
             ctx.status(400);
             return;
         }
