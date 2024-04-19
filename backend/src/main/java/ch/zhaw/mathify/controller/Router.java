@@ -38,6 +38,8 @@ public class Router {
     private final Scoreboard scoreboard = new Scoreboard();
     private final UserApiController userApiController = new UserApiController();
     private final ExerciseApiController exerciseApiController = new ExerciseApiController();
+    private final AuthenticationHandler authenticator = new AuthenticationHandler();
+    private final AuthorizationHandler authorizator = new AuthorizationHandler();
     private final UserRepository userRepository = UserRepository.getInstance();
     private Javalin app;
 
@@ -46,7 +48,6 @@ public class Router {
      */
     public void startApplication() {
         Runtime.getRuntime().addShutdownHook(new Thread(this::closeApplication));
-
         Optional<SslPlugin> sslPluginOptional = doSslPluginConfig();
         app = Javalin.create(config -> {
             sslPluginOptional.ifPresent(config::registerPlugin);
