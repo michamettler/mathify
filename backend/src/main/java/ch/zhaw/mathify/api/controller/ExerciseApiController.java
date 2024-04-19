@@ -1,4 +1,4 @@
-package ch.zhaw.mathify.controller.apicontroller;
+package ch.zhaw.mathify.api.controller;
 
 import ch.zhaw.mathify.maths.ExerciseGenerator;
 import ch.zhaw.mathify.model.Grade;

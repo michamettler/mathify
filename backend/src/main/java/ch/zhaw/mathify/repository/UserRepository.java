@@ -1,8 +1,9 @@
 package ch.zhaw.mathify.repository;
 
-import ch.zhaw.mathify.controller.apicontroller.UserApiController;
+import ch.zhaw.mathify.api.controller.UserApiController;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.util.JsonMapper;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -97,5 +99,16 @@ public final class UserRepository implements Repository<User> {
      */
     public List<User> get() {
         return Collections.unmodifiableList(users);
+    }
+
+    /**
+     * @param username the name of the user to get
+     * @return the user with the given name
+     *
+     * @throws NoSuchElementException if the user with the given name does not exist
+     */
+    @NotNull
+    public User getByUserName(String username) throws NoSuchElementException {
+        return users.stream().filter(u -> u.getUsername().equals(username)).findFirst().orElseThrow();
     }
 }

@@ -1,4 +1,4 @@
-package ch.zhaw.mathify.controller;
+package ch.zhaw.mathify.api.security;
 
 import ch.zhaw.mathify.model.Role;
 import io.javalin.http.Context;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 /**
  * This class tests the AccessManager class
  */
-class AccessManagerTest {
+class AuthorizationHandlerTest {
     private final Context ctx = Mockito.mock(Context.class);
     private final BasicAuthCredentials credentials = Mockito.mock(BasicAuthCredentials.class);
     @Test
@@ -24,7 +24,7 @@ class AccessManagerTest {
         when(ctx.attribute("role")).thenReturn(Role.USER);
         when(ctx.basicAuthCredentials()).thenReturn(credentials);
 
-        AccessManager.validateEndpointAccess(ctx);
+        AuthorizationHandler.validateEndpointAccess(ctx);
 
         verify(ctx, times(1)).status(200);
         verify(ctx, never()).status(401);
@@ -38,7 +38,7 @@ class AccessManagerTest {
         when(ctx.basicAuthCredentials()).thenReturn(credentials);
 
         try {
-            AccessManager.validateEndpointAccess(ctx);
+            AuthorizationHandler.validateEndpointAccess(ctx);
         } catch (UnauthorizedResponse e) {
             verify(ctx, never()).status(200);
             verify(ctx, times(1)).status(401);

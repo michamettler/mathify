@@ -1,6 +1,6 @@
-package ch.zhaw.mathify.controller;
+package ch.zhaw.mathify.api.controller;
 
-import ch.zhaw.mathify.controller.apicontroller.ExerciseApiController;
+import ch.zhaw.mathify.api.controller.ExerciseApiController;
 import ch.zhaw.mathify.model.exercise.ExerciseDto;
 import io.javalin.http.Context;
 import org.junit.jupiter.api.BeforeEach;
