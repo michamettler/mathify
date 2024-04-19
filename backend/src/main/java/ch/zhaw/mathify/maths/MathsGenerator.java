@@ -51,9 +51,10 @@ public class MathsGenerator {
         int b = random.nextInt(max + 1);
         int c = random.nextInt(max + 1);
         double[] result = {a, b, c};
+        double[] calculationValues = {a, b, c};
         String arrayUnsorted = Arrays.toString(result);
         Arrays.sort(result);
-        return new MathsExercise(result, new double[result.length], arrayUnsorted, ExerciseSubType.SORTING);
+        return new MathsExercise(result, new double[result.length], arrayUnsorted, calculationValues, ExerciseSubType.SORTING);
     }
 
     private static Exercise generateNeighbors(Grade grade) {
@@ -61,7 +62,8 @@ public class MathsGenerator {
         int max = grade.getMax();
         int a = random.nextInt(1, max + 1);
         double[] result = {a - 1, a + 1};
-        return new MathsExercise(result, new double[result.length], "Find the neighbors of " + a + "!", ExerciseSubType.NEIGHBORS);
+        double[] calculationValues = {a};
+        return new MathsExercise(result, new double[result.length], "Find the neighbors of " + a + "!", calculationValues, ExerciseSubType.NEIGHBORS);
     }
 
     private static Exercise generateComparison(Grade grade) {
@@ -74,7 +76,8 @@ public class MathsGenerator {
             c = random.nextInt(max + 1);
         } while (a == b || a == c || b == c);
         double[] result = {Math.max(a, Math.max(b, c))};
-        return new MathsExercise(result, new double[result.length], "Find the biggest number in the list: " + a + ", " + b + ", " + c, ExerciseSubType.COMPARISON);
+        double[] calculationValues = {a, b, c};
+        return new MathsExercise(result, new double[result.length], "Find the biggest number in the list: " + a + ", " + b + ", " + c, calculationValues, ExerciseSubType.COMPARISON);
     }
 
     private static Exercise generateNumberCompletion(Grade grade) {
@@ -86,7 +89,8 @@ public class MathsGenerator {
             b = random.nextInt(max + 1);
         } while (b <= a);
         double[] result = {b - a};
-        return new MathsExercise(result, new double[result.length], "What number do you add to " + a + " to make " + b + "?", ExerciseSubType.NUMBERCOMPLETION);
+        double[] calculationValues = {a, b};
+        return new MathsExercise(result, new double[result.length], "What number do you add to " + a + " to make " + b + "?", calculationValues, ExerciseSubType.NUMBERCOMPLETION);
     }
 
     private static Exercise generateTensComparison() {
@@ -97,7 +101,8 @@ public class MathsGenerator {
             b = random.nextInt(9) * 10 + 10;
         } while (b == a);
         double[] result = {Math.max(a, b)};
-        return new MathsExercise(result, new double[result.length], "Which tens number is bigger: " + a + " or " + b + "?", ExerciseSubType.TENSCOMPARISON);
+        double[] calculationValues = {a, b};
+        return new MathsExercise(result, new double[result.length], "Which tens number is bigger: " + a + " or " + b + "?", calculationValues, ExerciseSubType.TENSCOMPARISON);
     }
 
     private static Exercise generateDivision(Grade grade) {
@@ -107,7 +112,8 @@ public class MathsGenerator {
         int a = random.nextInt(max + 1);
         int b = getRandomFactor(a);
         double[] result = {(double) a / b};
-        return new MathsExercise(result, new double[result.length], a + " / " + b, ExerciseSubType.DIVISION);
+        double[] calculationValues = {a, b};
+        return new MathsExercise(result, new double[result.length], a + " / " + b, calculationValues, ExerciseSubType.DIVISION);
     }
 
     private static Exercise generateMultiplication(Grade grade) {
@@ -117,7 +123,8 @@ public class MathsGenerator {
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max + 1);
         double[] result = {a * b};
-        return new MathsExercise(result, new double[result.length], a + " * " + b, ExerciseSubType.MULTIPLICATION);
+        double[] calculationValues = {a, b};
+        return new MathsExercise(result, new double[result.length], a + " * " + b, calculationValues, ExerciseSubType.MULTIPLICATION);
     }
 
     private static Exercise generateSubtraction(Grade grade) {
@@ -126,7 +133,8 @@ public class MathsGenerator {
         int a = random.nextInt(max + 1);
         int b = random.nextInt(a + 1);
         double[] result = {a - b};
-        return new MathsExercise(result, new double[result.length], a + " - " + b, ExerciseSubType.SUBTRACTION);
+        double[] calculationValues = {a, b};
+        return new MathsExercise(result, new double[result.length], a + " - " + b, calculationValues, ExerciseSubType.SUBTRACTION);
     }
 
     private static Exercise generateAddition(Grade grade) {
@@ -135,7 +143,8 @@ public class MathsGenerator {
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max - a + 1);
         double[] result = {a + b};
-        return new MathsExercise(result, new double[result.length], a + " + " + b, ExerciseSubType.ADDITION);
+        double[] calculationValues = {a, b};
+        return new MathsExercise(result, new double[result.length], a + " + " + b, calculationValues, ExerciseSubType.ADDITION);
     }
 
     private static Exercise generateDoubling(Grade grade) {
@@ -143,7 +152,8 @@ public class MathsGenerator {
         int max = grade.getMax() / 2;
         int a = random.nextInt(max + 1) * 2;
         double[] result = {a};
-        return new MathsExercise(result, new double[result.length], "Double the following number: " + (a / 2), ExerciseSubType.DOUBLING);
+        double[] calculationValues = {a};
+        return new MathsExercise(result, new double[result.length], "Double the following number: " + (a / 2), calculationValues, ExerciseSubType.DOUBLING);
     }
 
     private static Exercise generateHalving(Grade grade) {
@@ -154,7 +164,8 @@ public class MathsGenerator {
             a = random.nextInt(max + 1) / 2;
         } while (a % 2 != 0);
         double[] result = {a};
-        return new MathsExercise(result, new double[result.length], "Halve the following number: " + (a * 2), ExerciseSubType.HALVING);
+        double[] calculationValues = {a};
+        return new MathsExercise(result, new double[result.length], "Halve the following number: " + (a * 2), calculationValues, ExerciseSubType.HALVING);
     }
 
     private static Exercise generateThreeStepAddition(Grade grade) {
@@ -167,7 +178,8 @@ public class MathsGenerator {
             c = random.nextInt(max + 1);
         } while (a + b + c > max);
         double[] result = {a + b + c};
-        return new MathsExercise(result, new double[result.length], a + " + " + b + " + " + c, ExerciseSubType.THREESTEPADDITION);
+        double[] calculationValues = {a, b, c};
+        return new MathsExercise(result, new double[result.length], a + " + " + b + " + " + c, calculationValues, ExerciseSubType.THREESTEPADDITION);
     }
 
     private static Exercise generateThreeStepSubtraction(Grade grade) {
@@ -180,7 +192,8 @@ public class MathsGenerator {
             c = random.nextInt(max + 1);
         } while (a - b - c < 0);
         double[] result = {a - b - c};
-        return new MathsExercise(result, new double[result.length], a + " - " + b + " - " + c, ExerciseSubType.THREESTEPSUBTRACTION);
+        double[] calculationValues = {a, b, c};
+        return new MathsExercise(result, new double[result.length], a + " - " + b + " - " + c, calculationValues, ExerciseSubType.THREESTEPSUBTRACTION);
     }
 
     private static Exercise generateMultiplicationTable(Grade grade) {
@@ -188,10 +201,11 @@ public class MathsGenerator {
         int max = grade.getMax();
         int a = random.nextInt(1, max + 1);
         double[] result = new double[10];
+        double[] calculationValues = {a};
         for (int i = 0; i < result.length; i++) {
             result[i] = a * (i + 1);
         }
-        return new MathsExercise(result, new double[result.length], "Generate the multiplication table for " + a, ExerciseSubType.MULTIPLICATIONTABLE);
+        return new MathsExercise(result, new double[result.length], "Generate the multiplication table for " + a, calculationValues, ExerciseSubType.MULTIPLICATIONTABLE);
     }
 
     private static int getRandomFactor(int num) {

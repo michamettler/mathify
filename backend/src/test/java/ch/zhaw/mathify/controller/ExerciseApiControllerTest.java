@@ -28,6 +28,7 @@ class ExerciseApiControllerTest {
                                 "1",
                                 "1",
                                 "exercise",
+                                "1",
                                 "addition"
                         )
                 );
@@ -50,6 +51,7 @@ class ExerciseApiControllerTest {
                                 "1",
                                 "2",
                                 "exercise",
+                                "1",
                                 "addition"
                         )
                 );

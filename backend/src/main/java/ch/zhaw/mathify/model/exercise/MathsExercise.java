@@ -15,7 +15,7 @@ import java.util.Arrays;
  * @param exerciseSubType the subtype of the exercise
  */
 public record MathsExercise(double[] result, double[] userResult, String exercise,
-                            ExerciseSubType exerciseSubType) implements Exercise {
+                            double[] calculationValues, ExerciseSubType exerciseSubType) implements Exercise {
     private static final Logger LOG = LoggerFactory.getLogger(MathsExercise.class);
 
     /**
@@ -36,7 +36,7 @@ public record MathsExercise(double[] result, double[] userResult, String exercis
     @Override
     public ExerciseDto toDto() {
         LOG.info("Converting exercise to dto...");
-        return new ExerciseDto(Arrays.toString(result), Arrays.toString(userResult), exercise, exerciseSubType.toString());
+        return new ExerciseDto(Arrays.toString(result), Arrays.toString(userResult), exercise, Arrays.toString(calculationValues), exerciseSubType.toString());
     }
 
     @Override
