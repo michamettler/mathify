@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @param result          the result of the exercise
  * @param exerciseSubType the exercise subtype
  */
-public record ExerciseDto(String result, String userResult, String exercise, String exerciseSubType) {
+public record ExerciseDto(String result, String userResult, String exercise, String calculationValues, String exerciseSubType) {
     private static final Logger LOG = LoggerFactory.getLogger(ExerciseDto.class);
 
     /**
@@ -28,6 +28,7 @@ public record ExerciseDto(String result, String userResult, String exercise, Str
                     Arrays.stream(this.result().split(",")).mapToDouble(Double::parseDouble).toArray(),
                     Arrays.stream(this.userResult.split(",")).mapToDouble(Double::parseDouble).toArray(),
                     this.exercise(),
+                    Arrays.stream(this.calculationValues().split(",")).mapToDouble(Double::parseDouble).toArray(),
                     ExerciseSubType.valueOfIgnoreCase(this.exerciseSubType())
             );
         } catch (IllegalArgumentException e) {

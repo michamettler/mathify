@@ -26,13 +26,22 @@ public class ExerciseApiController {
         Optional<String> gradeOptional = Optional.ofNullable(ctx.queryParam("grade"));
 
         if (exerciseSubTypeOptional.isPresent() && gradeOptional.isPresent()) {
-            LOG.info("Generating exercise with exerciseSubType: {} and grade: {}", exerciseSubTypeOptional.get(), gradeOptional.get());
-            ExerciseSubType exerciseSubType = ExerciseSubType.valueOfIgnoreCase(exerciseSubTypeOptional.get());
-            Grade grade = Grade.valueOfIgnoreCase(gradeOptional.get());
+            try {
+                LOG.info("Generating exercise with exerciseSubType: {} and grade: {}", exerciseSubTypeOptional.get(), gradeOptional.get());
+                ExerciseSubType exerciseSubType = ExerciseSubType.valueOfIgnoreCase(exerciseSubTypeOptional.get());
+                Grade grade = Grade.valueOfIgnoreCase(gradeOptional.get());
 
-            ctx.json(ExerciseGenerator.generate(grade, exerciseSubType).toDto());
+                ctx.json(ExerciseGenerator.generate(grade, exerciseSubType).toDto());
+            } catch (IllegalArgumentException e) {
+                String responseMessage = "Invalid query parameters - Exercise sub type or grade not found";
+                LOG.error(responseMessage);
+                ctx.result(responseMessage);
+                ctx.status(400);
+            }
         } else {
-            LOG.error("Missing query parameters");
+            String responseMessage = "Missing query parameters";
+            LOG.error(responseMessage);
+            ctx.result(responseMessage);
             ctx.status(400);
         }
     }
@@ -46,7 +55,9 @@ public class ExerciseApiController {
         LOG.info("Handling result...");
         ExerciseDto exerciseDto = ctx.bodyAsClass(ExerciseDto.class);
         if (exerciseDto == null) {
-            LOG.error("Invalid request body");
+            String responseMessage = "Invalid request body";
+            LOG.error(responseMessage);
+            ctx.result(responseMessage);
             ctx.status(400);
             return;
         }
