@@ -4,12 +4,16 @@ import ch.zhaw.mathify.model.Role;
 import ch.zhaw.mathify.model.User;
 import io.javalin.http.Context;
 import io.javalin.http.Header;
+import io.javalin.http.UnauthorizedResponse;
 import io.javalin.security.RouteRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
+/**
+ * This class is responsible for handling the authorization of the user
+ */
 public final class AuthorizationHandler {
     private static final Logger LOG = LoggerFactory.getLogger(AuthorizationHandler.class);
     private static final SessionHandler sessionHandler = SessionHandler.getInstance();
@@ -38,13 +42,13 @@ public final class AuthorizationHandler {
                 return;
             }
 
-            LOG.warn("Unauthorized access to endpoint: {}", ctx.path());
-            ctx.header(Header.WWW_AUTHENTICATE, "Basic");
-            ctx.status(401);
+
         } catch (Exception e) {
-            LOG.warn("Unauthorized access to endpoint: {}", ctx.path());
-            ctx.header(Header.WWW_AUTHENTICATE, "Basic");
-            ctx.status(401);
+            LOG.error("Could not get user from context: {}", e.getMessage());
         }
+        LOG.warn("Unauthorized access to endpoint: {}", ctx.path());
+        ctx.header(Header.WWW_AUTHENTICATE, "Basic");
+        ctx.status(401);
+        throw new UnauthorizedResponse();
     }
 }

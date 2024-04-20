@@ -79,7 +79,7 @@ public class Router {
             post("/verify", exerciseApiController::handleResult, Role.USER, Role.ADMIN);
 
         });
-        get("/login", AuthenticationHandler::login);
+        get("/login", AuthenticationHandler::login, Role.ANONYMOUS);
         get("/scoreboard", ctx -> {
             ctx.json(scoreboard.inOrderTraversal(scoreboard.getRoot()));
             LOG.info("Scoreboard page was accessed");

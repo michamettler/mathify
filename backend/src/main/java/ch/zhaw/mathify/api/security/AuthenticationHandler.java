@@ -38,7 +38,7 @@ public final class AuthenticationHandler {
         LOG.info("Trying to login user...");
         BasicAuthCredentials credentials = ctx.basicAuthCredentials();
 
-        if (credentials == null) {
+        if (credentials == null || credentials.getUsername().isEmpty() || credentials.getPassword().isEmpty()) {
             String message = "Credentials are empty";
             LOG.info(message);
             ctx.result(message);
@@ -46,8 +46,9 @@ public final class AuthenticationHandler {
             return;
         }
 
-        if (!credentials.getUsername().isEmpty() && !credentials.getPassword().isEmpty()) {
-            LOG.info("Username and password were provided. Authenticating user...");
+
+        LOG.info("Username and password were provided. Authenticating user...");
+        try {
             if (authenticate(credentials)) {
                 LOG.info("User authenticated successfully");
 
@@ -58,11 +59,19 @@ public final class AuthenticationHandler {
                 ctx.status(401);
 
             }
+        } catch (NoSuchElementException e) {
+            LOG.error("User does not exist", e);
+            ctx.result("Invalid credentials - User does not exist");
+            ctx.status(401);
+        } catch (Exception e) {
+            LOG.error("Error while authenticating user", e);
+            ctx.status(500);
         }
     }
 
     /**
      * Creates a user token and adds it to the user session
+     *
      * @param ctx The context of the request
      */
     private static void createTokenAndStoreToSession(Context ctx) {
@@ -86,16 +95,19 @@ public final class AuthenticationHandler {
 
     /**
      * Authenticates the user
+     *
      * @param credentials The credentials to authenticate
      * @return true if the user is authenticated, false otherwise
+     * @throws NoSuchElementException if the user does not exist
      */
-    private static boolean authenticate(BasicAuthCredentials credentials) {
+    private static boolean authenticate(BasicAuthCredentials credentials) throws NoSuchElementException {
         User user = userRepository.getByUserName(credentials.getUsername());
         return User.verifyPassword(credentials.getPassword(), user.getPassword());
     }
 
     /**
      * Creates a new token for the user with a length of 24 bytes
+     *
      * @return a new token
      */
     @NotNull
