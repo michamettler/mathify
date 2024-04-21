@@ -1,8 +1,11 @@
 package ch.zhaw.mathify.model;
 
+import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import java.util.HashMap;
 
 /**
  * User model with username, level and experience
@@ -13,6 +16,7 @@ public class User {
     private String username;
     private int level;
     private int experience;
+    private final HashMap<ExerciseSubType, Integer> technicalScore;
     private String guid;
     private String password;
     private String email;
@@ -35,6 +39,7 @@ public class User {
         this.grade = grade;
         this.guid = createGuid();
         this.level = 1;
+        this.technicalScore = initializeTechnicalScore();
         this.role = Role.USER;
     }
 
@@ -45,6 +50,7 @@ public class User {
         this.guid = createGuid();
         this.level = 1;
         this.experience = 0;
+        this.technicalScore = initializeTechnicalScore();
         this.role = Role.USER;
         this.grade = Grade.NONE;
     }
@@ -84,6 +90,14 @@ public class User {
     public static boolean verifyPassword(String password, String hash) {
         LOG.debug("Verifying password");
         return BCrypt.checkpw(password, hash);
+    }
+
+    private HashMap<ExerciseSubType, Integer> initializeTechnicalScore() {
+        HashMap<ExerciseSubType, Integer> technicalScore = new HashMap<>();
+        for (ExerciseSubType subType : ExerciseSubType.values()) {
+            technicalScore.put(subType, 1);
+        }
+        return technicalScore;
     }
 
     public String getUsername() {
@@ -148,5 +162,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public HashMap<ExerciseSubType, Integer> getTechnicalScore() {
+        return technicalScore;
+    }
+
+    public void setTechnicalScore(ExerciseSubType subType, int score) {
+        technicalScore.put(subType, score);
     }
 }
