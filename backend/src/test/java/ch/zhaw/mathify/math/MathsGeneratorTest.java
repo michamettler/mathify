@@ -15,6 +15,26 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
  */
 class MathsGeneratorTest {
     @Test
+    void testRoundingTen() {
+        Exercise exercise = MathsGenerator.generate(Grade.THIRD, ExerciseSubType.ROUNDING_TEN);
+        assertInstanceOf(MathsExercise.class, exercise);
+        MathsExercise mathsExercise = (MathsExercise) exercise;
+        double[] values = mathsExercise.calculationValues();
+        double a = values[0];
+        double roundedNumber = Math.round(a / 10.0) * 10.0;
+        assertEquals(roundedNumber, mathsExercise.result()[0]);
+    }
+
+    @Test
+    void testRoundingTenError(){
+        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FIRST, ExerciseSubType.ROUNDING_TEN));
+        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.SECOND, ExerciseSubType.ROUNDING_TEN));
+        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FOURTH, ExerciseSubType.ROUNDING_TEN));
+        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FIFTH, ExerciseSubType.ROUNDING_TEN));
+        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.SIXTH, ExerciseSubType.ROUNDING_TEN));
+    }
+
+    @Test
     void testSorting() {
         Exercise exercise = MathsGenerator.generate(Grade.FIRST, ExerciseSubType.SORTING);
         MathsExercise mathsExercise = (MathsExercise) exercise;

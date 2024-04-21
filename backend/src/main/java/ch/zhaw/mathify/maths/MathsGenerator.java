@@ -40,8 +40,24 @@ public class MathsGenerator {
             case THREESTEPADDITION -> generateThreeStepAddition(grade);
             case THREESTEPSUBTRACTION -> generateThreeStepSubtraction(grade);
             case MULTIPLICATIONTABLE -> generateMultiplicationTable(grade);
+            case ROUNDING_TEN -> generateRounding(grade);
             default -> throw new IllegalArgumentException("Sub type " + subType + " is not supported!");
         };
+    }
+
+    private static Exercise generateRounding(Grade grade) {
+        LOG.info("Generating rounding exercise");
+
+        if(grade != Grade.THIRD) {
+            LOG.error("Rounding is only supported for grade three");
+            throw new IllegalArgumentException("Rounding is only supported for grade three");
+        }
+
+        int max = grade.getMax();
+        int a = random.nextInt(max + 1);
+        double roundedNumber = Math.round(a / 10.0) * 10.0;
+        double[] result = {roundedNumber};
+        return new MathsExercise(result, new double[result.length], "Round the following number to the next ten: " + a, result, ExerciseSubType.ROUNDING_TEN);
     }
 
     private static Exercise generateSorting(Grade grade) {
