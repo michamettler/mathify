@@ -82,7 +82,7 @@ public final class AuthenticationHandler {
 
             String token = createToken();
             sessionHandler.createSession(user, token);
-            ctx.sessionAttribute("token", token);
+            ctx.res().addHeader("Authorization", token);
 
             ctx.status(200);
 
