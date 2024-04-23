@@ -10,7 +10,7 @@ import {User} from "../../../../../model/user";
 import {NgIf} from "@angular/common";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule, HttpResponse} from "@angular/common/http";
 import {AuthService} from "../../../../core/services/auth.service";
 import {MatButton} from "@angular/material/button";
 
@@ -54,20 +54,29 @@ export class UserLoginComponent {
       }
 
       this.userRegistrationService.login(user).subscribe({
-        next: (response) => {
-          console.log('Login successful');
-          this.authService.login(response);
-          this.router.navigate(['/mode-selection']);
+        next: (response: HttpResponse<any>) => {
+          const token = response.headers.get('Authorization');
+          if (token !== null) {
+            console.log('Login successful')
+            this.authService.login(token);
+            this.router.navigate(['/mode-selection']);
+          } else {
+            this.handleError('');
+          }
         },
         error: (error) => {
-          console.error('Login failed:', error);
-          this._snackBar.open("Login failed! Please try again.\n" + error, "dismiss", {
-            verticalPosition: 'top',
-            horizontalPosition: 'end'
-          });
+          this.handleError(error);
         }
       });
     }
+  }
+
+  handleError(error: string) {
+    console.error('Login failed:', error);
+    this._snackBar.open("Login failed! Please try again.\n" + error, "dismiss", {
+      verticalPosition: 'top',
+      horizontalPosition: 'end'
+    });
   }
 
   register(): void {
