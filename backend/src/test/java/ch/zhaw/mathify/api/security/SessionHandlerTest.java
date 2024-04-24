@@ -3,8 +3,6 @@ package ch.zhaw.mathify.api.security;
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
 import io.javalin.http.Context;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +48,7 @@ class SessionHandlerTest {
     @Test
     void testGetUserFromContext(){
         Context ctx = mock(Context.class);
-        when(ctx.sessionAttribute("token")).thenReturn(token);
+        when(ctx.header("Authorization")).thenReturn(token);
         assertEquals(sessionHandler.getUserFromContext(ctx), user);
     }
 }

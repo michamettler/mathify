@@ -29,7 +29,7 @@ class AuthorizationHandlerTest {
         when(ctx.routeRoles()).thenReturn(Collections.singleton(Role.USER));
         when(ctx.attribute("role")).thenReturn(Role.USER);
         when(ctx.basicAuthCredentials()).thenReturn(credentials);
-        when(ctx.sessionAttribute("token")).thenReturn(token);
+        when(ctx.header("Authorization")).thenReturn(token);
 
         AuthorizationHandler.validateEndpointAccess(ctx);
 

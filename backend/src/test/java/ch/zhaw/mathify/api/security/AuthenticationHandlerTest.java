@@ -2,6 +2,7 @@ package ch.zhaw.mathify.api.security;
 
 import io.javalin.http.Context;
 import io.javalin.security.BasicAuthCredentials;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -22,6 +23,7 @@ class AuthenticationHandlerTest {
     @Test
     void login_WithValidCredentials_ShouldAuthenticateSuccessfully() {
         AuthenticationHandler.login(ctx);
+        when(ctx.res()).thenReturn(mock(HttpServletResponseWrapper.class));
 
         verify(ctx, times(1)).status(200);
     }

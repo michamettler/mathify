@@ -114,7 +114,7 @@ public final class  SessionHandler {
      * @throws NoSuchElementException if the token is not found in the session
      */
     public User getUserFromContext(Context ctx) throws NoSuchElementException {
-        String token = ctx.sessionAttribute("token");
+        String token = ctx.header("Authorization");
 
         if (token == null) {
             throw new NoSuchElementException("No token found in session");

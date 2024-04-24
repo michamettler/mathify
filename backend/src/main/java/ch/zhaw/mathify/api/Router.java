@@ -97,7 +97,7 @@ public class Router {
 
     private void handleAuthenticationAndAuthorization(JavalinDefaultRouting router) {
         router.beforeMatched(ctx -> {
-            String token = ctx.sessionAttribute("token");
+            String token = ctx.sessionAttribute("Authorization");
 
             if(token == null) {
                 ctx.attribute("role", Role.ANONYMOUS);

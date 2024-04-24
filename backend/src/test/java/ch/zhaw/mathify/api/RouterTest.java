@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for the Router class.
  */
 public class RouterTest {
-    private String sessionId;
+    private String auth;
 
     @BeforeAll
     public static void startApplication() {
@@ -45,14 +45,14 @@ public class RouterTest {
 
     @BeforeEach
     public void setup() {
-        sessionId = given().auth().preemptive().basic("zehndjon", "jonas").get("/login").sessionId();
+        auth = given().auth().preemptive().basic("zehndjon", "jonas").get("/login").header("Authorization");
     }
 
     @Test
     void testWelcomePage() {
         String responseBody =
                 given()
-                        .sessionId(sessionId)
+                        .header("Authorization", auth)
                         .when()
                         .get("/welcome")
                         .then()
@@ -73,7 +73,7 @@ public class RouterTest {
             }
             JsonNode fetchedUsers =
                     given()
-                            .sessionId(sessionId)
+                            .header("Authorization", auth)
                             .when()
                             .get("/users")
                             .then()
@@ -94,7 +94,7 @@ public class RouterTest {
         String guid = "5e6a7b8c-7543-454c-b28b-2761c07fb5b7";
         User fetchedUser =
                 given()
-                        .sessionId(sessionId)
+                        .header("Authorization", auth)
                         .when()
                         .get("/users/{guid}", guid)
                         .then()
@@ -108,7 +108,7 @@ public class RouterTest {
     void testSubtypeReturn() {
         String[] fetchedSubtypes =
                 given()
-                        .sessionId(sessionId)
+                        .header("Authorization", auth)
                         .when()
                         .get("/exercise/subtypes")
                         .then()
