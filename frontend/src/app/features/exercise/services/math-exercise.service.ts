@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {User} from "../../../../model/user";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {catchError, Observable, throwError} from "rxjs";
 
 @Injectable({
@@ -13,20 +12,14 @@ export class MathExerciseService {
   constructor(private http: HttpClient) {
   }
 
-  retrieveExercise(user: User, subtype: string): Observable<any> {
+  retrieveExercise(): Observable<any> {
     let url = `${this.apiUrl}exercise`;
 
     const headers = new HttpHeaders({
-      'Authorization': `Basic ${btoa(user.username + ':' + user.password)}`
+      'Authorization': localStorage.getItem('token')?.toString() + '',
+      'Content-Type': 'application/json'
     });
-
-    const queryParameters = {
-      exerciseSubType: subtype,
-      grade: user.grade ? user.grade :''
-    };
-    const httpParams = new HttpParams({fromObject: queryParameters});
-
-    return this.http.get(url, {headers: headers, params: httpParams})
+    return this.http.get(url, {headers: headers})
       .pipe(
         catchError(this.handleError('login'))
       );

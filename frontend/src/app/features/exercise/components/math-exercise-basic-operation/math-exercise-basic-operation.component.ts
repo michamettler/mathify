@@ -51,7 +51,7 @@ export class MathExerciseBasicOperationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mathExerciseService.retrieveExercise(this.user, this.exerciseType).subscribe({
+    this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
         this.exercise = response.exercise
         this.solution = response.result
