@@ -1,6 +1,6 @@
 namespace MathExerciseSubType {
   export enum SingleResultOperation {
-    ADDITION = 'UP',
+    ADDITION = 'ADDITION',
     DIVISION = 'DIVISION',
     MULTIPLICATION = 'MULTIPLICATION',
     SUBTRACTION = 'SUBTRACTION',
