@@ -27,12 +27,11 @@ public class ExerciseApiController {
     public void getExerciseFromSubtypeAndGrade(Context ctx) {
         Optional<String> exerciseSubTypeOptional = Optional.ofNullable(ctx.queryParam("exerciseSubType"));
         Optional<String> gradeOptional = Optional.ofNullable(ctx.queryParam("grade"));
-        Optional<String> token = Optional.ofNullable(ctx.header("Authorization"));
-        token.ifPresent(s -> System.out.println("Token: " + s));
+        Optional<String> tokenOptional = Optional.ofNullable(ctx.header("Authorization"));
 
-        if (exerciseSubTypeOptional.isPresent() && gradeOptional.isPresent() && token.isPresent()) {
+        if (exerciseSubTypeOptional.isPresent() && gradeOptional.isPresent() && tokenOptional.isPresent()) {
             try {
-                User user = SessionHandler.getInstance().getUserByToken(token.get());
+                User user = SessionHandler.getInstance().getUserByToken(tokenOptional.get());
                 LOG.info("Generating exercise with exerciseSubType: {} and grade: {} for user: {}",
                         exerciseSubTypeOptional.get(), gradeOptional.get(), user.getUsername());
                 ExerciseSubType exerciseSubType = ExerciseSubType.valueOfIgnoreCase(exerciseSubTypeOptional.get());
