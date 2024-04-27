@@ -40,7 +40,7 @@ export class MathExerciseBasicOperationComponent implements OnInit {
   hint: string = "Remember to multiply, not add.";
 
   @Input() user: User = { //TODO read from session
-    grade: 'first',
+    grade: 'third',
     username: 'System_Admin',
     password: 'fg6i7i4bMa',
     level: 1,
@@ -51,7 +51,7 @@ export class MathExerciseBasicOperationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mathExerciseService.retrieveExercise().subscribe({
+    this.mathExerciseService.retrieveExercise(this.user, this.exerciseType).subscribe({
       next: (response) => {
         this.exercise = response.exercise
         this.solution = response.result
