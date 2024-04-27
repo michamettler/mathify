@@ -10,7 +10,7 @@ import {MatProgressBar} from "@angular/material/progress-bar";
 import {Exercise} from "../../../../../model/exercise";
 
 @Component({
-  selector: 'app-exercise-basic-operation',
+  selector: 'app-math-single-result-operation',
   standalone: true,
   imports: [
     MatCardTitle,
@@ -25,14 +25,10 @@ import {Exercise} from "../../../../../model/exercise";
     HeaderComponent,
     MatProgressBar
   ],
-  templateUrl: './math-exercise-basic-operation.component.html',
-  styleUrl: './math-exercise-basic-operation.component.scss'
+  templateUrl: './math-single-result-operation.component.html',
+  styleUrl: './math-single-result-operation.component.scss'
 })
-export class MathExerciseBasicOperationComponent implements OnInit {
-  exercise: string = '';
-  userAnswer = '';
-  solution: string = '';
-  exerciseType: 'addition' | 'subtraction' = this.getRandomSubtype();
+export class MathSingleResultOperationComponent implements OnInit {
   showSolution: boolean = false;
   showHint: boolean = false;
   hint: string = "Remember to multiply, not add.";

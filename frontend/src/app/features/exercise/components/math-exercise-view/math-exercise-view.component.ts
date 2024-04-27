@@ -12,8 +12,8 @@ import {MatCard, MatCardContent, MatCardTitle} from "@angular/material/card";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {Exercise} from "../../../../../model/exercise";
 import {
-  MathExerciseBasicOperationComponent
-} from "../math-exercise-basic-operation/math-exercise-basic-operation.component";
+  MathSingleResultOperationComponent
+} from "../math-single-result-operation/math-single-result-operation.component";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -30,7 +30,7 @@ import {
     MatLabel,
     HeaderComponent,
     MatProgressBar,
-    MathExerciseBasicOperationComponent
+    MathSingleResultOperationComponent
   ],
   templateUrl: './math-exercise-view.component.html',
   styleUrl: './math-exercise-view.component.scss'
