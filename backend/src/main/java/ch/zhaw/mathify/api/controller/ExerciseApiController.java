@@ -22,14 +22,14 @@ public class ExerciseApiController {
      * @param ctx Context of the request
      */
     public void getExerciseFromSubtypeAndGrade(Context ctx) {
-        Optional<String> exerciseSubTypeOptional = Optional.ofNullable(ctx.queryParam("exerciseSubType"));
-        Optional<String> gradeOptional = Optional.ofNullable(ctx.queryParam("grade"));
+        String exerciseSubTypeString = ctx.queryParam("exerciseSubType");
+        String gradeString = ctx.queryParam("grade");
 
-        if (exerciseSubTypeOptional.isPresent() && gradeOptional.isPresent()) {
+        if (exerciseSubTypeString != null && gradeString != null && !exerciseSubTypeString.isEmpty() && !gradeString.isEmpty()) {
             try {
-                LOG.info("Generating exercise with exerciseSubType: {} and grade: {}", exerciseSubTypeOptional.get(), gradeOptional.get());
-                ExerciseSubType exerciseSubType = ExerciseSubType.valueOfIgnoreCase(exerciseSubTypeOptional.get());
-                Grade grade = Grade.valueOfIgnoreCase(gradeOptional.get());
+                LOG.info("Generating exercise with exerciseSubType: {} and grade: {}", exerciseSubTypeString, gradeString);
+                ExerciseSubType exerciseSubType = ExerciseSubType.valueOfIgnoreCase(exerciseSubTypeString);
+                Grade grade = Grade.valueOfIgnoreCase(gradeString);
 
                 ctx.json(ExerciseGenerator.generate(grade, exerciseSubType).toDto());
             } catch (IllegalArgumentException e) {
