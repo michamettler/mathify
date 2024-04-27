@@ -18,5 +18,5 @@ export const routes: Routes = [
   {path: 'registration', component: UserRegistrationComponent},
   {path: 'mode-selection', component: ModeSelectionComponent, canActivate: [AuthGuard]},
   {path: 'scoreboard', component: ScoreboardOverviewComponent, canActivate: [AuthGuard]},
-  {path: 'exercise', component: MathExerciseViewComponent, canActivate: [AuthGuard]}
+  {path: 'exercise', component: MathExerciseViewComponent}
 ]

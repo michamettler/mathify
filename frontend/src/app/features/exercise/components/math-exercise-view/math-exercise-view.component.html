@@ -1,6 +1,14 @@
 <app-header [gradeSelected]="true"></app-header>
 <div class="container">
-  <app-math-single-result-operation [exercise]="exercise"></app-math-single-result-operation>
+  <div *ngIf="category==='SingleResultOperation'">
+    <app-math-single-result-operation [exercise]="exercise"></app-math-single-result-operation>
+  </div>
+  <div *ngIf="category==='MultipleResultOperation'">
+    <app-math-multiple-result-operation [exercise]="exercise"></app-math-multiple-result-operation>
+  </div>
+  <div *ngIf="category==='MultipleStepOperation'">
+    <app-math-multiple-step-operation [exercise]="exercise"></app-math-multiple-step-operation>
+  </div>
   <div class="progress-section">
     <div>
       <h2>{{ user.level }}</h2>

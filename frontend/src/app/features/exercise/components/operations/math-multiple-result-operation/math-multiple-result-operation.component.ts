@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Exercise} from "../../../../../../model/exercise";
 
 @Component({
   selector: 'app-math-multiple-result-operation',
@@ -8,5 +9,6 @@ import { Component } from '@angular/core';
   styleUrl: './math-multiple-result-operation.component.scss'
 })
 export class MathMultipleResultOperationComponent {
+  @Input() exercise!: Exercise | undefined;
 
 }

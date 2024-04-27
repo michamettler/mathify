@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import { Exercise } from '../../../../../../model/exercise';
 
 @Component({
   selector: 'app-math-multiple-step-operation',
@@ -8,5 +9,6 @@ import { Component } from '@angular/core';
   styleUrl: './math-multiple-step-operation.component.scss'
 })
 export class MathMultipleStepOperationComponent {
+  @Input() exercise!: Exercise | undefined;
 
 }

@@ -14,6 +14,13 @@ import {Exercise} from "../../../../../model/exercise";
 import {
   MathSingleResultOperationComponent
 } from "../operations/math-single-result-operation/math-single-result-operation.component";
+import {MathExerciseSubType} from "../../../../../model/mathExerciseSubType";
+import {
+  MathMultipleResultOperationComponent
+} from "../operations/math-multiple-result-operation/math-multiple-result-operation.component";
+import {
+  MathMultipleStepOperationComponent
+} from "../operations/math-multiple-step-operation/math-multiple-step-operation.component";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -30,14 +37,17 @@ import {
     MatLabel,
     HeaderComponent,
     MatProgressBar,
-    MathSingleResultOperationComponent
+    MathSingleResultOperationComponent,
+    MathMultipleResultOperationComponent,
+    MathMultipleStepOperationComponent
   ],
   templateUrl: './math-exercise-view.component.html',
   styleUrl: './math-exercise-view.component.scss'
 })
 export class MathExerciseViewComponent implements OnInit {
 
-  exercise: Exercise | undefined;
+  exercise?: Exercise;
+  category?: string;
 
   @Input() user: User = { //TODO read from session
     grade: 'first',
@@ -64,4 +74,25 @@ export class MathExerciseViewComponent implements OnInit {
     });
   }
 
+  findCategory(operation: string): string {
+    const { SingleResultOperation, MultipleResultOperation, MultipleStepOperation, TableOperation } = MathExerciseSubType;
+
+    if (Object.values(SingleResultOperation).includes(operation as any)) {
+      this.category = 'SingleResultOperation';
+      return operation
+    } else if (Object.values(MultipleResultOperation).includes(operation as any)) {
+      this.category = 'MultipleResultOperation';
+      return operation;
+    } else if (Object.values(MultipleStepOperation).includes(operation as any)) {
+      this.category = 'MultipleStepOperation';
+      return operation;
+    } else if (Object.values(TableOperation).includes(operation as any)) {
+      this.category = 'TableOperation';
+      return operation;
+    }
+
+    return 'Unknown Category';
+  }
+
+  protected readonly MathExerciseSubType = MathExerciseSubType;
 }
