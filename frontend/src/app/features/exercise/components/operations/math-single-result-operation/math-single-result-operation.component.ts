@@ -5,9 +5,9 @@ import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {MatButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
-import {HeaderComponent} from "../../../../core/components/header/header.component";
+import {HeaderComponent} from "../../../../../core/components/header/header.component";
 import {MatProgressBar} from "@angular/material/progress-bar";
-import {Exercise} from "../../../../../model/exercise";
+import {Exercise} from "../../../../../../model/exercise";
 
 @Component({
   selector: 'app-math-single-result-operation',

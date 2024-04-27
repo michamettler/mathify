@@ -13,7 +13,7 @@ import {MatProgressBar} from "@angular/material/progress-bar";
 import {Exercise} from "../../../../../model/exercise";
 import {
   MathSingleResultOperationComponent
-} from "../math-single-result-operation/math-single-result-operation.component";
+} from "../operations/math-single-result-operation/math-single-result-operation.component";
 
 @Component({
   selector: 'app-math-exercise-view',
