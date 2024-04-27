@@ -21,12 +21,12 @@ public class ExerciseGenerator {
      * @param exerciseSubType The subtype of the exercise
      * @return A randomly generated exercise
      */
-    public static Exercise generate(Grade grade, ExerciseSubType exerciseSubType) {
-        LOG.info("Generating exercise for grade {} and exercise subtype {}", grade, exerciseSubType);
-        if (grade == null || exerciseSubType == null) {
-            LOG.error("Grade and exerciseSubType must not be null");
+    public static Exercise generate(Grade grade, ExerciseSubType exerciseSubType, int technicalScore) {
+        LOG.info("Generating exercise for grade {}, exercise subtype {} and technical score {}", grade, exerciseSubType, technicalScore);
+        if (grade == null || exerciseSubType == null || technicalScore < 1 || technicalScore > 10) {
+            LOG.error("Grade and exerciseSubType must not be null and technical score must be between 1 and 10");
             throw new IllegalArgumentException("Grade and exerciseSubType must not be null");
         }
-        return MathsGenerator.generate(grade, exerciseSubType);
+        return MathsGenerator.generate(grade, exerciseSubType, technicalScore);
     }
 }
