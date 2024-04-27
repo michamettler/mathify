@@ -1,0 +1,27 @@
+namespace ExerciseSubType {
+  export enum SingleResultOperation {
+    ADDITION = 'UP',
+    DIVISION = 'DIVISION',
+    MULTIPLICATION = 'MULTIPLICATION',
+    SUBTRACTION = 'SUBTRACTION',
+    NUMBERCOMPLETION = 'NUMBERCOMPLETION',
+    TENSCOMPARISON = 'TENSCOMPARISON',
+    DOUBLING = 'DOUBLING',
+    HALVING = 'HALVING',
+  }
+
+  export enum MultipleResultOperation {
+    SORTING = 'SORTING',
+    NEIGHBORS = 'NEIGHBORS',
+    COMPARISON = 'COMPARISON',
+}
+
+  export enum MultipleStepOperation {
+    THREESTEPADDITION = 'THREESTEPADDITION',
+    THREESTEPSUBTRACTION = 'THREESTEPSUBTRACTION',
+  }
+
+  export enum TableOperation {
+    MULTIPLICATIONTABLE = 'MULTIPLICATIONTABLE'
+  }
+}
