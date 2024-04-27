@@ -66,7 +66,7 @@ export class MathExerciseViewComponent implements OnInit {
         this.exercise = {
           exercise: response.exercise,
           result: response.result,
-          exerciseSubType: response.exerciseSubType,
+          exerciseSubType: this.findCategory(response.exerciseSubType),
           userResult: undefined,
           calculationValues: undefined
         }
@@ -75,7 +75,7 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   findCategory(operation: string): string {
-    const { SingleResultOperation, MultipleResultOperation, MultipleStepOperation, TableOperation } = MathExerciseSubType;
+    const {SingleResultOperation, MultipleResultOperation, MultipleStepOperation, TableOperation} = MathExerciseSubType;
 
     if (Object.values(SingleResultOperation).includes(operation as any)) {
       this.category = 'SingleResultOperation';
@@ -94,5 +94,8 @@ export class MathExerciseViewComponent implements OnInit {
     return 'Unknown Category';
   }
 
-  protected readonly MathExerciseSubType = MathExerciseSubType;
+  verify(): void {
+    //TODO verify user result
+  }
+
 }
