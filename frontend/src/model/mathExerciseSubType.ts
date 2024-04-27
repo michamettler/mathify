@@ -1,4 +1,4 @@
-namespace ExerciseSubType {
+namespace MathExerciseSubType {
   export enum SingleResultOperation {
     ADDITION = 'UP',
     DIVISION = 'DIVISION',
@@ -8,12 +8,12 @@ namespace ExerciseSubType {
     TENSCOMPARISON = 'TENSCOMPARISON',
     DOUBLING = 'DOUBLING',
     HALVING = 'HALVING',
+    COMPARISON = 'COMPARISON',
   }
 
   export enum MultipleResultOperation {
     SORTING = 'SORTING',
     NEIGHBORS = 'NEIGHBORS',
-    COMPARISON = 'COMPARISON',
 }
 
   export enum MultipleStepOperation {
