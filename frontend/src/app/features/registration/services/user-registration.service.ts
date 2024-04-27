@@ -20,7 +20,7 @@ export class UserRegistrationService {
       const headers = new HttpHeaders({
         'Authorization': 'Basic ' + authData
       });
-      return this.http.get(url, {headers: headers, responseType: 'text'})
+      return this.http.get(url, {headers: headers, observe: 'response'})
         .pipe(
           catchError(this.handleError('login'))
         );

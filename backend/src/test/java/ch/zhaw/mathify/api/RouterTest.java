@@ -1,4 +1,4 @@
-package ch.zhaw.mathify.controller;
+package ch.zhaw.mathify.api;
 
 import ch.zhaw.mathify.App;
 import ch.zhaw.mathify.model.SettingsNotFoundException;
@@ -10,6 +10,7 @@ import io.restassured.RestAssured;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.config.SSLConfig;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -29,6 +30,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for the Router class.
  */
 public class RouterTest {
+    private String auth;
+
     @BeforeAll
     public static void startApplication() {
         try {
@@ -40,15 +43,21 @@ public class RouterTest {
         RestAssured.config = RestAssuredConfig.newConfig().sslConfig(SSLConfig.sslConfig().relaxedHTTPSValidation());
     }
 
+    @BeforeEach
+    public void setup() {
+        auth = given().auth().preemptive().basic("zehndjon", "jonas").get("/login").header("Authorization");
+    }
+
     @Test
     void testWelcomePage() {
         String responseBody =
                 given()
-                    .when()
+                        .header("Authorization", auth)
+                        .when()
                         .get("/welcome")
-                    .then()
+                        .then()
                         .statusCode(200)
-                    .extract().asString();
+                        .extract().asString();
 
         assertThat(responseBody, equalTo("Welcome to Mathify!"));
     }
@@ -64,17 +73,17 @@ public class RouterTest {
             }
             JsonNode fetchedUsers =
                     given()
-                        .auth().preemptive().basic("zehndjon", "jonas")
-                    .when()
-                        .get("/users")
-                    .then()
-                        .statusCode(200)
-                    .extract().body().as(JsonNode.class);
+                            .header("Authorization", auth)
+                            .when()
+                            .get("/users")
+                            .then()
+                            .statusCode(200)
+                            .extract().body().as(JsonNode.class);
 
             assertThat(fetchedUsers.findValuesAsText("username"), containsInAnyOrder(expectedUserNames.toArray()));
 
         } catch (IOException e) {
-            System.out.println("Error reading user list!");
+            System.out.println("Error reading user list! " + e.getMessage());
             fail();
         }
     }
@@ -85,12 +94,12 @@ public class RouterTest {
         String guid = "5e6a7b8c-7543-454c-b28b-2761c07fb5b7";
         User fetchedUser =
                 given()
-                    .auth().preemptive().basic("zehndjon", "jonas")
-                .when()
-                    .get("/users/{guid}", guid)
-                .then()
-                    .statusCode(200)
-                .extract().body().as(User.class);
+                        .header("Authorization", auth)
+                        .when()
+                        .get("/users/{guid}", guid)
+                        .then()
+                        .statusCode(200)
+                        .extract().body().as(User.class);
 
         assertEquals(expectedUsername, fetchedUser.getUsername());
     }
@@ -99,26 +108,15 @@ public class RouterTest {
     void testSubtypeReturn() {
         String[] fetchedSubtypes =
                 given()
-                    .auth().preemptive().basic("zehndjon", "jonas")
-                .when()
-                    .get("/exercise/subtypes")
-                .then()
-                    .statusCode(200)
-                .extract().body().as(String[].class);
+                        .header("Authorization", auth)
+                        .when()
+                        .get("/exercise/subtypes")
+                        .then()
+                        .statusCode(200)
+                        .extract().body().as(String[].class);
 
         for (ExerciseSubType expectedSubType : ExerciseSubType.values()) {
             assertTrue(Arrays.asList(fetchedSubtypes).contains(expectedSubType.name()));
         }
-    }
-
-    @Test
-    void testLogin() {
-        given()
-            .auth().preemptive().basic("zehndjon", "jonas")
-        .when()
-            .get("/login")
-        .then()
-            .statusCode(200)
-        .body(not(empty()));
     }
 }

@@ -1,18 +1,18 @@
-package ch.zhaw.mathify.controller;
+package ch.zhaw.mathify.api;
 
 import ch.zhaw.mathify.App;
-import ch.zhaw.mathify.controller.apicontroller.ExerciseApiController;
-import ch.zhaw.mathify.controller.apicontroller.UserApiController;
+import ch.zhaw.mathify.api.controller.ExerciseApiController;
+import ch.zhaw.mathify.api.controller.UserApiController;
+import ch.zhaw.mathify.api.security.AuthenticationHandler;
+import ch.zhaw.mathify.api.security.AuthorizationHandler;
 import ch.zhaw.mathify.model.Role;
 import ch.zhaw.mathify.model.Scoreboard;
-import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import ch.zhaw.mathify.repository.UserRepository;
 import ch.zhaw.mathify.util.JsonMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import io.javalin.Javalin;
 import io.javalin.community.ssl.SslPlugin;
-import io.javalin.http.Context;
 import io.javalin.router.JavalinDefaultRouting;
 import io.javalin.security.BasicAuthCredentials;
 import org.slf4j.Logger;
@@ -24,8 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.Optional;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -46,7 +44,6 @@ public class Router {
      */
     public void startApplication() {
         Runtime.getRuntime().addShutdownHook(new Thread(this::closeApplication));
-
         Optional<SslPlugin> sslPluginOptional = doSslPluginConfig();
         app = Javalin.create(config -> {
             sslPluginOptional.ifPresent(config::registerPlugin);
@@ -73,7 +70,7 @@ public class Router {
         get("/", ctx -> ctx.redirect("/welcome"));
         get("/welcome", ctx -> {
             ctx.result("Welcome to Mathify!");
-            LOG.info("welcome page was accessed");
+            LOG.info("Welcome page was accessed");
         }, Role.ANONYMOUS);
         crud("/users/{user-guid}", userApiController, Role.SYSTEM_CRUD, Role.ADMIN);
         path("/exercise", () -> {
@@ -82,10 +79,10 @@ public class Router {
             post("/verify", exerciseApiController::handleResult, Role.USER, Role.ADMIN);
 
         });
-        get("/login", this::createUserToken, Role.ANONYMOUS);
+        get("/login", AuthenticationHandler::login, Role.ANONYMOUS);
         get("/scoreboard", ctx -> {
             ctx.json(scoreboard.inOrderTraversal(scoreboard.getRoot()));
-            LOG.info("scoreboard page was accessed");
+            LOG.info("Scoreboard page was accessed");
         }, Role.USER);
         get("/page-not-found", ctx -> {
             ctx.result("Page " + ctx.queryParam("invalid-endpoint") + " not found!");
@@ -98,45 +95,16 @@ public class Router {
         }, Role.ADMIN);
     }
 
-    private void createUserToken(Context ctx) {
-        LOG.info("Creating user token...");
-        Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
-        if (credentials.isPresent() && authenticateUser(credentials.get(), ctx)) {
-            SecureRandom secureRandom = new SecureRandom();
-            Base64.Encoder base64Encoder = Base64.getUrlEncoder();
-            byte[] randomBytes = new byte[24];
-            secureRandom.nextBytes(randomBytes);
-            ctx.result(base64Encoder.encodeToString(randomBytes));
-            LOG.info("{} logged in successfully", credentials.get().getUsername());
-            ctx.status(200);
-            return;
-        }
-        ctx.result("Please provide valid credentials!");
-        LOG.error("invalid credentials have been provided during the login attempt");
-        ctx.status(401);
-    }
-
     private void handleAuthenticationAndAuthorization(JavalinDefaultRouting router) {
         router.beforeMatched(ctx -> {
-            Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
-            if (credentials.isEmpty()) {
-                ctx.attribute("role", Role.ANONYMOUS);
-            } else {
-                authenticateUser(credentials.get(), ctx);
-            }
-            AccessManager.validateEndpointAccess(ctx);
-        });
-    }
+            String token = ctx.sessionAttribute("Authorization");
 
-    private boolean authenticateUser(BasicAuthCredentials credentials, Context ctx) {
-        for (User user : userRepository.get()) {
-            if (user.getUsername().equals(credentials.getUsername()) && User.verifyPassword(credentials.getPassword(), user.getPassword())) {
-                LOG.info("{} was authenticated successfully", user.getUsername());
-                ctx.attribute("role", user.getRole());
-                return true;
+            if(token == null) {
+                ctx.attribute("role", Role.ANONYMOUS);
             }
-        }
-        return false;
+
+            AuthorizationHandler.validateEndpointAccess(ctx);
+        });
     }
 
 
@@ -166,7 +134,7 @@ public class Router {
     /**
      * Shuts the Javalin instance including the Endpoints down
      */
-    public void closeApplication() {
+    private void closeApplication() {
         if (app != null) {
             app.stop();
             userRepository.save();
