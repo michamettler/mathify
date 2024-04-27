@@ -7,9 +7,7 @@ import {MatButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
 import {HeaderComponent} from "../../../../core/components/header/header.component";
 import {MatProgressBar} from "@angular/material/progress-bar";
-import {User} from "../../../../../model/user";
-import {MathExerciseService} from "../../services/math-exercise.service";
-import {Router} from "@angular/router";
+import {Exercise} from "../../../../../model/exercise";
 
 @Component({
   selector: 'app-exercise-basic-operation',
@@ -65,11 +63,6 @@ export class MathExerciseBasicOperationComponent implements OnInit {
 
   toggleHint(): void {
     this.showHint = !this.showHint;
-  }
-
-  getRandomSubtype(): 'addition' | 'subtraction' {
-    const randomNumber = Math.floor(Math.random() * 2) + 1;
-    return randomNumber === 1 ? 'addition' : 'subtraction';
   }
 
 }

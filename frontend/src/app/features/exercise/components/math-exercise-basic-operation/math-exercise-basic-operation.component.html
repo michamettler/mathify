@@ -1,12 +1,11 @@
-<app-header [gradeSelected]="true"></app-header>
 <div class="container">
-  <h1>Math Exercise - {{ exerciseType }}</h1>
-  <h2 class="exercise">{{ exercise }}</h2>
+  <h1>Math Exercise - {{ exercise ? exercise.exerciseSubType : '' }}</h1>
+  <h2 class="exercise">{{ exercise ? exercise.exercise : '' }}</h2>
   <div class="input-section">
     <div class="input-group">
       <mat-form-field appearance="fill">
         <mat-label>Your Answer</mat-label>
-        <input [(ngModel)]="userAnswer" matInput>
+        <input [value]="exercise ? exercise.userResult : ''" matInput>
       </mat-form-field>
       <button (click)="displaySolution()" class="submit-button" color="primary" mat-raised-button>Submit</button>
     </div>
@@ -15,24 +14,10 @@
       <button (click)="toggleHint()" mat-stroked-button>Show hint</button>
     </div>
     <div *ngIf="showSolution" class="solution">
-      <p>The correct answer is: {{ solution }}</p>
+      <p>The correct answer is: {{ exercise ? exercise.result : '' }}</p>
     </div>
     <div *ngIf="showHint" class="hint">
       <p>Hint: {{ hint }}</p>
     </div>
   </div>
-
-  <div class="progress-section">
-    <div>
-      <h2>{{ user.level }}</h2>
-      <div class="progress" style="width: 100%">
-        <div [attr.aria-valuenow]="user.experience" [style.width]="user.experience + '%'"
-             aria-valuemax="100" aria-valuemin="0" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"></div>
-      </div>
-    </div>
-  </div>
 </div>
-
-
-
-

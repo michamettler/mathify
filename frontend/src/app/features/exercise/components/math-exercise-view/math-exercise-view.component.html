@@ -1,1 +1,14 @@
-<app-exercise-basic-operation></app-exercise-basic-operation>
+<app-header [gradeSelected]="true"></app-header>
+<div class="container">
+  <app-exercise-basic-operation [exercise]="exercise"></app-exercise-basic-operation>
+  <div class="progress-section">
+    <div>
+      <h2>{{ user.level }}</h2>
+      <div class="progress" style="width: 100%">
+        <div [attr.aria-valuenow]="user.experience" [style.width]="user.experience + '%'"
+             aria-valuemax="100" aria-valuemin="0" class="progress-bar progress-bar-striped progress-bar-animated"
+             role="progressbar"></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,17 +1,16 @@
-.container {
-  margin: 20px auto;
-  padding: 20px;
+.input-group {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-}
+  margin-top: 10px;
 
-h1 {
-  font-size: 40px;
-}
-
-h2 {
-  padding-top: 15%;
+  input {
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    margin: 0 5px;
+  }
 }
 
 .input-section, .button-group, .progress-section {
@@ -28,21 +27,6 @@ h2 {
   }
 }
 
-.input-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-
-  input {
-    width: 100%;
-    height: 30px;
-    text-align: center;
-    margin: 0 5px;
-  }
-}
-
 .solution {
   margin-top: 20px;
   color: green;
@@ -50,23 +34,4 @@ h2 {
 
 .hint {
   margin-top: 20px;
-}
-
-.progress-section {
-  margin-top: 150px;
-  color: #3F51B5;
-  width: 100%;
-
-  .progress {
-    height: 30px;
-  }
-}
-
-.d-flex {
-  display: flex;
-  justify-content: space-between;
-}
-
-.label {
-  margin-bottom: 5px;
 }
