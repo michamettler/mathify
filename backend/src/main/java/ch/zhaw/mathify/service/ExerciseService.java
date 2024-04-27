@@ -23,6 +23,9 @@ public class ExerciseService {
     private static final Map<Grade, List<ExerciseSubType>> GRADE_EXERCISE_SUB_TYPE_MAP = new EnumMap<>(Grade.class);
     private final Map<User, Integer> userExerciseCount = new HashMap<>();
 
+    /**
+     * Constructor for the ExerciseService.
+     */
     public ExerciseService() {
         populateGradeExerciseSubtypeMapping();
     }
