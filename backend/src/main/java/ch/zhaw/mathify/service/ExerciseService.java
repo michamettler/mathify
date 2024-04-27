@@ -8,6 +8,7 @@ import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ import static ch.zhaw.mathify.model.exercise.ExerciseSubType.*;
  */
 public class ExerciseService {
     private static final Logger LOG = LoggerFactory.getLogger(ExerciseService.class);
-    private static final Map<Grade, List<ExerciseSubType>> GRADE_EXERCISE_SUB_TYPE_MAP = new HashMap<>();
+    private static final Map<Grade, List<ExerciseSubType>> GRADE_EXERCISE_SUB_TYPE_MAP = new EnumMap<>(Grade.class);
     private final Map<User, Integer> userExerciseCount = new HashMap<>();
 
     public ExerciseService() {
