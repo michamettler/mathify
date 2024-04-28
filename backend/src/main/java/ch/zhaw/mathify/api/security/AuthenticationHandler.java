@@ -78,6 +78,7 @@ public final class AuthenticationHandler {
         LOG.info("Trying to register user...");
 
         User user = ctx.bodyAsClass(User.class);
+        user.setPassword(User.hashPassword(user.getPassword()));
 
         if(user == null || user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getGrade() == null) {
             String message = "User data is empty";

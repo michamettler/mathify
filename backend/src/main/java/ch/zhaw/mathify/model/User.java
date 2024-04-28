@@ -89,7 +89,14 @@ public class User {
      */
     public static boolean verifyPassword(String password, String hash) {
         LOG.debug("Verifying password");
-        return BCrypt.checkpw(password, hash);
+        LOG.info("Password: {}", password);
+        LOG.info("Hash: {}", hash);
+        try{
+            return BCrypt.checkpw(password, hash);
+        } catch (IllegalArgumentException e) {
+            LOG.error("Invalid hash", e);
+            return false;
+        }
     }
 
     private HashMap<ExerciseSubType, Integer> initializeTechnicalScore() {
