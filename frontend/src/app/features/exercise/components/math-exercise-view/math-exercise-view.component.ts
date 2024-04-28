@@ -15,8 +15,8 @@ import {
   MathSingleResultOperationComponent
 } from "../operations/math-single-result-operation/math-single-result-operation.component";
 import {
-  MathMultipleResultOperationComponent
-} from "../operations/math-multiple-result-operation/math-multiple-result-operation.component";
+  MathNeighborOperationComponent
+} from "../operations/math-neighbor-operation/math-neighbor-operation.component";
 import {SortingOperationComponent} from "../operations/math-sorting-operation/sorting-operation.component";
 import {MathExerciseSubType} from "../../../../../model/mathExerciseSubType";
 
@@ -36,7 +36,7 @@ import {MathExerciseSubType} from "../../../../../model/mathExerciseSubType";
     HeaderComponent,
     MatProgressBar,
     MathSingleResultOperationComponent,
-    MathMultipleResultOperationComponent,
+    MathNeighborOperationComponent,
     SortingOperationComponent
   ],
   templateUrl: './math-exercise-view.component.html',
@@ -59,7 +59,7 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mathExerciseService.retrieveExercise().subscribe({
+    /*this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
         this.exercise = {
           exercise: response.exercise + ' = ?',
@@ -69,17 +69,24 @@ export class MathExerciseViewComponent implements OnInit {
           calculationValues: undefined
         }
       }
-    });
+    });*/
+    this.exercise = {
+      exercise: 'Find the neighbors of 8!',
+      result: '[7, 9]',
+      exerciseSubType: this.findCategory('NEIGHBORS'),
+      userResult: undefined,
+      calculationValues: undefined
+    }
   }
 
   findCategory(operation: string): string {
-    const {SingleResultOperation, MultipleResultOperation, SortingOperation, TableOperation} = MathExerciseSubType;
+    const {SingleResultOperation, NeighborOperation, SortingOperation, TableOperation} = MathExerciseSubType;
 
     if (Object.values(SingleResultOperation).includes(operation as any)) {
       this.category = 'SingleResultOperation';
       return operation
-    } else if (Object.values(MultipleResultOperation).includes(operation as any)) {
-      this.category = 'MultipleResultOperation';
+    } else if (Object.values(NeighborOperation).includes(operation as any)) {
+      this.category = 'NeighborOperation';
       return operation;
     } else if (Object.values(SortingOperation).includes(operation as any)) {
       this.category = 'SortingOperation';

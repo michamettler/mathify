@@ -13,7 +13,7 @@ export namespace MathExerciseSubType {
     THREESTEPSUBTRACTION = 'THREESTEPSUBTRACTION',
   }
 
-  export enum MultipleResultOperation {
+  export enum NeighborOperation {
     NEIGHBORS = 'NEIGHBORS',
   }
 

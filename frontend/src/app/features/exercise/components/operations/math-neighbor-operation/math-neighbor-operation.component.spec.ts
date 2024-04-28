@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MathMultipleResultOperationComponent } from './math-multiple-result-operation.component';
+import { MathNeighborOperationComponent } from './math-neighbor-operation.component';
 
 describe('MathMultipleResultOperationComponent', () => {
-  let component: MathMultipleResultOperationComponent;
-  let fixture: ComponentFixture<MathMultipleResultOperationComponent>;
+  let component: MathNeighborOperationComponent;
+  let fixture: ComponentFixture<MathNeighborOperationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MathMultipleResultOperationComponent]
+      imports: [MathNeighborOperationComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(MathMultipleResultOperationComponent);
+
+    fixture = TestBed.createComponent(MathNeighborOperationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
