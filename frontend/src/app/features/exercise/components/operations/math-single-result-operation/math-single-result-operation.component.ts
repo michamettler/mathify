@@ -8,7 +8,6 @@ import {MatInput} from "@angular/material/input";
 import {HeaderComponent} from "../../../../../core/components/header/header.component";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {Exercise} from "../../../../../../model/exercise";
-import {User} from "../../../../../../model/user";
 
 @Component({
   selector: 'app-math-single-result-operation',
@@ -34,14 +33,6 @@ export class MathSingleResultOperationComponent {
   showSolution: boolean = false;
   showHint: boolean = false;
   hint: string = "Remember to multiply, not add.";
-
-  @Input() user: User = { //TODO read from session
-    grade: 'third',
-    username: 'System_Admin',
-    password: 'fg6i7i4bMa',
-    level: 1,
-    experience: 30
-  };
 
   constructor() {
   }

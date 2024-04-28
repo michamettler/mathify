@@ -71,9 +71,9 @@ export class MathExerciseViewComponent implements OnInit {
       }
     });*/
     this.exercise = {
-      exercise: 'Find the neighbors of 8!',
+      exercise: '[7, 9, 0]',
       result: '[7, 9]',
-      exerciseSubType: this.findCategory('NEIGHBORS'),
+      exerciseSubType: this.findCategory('SORTING'),
       userResult: undefined,
       calculationValues: undefined
     }
