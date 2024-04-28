@@ -280,8 +280,11 @@ public class MathsGenerator {
 
         for (int i = 0; i < countDigits(a - b); i++) {
             int difference = tempA % 10 - tempB % 10 - carryOver;
-            if (difference < 0) result[2 * i] = 10 - Math.abs(difference);
-            else result[2 * i] = Math.abs(difference);
+            if (difference < 0) {
+                result[2 * i] = 10 - Math.abs(difference);
+            } else {
+                result[2 * i] = Math.abs(difference);
+            }
             carryOver = (tempA % 10 - tempB % 10 - carryOver < 0) ? 1 : 0;
             if (carryOver == 1 || tempA / 10 != 0 || tempB / 10 != 0) {
                 result[2 * i + 1] = carryOver;
