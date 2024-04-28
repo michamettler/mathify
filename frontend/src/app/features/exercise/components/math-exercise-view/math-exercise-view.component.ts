@@ -64,7 +64,7 @@ export class MathExerciseViewComponent implements OnInit {
     this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
         this.exercise = {
-          exercise: response.exercise,
+          exercise: response.exercise + ' = ?',
           result: response.result,
           exerciseSubType: this.findCategory(response.exerciseSubType),
           userResult: undefined,
