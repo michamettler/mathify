@@ -1,6 +1,6 @@
 package ch.zhaw.mathify;
 
-import ch.zhaw.mathify.controller.Router;
+import ch.zhaw.mathify.api.Router;
 import ch.zhaw.mathify.model.Settings;
 import ch.zhaw.mathify.model.SettingsNotFoundException;
 import ch.zhaw.mathify.util.JsonMapper;

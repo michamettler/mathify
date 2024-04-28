@@ -33,4 +33,11 @@ class UserTest {
     void testVerifyPasswordWithWrongPassword() {
         assertFalse(User.verifyPassword("wrongpassword", user.getPassword()));
     }
+
+    @Test
+    void testTechnicalScoreInitialization() {
+        for (int score : user.getTechnicalScore().values()) {
+            assertEquals(1, score);
+        }
+    }
 }

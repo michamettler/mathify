@@ -40,7 +40,7 @@ export class MathExerciseBasicOperationComponent implements OnInit {
   hint: string = "Remember to multiply, not add.";
 
   @Input() user: User = { //TODO read from session
-    grade: 'first',
+    grade: 'third',
     username: 'System_Admin',
     password: 'fg6i7i4bMa',
     level: 1,

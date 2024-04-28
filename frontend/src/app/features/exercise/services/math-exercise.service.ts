@@ -17,19 +17,20 @@ export class MathExerciseService {
     let url = `${this.apiUrl}exercise`;
 
     const headers = new HttpHeaders({
-      'Authorization': `Basic ${btoa(user.username + ':' + user.password)}`
+      'Authorization': localStorage.getItem('token')?.toString() + '',
+      'Content-Type': 'application/json'
     });
 
     const queryParameters = {
       exerciseSubType: subtype,
-      grade: user.grade ? user.grade :''
+      grade: user.grade ? user.grade : ''
     };
+
     const httpParams = new HttpParams({fromObject: queryParameters});
 
-    return this.http.get(url, {headers: headers, params: httpParams})
-      .pipe(
-        catchError(this.handleError('login'))
-      );
+    return this.http.get(url, {headers: headers, params: httpParams}).pipe(
+      catchError(this.handleError('login'))
+    );
   }
 
   private handleError(operation = 'operation') {

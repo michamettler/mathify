@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 })
 export class AuthService {
 
-  private authSecretKey = '';
+  private authSecretKey = 'token';
 
   constructor() {
   }
