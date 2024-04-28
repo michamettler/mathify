@@ -80,7 +80,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.FIRST, ExerciseSubType.ADDITION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 20);
     }
 
@@ -90,7 +90,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.SECOND, ExerciseSubType.ADDITION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 100);
     }
 
@@ -100,7 +100,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.THIRD, ExerciseSubType.ADDITION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 1000);
     }
 
@@ -110,7 +110,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.FOURTH, ExerciseSubType.ADDITION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 10000);
     }
 
@@ -120,7 +120,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.FIFTH, ExerciseSubType.ADDITION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 100000);
     }
 
@@ -130,7 +130,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.SIXTH, ExerciseSubType.ADDITION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 1000000);
     }
 
@@ -140,7 +140,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.FIRST, ExerciseSubType.SUBTRACTION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 20 && MathsExercise.result()[0] >= 0);
     }
 
@@ -150,7 +150,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.SECOND, ExerciseSubType.SUBTRACTION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 100 && MathsExercise.result()[0] >= 0);
     }
 
@@ -160,7 +160,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.THIRD, ExerciseSubType.SUBTRACTION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 1000 && MathsExercise.result()[0] >= 0);
     }
 
@@ -170,7 +170,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.FOURTH, ExerciseSubType.SUBTRACTION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 10000 && MathsExercise.result()[0] >= 0);
     }
 
@@ -180,7 +180,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.FIFTH, ExerciseSubType.SUBTRACTION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 100000 && MathsExercise.result()[0] >= 0);
     }
 
@@ -190,7 +190,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.SIXTH, ExerciseSubType.SUBTRACTION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 1000000 && MathsExercise.result()[0] >= 0);
     }
 
@@ -200,7 +200,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.SECOND, ExerciseSubType.MULTIPLICATION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ \\* \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\* \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 10000);
     }
 
@@ -210,7 +210,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.THIRD, ExerciseSubType.MULTIPLICATION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ \\* \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\* \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 1000);
     }
 
@@ -220,7 +220,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.FOURTH, ExerciseSubType.MULTIPLICATION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ \\* \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\* \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 10000);
     }
 
@@ -230,7 +230,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.FIFTH, ExerciseSubType.MULTIPLICATION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ \\* \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\* \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 100000);
     }
 
@@ -240,7 +240,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.SIXTH, ExerciseSubType.MULTIPLICATION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ \\* \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\* \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 1000000);
     }
 
@@ -250,7 +250,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.THIRD, ExerciseSubType.DIVISION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ / \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ / \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 1000);
     }
 
@@ -260,7 +260,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.FOURTH, ExerciseSubType.DIVISION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ / \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ / \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 10000);
     }
 
@@ -270,7 +270,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.FIFTH, ExerciseSubType.DIVISION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ / \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ / \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 100000);
     }
 
@@ -280,7 +280,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.SIXTH, ExerciseSubType.DIVISION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ / \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ / \\d+ = \\?"));
         assertTrue(MathsExercise.result()[0] <= 1000000);
     }
 
@@ -310,7 +310,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.FIFTH, ExerciseSubType.THREESTEPADDITION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+ \\+ \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ \\+ \\d+ \\+ \\d+ = \\?"));
         double calculationValues = MathsExercise.calculationValues()[0] + MathsExercise.calculationValues()[1] + MathsExercise.calculationValues()[2];
         assertEquals(MathsExercise.result()[0], calculationValues);
     }
@@ -321,7 +321,7 @@ class MathsGeneratorTest {
         Exercise exercise = MathsGenerator.generate(Grade.SIXTH, ExerciseSubType.THREESTEPSUBTRACTION, technicalScore);
         assertInstanceOf(MathsExercise.class, exercise);
         MathsExercise MathsExercise = (MathsExercise) exercise;
-        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+ - \\d+"));
+        assertTrue(MathsExercise.exercise().matches("\\d+ - \\d+ - \\d+ = \\?"));
         double calculationValues = MathsExercise.calculationValues()[0] - MathsExercise.calculationValues()[1] - MathsExercise.calculationValues()[2];
         assertEquals(MathsExercise.result()[0], calculationValues);
     }

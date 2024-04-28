@@ -1,0 +1,33 @@
+h1 {
+  font-size: 40px;
+}
+
+.progress-section {
+  margin-top: 5%;
+  color: #3F51B5;
+  width: 100%;
+  text-align: center;
+
+  .progress {
+    height: 30px;
+  }
+}
+
+.number-ray-section {
+  width: 100%;
+  text-align: center;
+
+  .number-ray {
+    width: 50%;
+  }
+}
+
+
+.d-flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.label {
+  margin-bottom: 5px;
+}

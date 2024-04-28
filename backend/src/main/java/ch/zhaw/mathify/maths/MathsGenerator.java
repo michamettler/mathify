@@ -1,7 +1,9 @@
 package ch.zhaw.mathify.maths;
 
-import ch.zhaw.mathify.model.*;
-import ch.zhaw.mathify.model.exercise.*;
+import ch.zhaw.mathify.model.Grade;
+import ch.zhaw.mathify.model.exercise.Exercise;
+import ch.zhaw.mathify.model.exercise.ExerciseSubType;
+import ch.zhaw.mathify.model.exercise.MathsExercise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -113,7 +115,7 @@ public class MathsGenerator {
         int b = getRandomFactor(a);
         double[] result = {(double) a / b};
         double[] calculationValues = {a, b};
-        return new MathsExercise(result, new double[result.length], a + " / " + b, calculationValues, ExerciseSubType.DIVISION);
+        return new MathsExercise(result, new double[result.length], a + " / " + b + " = ?", calculationValues, ExerciseSubType.DIVISION);
     }
 
     private static Exercise generateMultiplication(Grade grade, int technicalScore) {
@@ -124,7 +126,7 @@ public class MathsGenerator {
         int b = random.nextInt(max + 1);
         double[] result = {a * b};
         double[] calculationValues = {a, b};
-        return new MathsExercise(result, new double[result.length], a + " * " + b, calculationValues, ExerciseSubType.MULTIPLICATION);
+        return new MathsExercise(result, new double[result.length], a + " * " + b + " = ?", calculationValues, ExerciseSubType.MULTIPLICATION);
     }
 
     private static Exercise generateSubtraction(Grade grade, int technicalScore) {
@@ -134,7 +136,7 @@ public class MathsGenerator {
         int b = random.nextInt(a + 1);
         double[] result = {a - b};
         double[] calculationValues = {a, b};
-        return new MathsExercise(result, new double[result.length], a + " - " + b, calculationValues, ExerciseSubType.SUBTRACTION);
+        return new MathsExercise(result, new double[result.length], a + " - " + b + " = ?", calculationValues, ExerciseSubType.SUBTRACTION);
     }
 
     private static Exercise generateAddition(Grade grade, int technicalScore) {
@@ -144,7 +146,7 @@ public class MathsGenerator {
         int b = random.nextInt(max - a + 1);
         double[] result = {a + b};
         double[] calculationValues = {a, b};
-        return new MathsExercise(result, new double[result.length], a + " + " + b, calculationValues, ExerciseSubType.ADDITION);
+        return new MathsExercise(result, new double[result.length], a + " + " + b + " = ?", calculationValues, ExerciseSubType.ADDITION);
     }
 
     private static Exercise generateDoubling(Grade grade, int technicalScore) {
@@ -179,7 +181,7 @@ public class MathsGenerator {
         } while (a + b + c > max);
         double[] result = {a + b + c};
         double[] calculationValues = {a, b, c};
-        return new MathsExercise(result, new double[result.length], a + " + " + b + " + " + c, calculationValues, ExerciseSubType.THREESTEPADDITION);
+        return new MathsExercise(result, new double[result.length], a + " + " + b + " + " + c + " = ?", calculationValues, ExerciseSubType.THREESTEPADDITION);
     }
 
     private static Exercise generateThreeStepSubtraction(Grade grade, int technicalScore) {
@@ -193,7 +195,7 @@ public class MathsGenerator {
         } while (a - b - c < 0);
         double[] result = {a - b - c};
         double[] calculationValues = {a, b, c};
-        return new MathsExercise(result, new double[result.length], a + " - " + b + " - " + c, calculationValues, ExerciseSubType.THREESTEPSUBTRACTION);
+        return new MathsExercise(result, new double[result.length], a + " - " + b + " - " + c + " = ?", calculationValues, ExerciseSubType.THREESTEPSUBTRACTION);
     }
 
     private static Exercise generateMultiplicationTable(Grade grade, int technicalScore) {
