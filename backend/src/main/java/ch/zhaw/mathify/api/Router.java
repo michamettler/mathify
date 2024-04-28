@@ -13,6 +13,7 @@ import ch.zhaw.mathify.util.JsonMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import io.javalin.Javalin;
 import io.javalin.community.ssl.SslPlugin;
+import io.javalin.http.Context;
 import io.javalin.router.JavalinDefaultRouting;
 import io.javalin.security.BasicAuthCredentials;
 import org.slf4j.Logger;
@@ -33,11 +34,24 @@ import static io.javalin.apibuilder.ApiBuilder.*;
  */
 public class Router {
     private static final Logger LOG = LoggerFactory.getLogger(Router.class);
-    private final Scoreboard scoreboard = new Scoreboard();
-    private final UserApiController userApiController = new UserApiController();
-    private final ExerciseApiController exerciseApiController = new ExerciseApiController();
-    private final UserRepository userRepository = UserRepository.getInstance();
+    private final ExerciseApiController exerciseApiController;
+    private final UserApiController userApiController;
+    private final UserRepository userRepository;
+    private final Scoreboard scoreboard;
+    private final int port;
     private Javalin app;
+
+    /**
+     * Constructor to create a new Router instance
+     */
+    public Router() {
+        scoreboard = new Scoreboard();
+        userApiController = new UserApiController();
+        exerciseApiController = new ExerciseApiController();
+        userRepository = UserRepository.getInstance();
+
+        port = App.getSettings().getHttp().port();
+    }
 
     /**
      * Starts the Javalin instance including the Endpoints
@@ -53,7 +67,6 @@ public class Router {
 
         registerErrorHandler();
 
-        int port = App.getSettings().getHttp().port();
         app.start(port);
     }
 
@@ -63,36 +76,36 @@ public class Router {
             ctx.result("Welcome to Mathify!");
             LOG.info("Welcome page was accessed");
         }, Role.ANONYMOUS);
-        crud("/users/{user-guid}", userApiController, Role.SYSTEM_CRUD, Role.ADMIN);
-        path("/exercise", () -> {
-            get(exerciseApiController::getExerciseFromSubtypeAndGrade, Role.USER, Role.ADMIN);
-            get("/subtypes", ctx -> ctx.json(JsonMapper.toJson(ExerciseSubType.values())), Role.USER, Role.ADMIN);
-            post("/verify", exerciseApiController::handleResult, Role.USER, Role.ADMIN);
-        });
         get("/login", AuthenticationHandler::login, Role.ANONYMOUS);
-        post("/register", AuthenticationHandler::register, Role.ANONYMOUS);
         get("/scoreboard", ctx -> {
             ctx.json(scoreboard.inOrderTraversal(scoreboard.getRoot()));
             LOG.info("Scoreboard page was accessed");
         }, Role.USER);
-
         get("/page-not-found", ctx -> {
             ctx.result("Page " + ctx.queryParam("invalid-endpoint") + " not found!");
             LOG.error("Page {} not found!", ctx.queryParam("invalid-endpoint"));
         }, Role.ANONYMOUS);
 
-        post("/stop", ctx -> {
-            ctx.result("Stopping server...");
-            LOG.info("Server was stopped");
-            closeApplication();
-        }, Role.ADMIN);
+        crud("/users/{user-guid}", userApiController, Role.SYSTEM_CRUD, Role.ADMIN);
+
+        path("/exercise", () -> {
+            get(exerciseApiController::getExerciseFromSubtypeAndGrade, Role.USER, Role.ADMIN);
+            get("/subtypes", ctx -> ctx.json(JsonMapper.toJson(ExerciseSubType.values())), Role.USER, Role.ADMIN);
+            post("/verify", exerciseApiController::handleResult, Role.USER, Role.ADMIN);
+        });
+
+        post("/register", AuthenticationHandler::register, Role.ANONYMOUS);
+        post("/stop", this::invokeStop, Role.ADMIN);
     }
 
-    private void registerErrorHandler(){
+    private void registerErrorHandler() {
         app.error(401, ctx -> {
             Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
-            credentials.ifPresentOrElse(basicAuthCredentials -> LOG.error("User {} is not allowed to access the {} endpoint", basicAuthCredentials.getUsername(), ctx.path()), () -> LOG.error("Anonymous user is not allowed to access the {} endpoint", ctx.path()));
-            ctx.html("Unauthorized access! Please provide valid credentials!");
+            credentials.ifPresentOrElse(
+                    basicAuthCredentials -> LOG.error("User {} is not allowed to access the {} endpoint", basicAuthCredentials.getUsername(), ctx.path()),
+                    () -> LOG.error("Anonymous user is not allowed to access the {} endpoint", ctx.path())
+            );
+            ctx.json("Unauthorized access! Please provide valid credentials!");
         });
         app.exception(MismatchedInputException.class, (e, ctx) -> {
             ctx.result("Invalid JSON format!");
@@ -106,12 +119,18 @@ public class Router {
         router.beforeMatched(ctx -> {
             String token = ctx.sessionAttribute("Authorization");
 
-            if(token == null) {
+            if (token == null) {
                 ctx.attribute("role", Role.ANONYMOUS);
             }
 
             AuthorizationHandler.validateEndpointAccess(ctx);
         });
+    }
+
+    private void invokeStop(Context ctx){
+        ctx.result("Stopping server...");
+        LOG.info("Server was stopped");
+        closeApplication();
     }
 
 
