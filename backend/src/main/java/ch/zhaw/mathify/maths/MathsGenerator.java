@@ -245,7 +245,7 @@ public class MathsGenerator {
         int tempA = a;
         int tempB = b;
 
-        for (int i = 0; i < countDigits(a + b); i++) {
+        for (int i = 0; i < amountOfDigits; i++) {
             result[2 * i] = (tempA % 10 + tempB % 10 + carryOver) % 10;
             carryOver = (tempA % 10 + tempB % 10 + carryOver >= 10) ? 1 : 0;
             if (carryOver == 1 || tempA / 10 != 0 || tempB / 10 != 0) {
