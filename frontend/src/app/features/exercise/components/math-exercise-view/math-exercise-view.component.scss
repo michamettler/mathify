@@ -2,10 +2,6 @@ h1 {
   font-size: 40px;
 }
 
-h2 {
-  padding-top: 15%;
-}
-
 .progress-section {
   margin-top: 5%;
   color: #3F51B5;
@@ -16,6 +12,16 @@ h2 {
     height: 30px;
   }
 }
+
+.number-ray-section {
+  width: 100%;
+  text-align: center;
+
+  .number-ray {
+    width: 50%;
+  }
+}
+
 
 .d-flex {
   display: flex;
