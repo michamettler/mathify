@@ -70,14 +70,17 @@ public class Router {
             post("/verify", exerciseApiController::handleResult, Role.USER, Role.ADMIN);
         });
         get("/login", AuthenticationHandler::login, Role.ANONYMOUS);
+        post("/register", AuthenticationHandler::register, Role.ANONYMOUS);
         get("/scoreboard", ctx -> {
             ctx.json(scoreboard.inOrderTraversal(scoreboard.getRoot()));
             LOG.info("Scoreboard page was accessed");
         }, Role.USER);
+
         get("/page-not-found", ctx -> {
             ctx.result("Page " + ctx.queryParam("invalid-endpoint") + " not found!");
             LOG.error("Page {} not found!", ctx.queryParam("invalid-endpoint"));
         }, Role.ANONYMOUS);
+
         post("/stop", ctx -> {
             ctx.result("Stopping server...");
             LOG.info("Server was stopped");

@@ -1,5 +1,6 @@
 package ch.zhaw.mathify.api.security;
 
+import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.repository.UserRepository;
 import io.javalin.http.Context;
@@ -65,6 +66,41 @@ public final class AuthenticationHandler {
             ctx.status(401);
         } catch (Exception e) {
             LOG.error("Error while authenticating user", e);
+            ctx.status(500);
+        }
+    }
+
+    /**
+     * Registers a new user if it doesn't already exist
+     * @param ctx The context of the request
+     */
+    public static void register(Context ctx) {
+        LOG.info("Trying to register user...");
+
+        User user = ctx.bodyAsClass(User.class);
+
+        if(user == null || user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getGrade() == null) {
+            String message = "User data is empty";
+            LOG.info(message);
+            ctx.result(message);
+            ctx.status(400);
+            return;
+        }
+
+        if(userRepository.checkIfUserExists(user.getUsername())) {
+            String message = "User already exists";
+            LOG.info(message);
+            ctx.result(message);
+            ctx.status(400);
+            return;
+        }
+
+        try {
+            userRepository.add(user);
+            ctx.status(200);
+            LOG.info("User registered successfully");
+        } catch (Exception e) {
+            LOG.error("Error while registering user", e);
             ctx.status(500);
         }
     }
