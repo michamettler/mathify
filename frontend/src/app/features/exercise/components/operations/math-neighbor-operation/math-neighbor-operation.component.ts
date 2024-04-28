@@ -5,6 +5,9 @@ import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {NgIf} from "@angular/common";
 import {User} from "../../../../../../model/user";
+import {MathExerciseService} from "../../../services/math-exercise.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-math-neighbor-operation',
@@ -14,7 +17,8 @@ import {User} from "../../../../../../model/user";
     MatFormField,
     MatInput,
     MatLabel,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './math-neighbor-operation.component.html',
   styleUrl: './math-neighbor-operation.component.scss'
@@ -37,7 +41,7 @@ export class MathNeighborOperationComponent {
     experience: 30
   };
 
-  constructor() {
+  constructor(private mathExerciseService: MathExerciseService, private _snackBar: MatSnackBar) {
   }
 
   displaySolution(): void {
@@ -46,6 +50,25 @@ export class MathNeighborOperationComponent {
 
   toggleHint(): void {
     this.showHint = !this.showHint;
+  }
+
+  verify(): void {
+    if (this.exercise) {
+      this.exercise.userResult = JSON.stringify([Number(this.firstAnswer), Number(this.secondAnswer)]);
+      this.mathExerciseService.verifyExercise(this.exercise).subscribe({
+        next: (response) => {
+          console.log(response)
+          if (response === true) {
+            window.location.reload(); //TODO maybe find a better way to get new exercises
+          } else {
+            this._snackBar.open("Result was incorrect, sorry!", "dismiss", {
+              verticalPosition: 'top',
+              horizontalPosition: 'end'
+            });
+          }
+        }
+      });
+    }
   }
 
 }
