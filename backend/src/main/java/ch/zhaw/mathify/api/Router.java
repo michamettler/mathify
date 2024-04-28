@@ -50,17 +50,8 @@ public class Router {
             config.router.apiBuilder(this::register);
             config.router.mount(this::handleAuthenticationAndAuthorization);
         });
-        app.error(401, ctx -> {
-            Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
-            credentials.ifPresentOrElse(basicAuthCredentials -> LOG.error("User {} is not allowed to access the {} endpoint", basicAuthCredentials.getUsername(), ctx.path()), () -> LOG.error("Anonymous user is not allowed to access the {} endpoint", ctx.path()));
-            ctx.html("Unauthorized access! Please provide valid credentials!");
-        });
-        app.exception(MismatchedInputException.class, (e, ctx) -> {
-            ctx.result("Invalid JSON format!");
-            LOG.error("Invalid JSON format!");
-            ctx.status(400);
-        });
-        app.error(404, ctx -> ctx.redirect("/page-not-found?invalid-endpoint=" + ctx.path()));
+
+        registerErrorHandler();
 
         int port = App.getSettings().getHttp().port();
         app.start(port);
@@ -92,6 +83,20 @@ public class Router {
             LOG.info("Server was stopped");
             closeApplication();
         }, Role.ADMIN);
+    }
+
+    private void registerErrorHandler(){
+        app.error(401, ctx -> {
+            Optional<BasicAuthCredentials> credentials = Optional.ofNullable(ctx.basicAuthCredentials());
+            credentials.ifPresentOrElse(basicAuthCredentials -> LOG.error("User {} is not allowed to access the {} endpoint", basicAuthCredentials.getUsername(), ctx.path()), () -> LOG.error("Anonymous user is not allowed to access the {} endpoint", ctx.path()));
+            ctx.html("Unauthorized access! Please provide valid credentials!");
+        });
+        app.exception(MismatchedInputException.class, (e, ctx) -> {
+            ctx.result("Invalid JSON format!");
+            LOG.error("Invalid JSON format!");
+            ctx.status(400);
+        });
+        app.error(404, ctx -> ctx.redirect("/page-not-found?invalid-endpoint=" + ctx.path()));
     }
 
     private void handleAuthenticationAndAuthorization(JavalinDefaultRouting router) {
