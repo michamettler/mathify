@@ -13,24 +13,16 @@ export class MathExerciseService {
   constructor(private http: HttpClient) {
   }
 
-  retrieveExercise(user: User, subtype: string): Observable<any> {
+  retrieveExercise(): Observable<any> {
     let url = `${this.apiUrl}exercise`;
 
     const headers = new HttpHeaders({
       'Authorization': localStorage.getItem('token')?.toString() + '',
-      'Content-Type': 'application/json'
     });
-
-    const queryParameters = {
-      exerciseSubType: subtype,
-      grade: user.grade ? user.grade : ''
-    };
-
-    const httpParams = new HttpParams({fromObject: queryParameters});
-
-    return this.http.get(url, {headers: headers, params: httpParams}).pipe(
-      catchError(this.handleError('login'))
-    );
+    return this.http.get(url, {headers: headers})
+      .pipe(
+        catchError(this.handleError('login'))
+      );
   }
 
   private handleError(operation = 'operation') {

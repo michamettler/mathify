@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {MatCard, MatCardContent, MatCardTitle} from "@angular/material/card";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
@@ -8,6 +8,7 @@ import {MatInput} from "@angular/material/input";
 import {HeaderComponent} from "../../../../../core/components/header/header.component";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {Exercise} from "../../../../../../model/exercise";
+import {User} from "../../../../../../model/user";
 
 @Component({
   selector: 'app-math-single-result-operation',
@@ -28,7 +29,8 @@ import {Exercise} from "../../../../../../model/exercise";
   templateUrl: './math-single-result-operation.component.html',
   styleUrl: './math-single-result-operation.component.scss'
 })
-export class MathSingleResultOperationComponent implements OnInit {
+export class MathSingleResultOperationComponent {
+  @Input() exercise?: Exercise;
   showSolution: boolean = false;
   showHint: boolean = false;
   hint: string = "Remember to multiply, not add.";
@@ -41,16 +43,7 @@ export class MathSingleResultOperationComponent implements OnInit {
     experience: 30
   };
 
-  constructor(private mathExerciseService: MathExerciseService, private router: Router) {
-  }
-
-  ngOnInit(): void {
-    this.mathExerciseService.retrieveExercise(this.user, this.exerciseType).subscribe({
-      next: (response) => {
-        this.exercise = response.exercise
-        this.solution = response.result
-      }
-    });
+  constructor() {
   }
 
   displaySolution(): void {
