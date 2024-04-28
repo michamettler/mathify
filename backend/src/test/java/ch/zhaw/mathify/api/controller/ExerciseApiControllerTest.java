@@ -25,10 +25,10 @@ class ExerciseApiControllerTest {
         when(ctxMock.bodyAsClass(ExerciseDto.class))
                 .thenReturn(
                         new ExerciseDto(
-                                "1",
-                                "1",
+                                "[1]",
+                                "[1]",
                                 "exercise",
-                                "1",
+                                "[1]",
                                 "addition"
                         )
                 );
@@ -48,10 +48,10 @@ class ExerciseApiControllerTest {
         when(ctxMock.bodyAsClass(ExerciseDto.class))
                 .thenReturn(
                         new ExerciseDto(
-                                "1",
-                                "2",
+                                "[1]",
+                                "[2]",
                                 "exercise",
-                                "1",
+                                "[1]",
                                 "addition"
                         )
                 );
