@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -14,10 +15,11 @@ import {AuthService} from "../../services/auth.service";
 export class HeaderComponent {
   @Input() gradeSelected: boolean = false;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
   }
 
   logout() {
+    this.router.navigate(['/login']);
     this.authService.logout();
   }
 }
