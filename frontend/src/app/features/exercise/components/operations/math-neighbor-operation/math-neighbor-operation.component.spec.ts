@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MathNeighborOperationComponent } from './math-neighbor-operation.component';
+import {MathNeighborOperationComponent} from './math-neighbor-operation.component';
 
 describe('MathMultipleResultOperationComponent', () => {
   let component: MathNeighborOperationComponent;
@@ -10,7 +10,7 @@ describe('MathMultipleResultOperationComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MathNeighborOperationComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(MathNeighborOperationComponent);
     component = fixture.componentInstance;

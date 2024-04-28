@@ -23,7 +23,7 @@ import {MathExerciseService} from "../../../services/math-exercise.service";
   templateUrl: './sorting-operation.component.html',
   styleUrl: './sorting-operation.component.scss'
 })
-export class SortingOperationComponent implements OnInit{
+export class SortingOperationComponent implements OnInit {
   @Input() exercise?: Exercise;
 
   numbers: number[] = []
