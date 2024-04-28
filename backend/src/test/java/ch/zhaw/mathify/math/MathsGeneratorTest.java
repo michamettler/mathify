@@ -15,26 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
  */
 class MathsGeneratorTest {
     @Test
-    void testRoundingTen() {
-        Exercise exercise = MathsGenerator.generate(Grade.THIRD, ExerciseSubType.ROUNDING_TEN);
-        assertInstanceOf(MathsExercise.class, exercise);
-        MathsExercise mathsExercise = (MathsExercise) exercise;
-        double[] values = mathsExercise.calculationValues();
-        double a = values[0];
-        double roundedNumber = Math.round(a / 10.0) * 10.0;
-        assertEquals(roundedNumber, mathsExercise.result()[0]);
-    }
-
-    @Test
-    void testRoundingTenError(){
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FIRST, ExerciseSubType.ROUNDING_TEN));
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.SECOND, ExerciseSubType.ROUNDING_TEN));
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FOURTH, ExerciseSubType.ROUNDING_TEN));
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FIFTH, ExerciseSubType.ROUNDING_TEN));
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.SIXTH, ExerciseSubType.ROUNDING_TEN));
-    }
-
-    @Test
     void testSorting() {
         int technicalScore = 1;
         Exercise exercise = MathsGenerator.generate(Grade.FIRST, ExerciseSubType.SORTING, technicalScore);
@@ -359,6 +339,63 @@ class MathsGeneratorTest {
         }
         for (int i = 0; i < result.length; i++) {
             assertEquals(MathsExercise.result()[i], result[i]);
+        }
+    }
+
+    @Test
+    void testRoundingTen() {
+        int technicalScore = 2;
+        Exercise exercise = MathsGenerator.generate(Grade.THIRD, ExerciseSubType.ROUNDINGTEN, technicalScore);
+        assertInstanceOf(MathsExercise.class, exercise);
+        MathsExercise mathsExercise = (MathsExercise) exercise;
+        double[] values = mathsExercise.calculationValues();
+        double a = values[0];
+        double roundedNumber = Math.round(a / 10.0) * 10.0;
+        assertEquals(roundedNumber, mathsExercise.result()[0]);
+    }
+
+    @Test
+    void testRoundingTenError() {
+        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FIRST, ExerciseSubType.ROUNDINGTEN, 3));
+        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.SECOND, ExerciseSubType.ROUNDINGTEN, 4));
+        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FOURTH, ExerciseSubType.ROUNDINGTEN, 5));
+        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FIFTH, ExerciseSubType.ROUNDINGTEN, 6));
+        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.SIXTH, ExerciseSubType.ROUNDINGTEN, 7));
+    }
+
+    @Test
+    void testLongAddition() {
+        int technicalScore = 3;
+        Exercise exercise = MathsGenerator.generate(Grade.THIRD, ExerciseSubType.LONGADDITION, technicalScore);
+        assertInstanceOf(MathsExercise.class, exercise);
+        MathsExercise mathsExercise = (MathsExercise) exercise;
+
+        assertEquals(mathsExercise.result()[mathsExercise.result().length - 1], mathsExercise.calculationValues()[0] + mathsExercise.calculationValues()[1]);
+
+        for (int i = 0; i < mathsExercise.result().length - 1; i++) {
+            if (i % 2 == 0) {
+                assertTrue(mathsExercise.result()[i] >= 0 && mathsExercise.result()[i] <= 9);
+            } else {
+                assertTrue(mathsExercise.result()[i] == 0 || mathsExercise.result()[i] == 1);
+            }
+        }
+    }
+
+    @Test
+    void testLongSubtraction() {
+        int technicalScore = 4;
+        Exercise exercise = MathsGenerator.generate(Grade.THIRD, ExerciseSubType.LONGSUBTRACTION, technicalScore);
+        assertInstanceOf(MathsExercise.class, exercise);
+        MathsExercise mathsExercise = (MathsExercise) exercise;
+
+        assertEquals(mathsExercise.result()[mathsExercise.result().length - 1], mathsExercise.calculationValues()[0] - mathsExercise.calculationValues()[1]);
+
+        for (int i = 0; i < mathsExercise.result().length - 1; i++) {
+            if (i % 2 == 0) {
+                assertTrue(mathsExercise.result()[i] >= 0 && mathsExercise.result()[i] <= 9);
+            } else {
+                assertTrue(mathsExercise.result()[i] == 0 || mathsExercise.result()[i] == 1);
+            }
         }
     }
 }

@@ -40,6 +40,9 @@ public class MathsGenerator {
             case THREESTEPADDITION -> generateThreeStepAddition(grade, technicalScore);
             case THREESTEPSUBTRACTION -> generateThreeStepSubtraction(grade, technicalScore);
             case MULTIPLICATIONTABLE -> generateMultiplicationTable(grade, technicalScore);
+            case ROUNDINGTEN -> generateRounding(grade, technicalScore);
+            case LONGADDITION -> generateLongAddition(grade, technicalScore);
+            case LONGSUBTRACTION -> generateLongSubtraction(grade, technicalScore);
             default -> throw new IllegalArgumentException("Sub type " + subType + " is not supported!");
         };
     }
@@ -208,6 +211,90 @@ public class MathsGenerator {
         return new MathsExercise(result, new double[result.length], "Generate the multiplication table for " + a, calculationValues, ExerciseSubType.MULTIPLICATIONTABLE);
     }
 
+    private static Exercise generateRounding(Grade grade, int technicalScore) {
+        LOG.info("Generating rounding exercise");
+
+        if (grade != Grade.THIRD) {
+            LOG.error("Rounding is only supported for grade three");
+            throw new IllegalArgumentException("Rounding is only supported for grade three");
+        }
+
+        int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
+        int a = random.nextInt(max + 1);
+        double roundedNumber = Math.round(a / 10.0) * 10.0;
+        double[] result = {roundedNumber};
+        return new MathsExercise(result, new double[result.length], "Round the following number to the next ten: " + a, result, ExerciseSubType.ROUNDINGTEN);
+    }
+
+    private static Exercise generateLongAddition(Grade grade, int technicalScore) {
+        LOG.info("Generating long addition exercise");
+        int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
+        int a = random.nextInt(max + 1);
+        int b = random.nextInt(max + 1);
+        double[] calculationValues = {a, b};
+
+        int amountOfDigits = countDigits(a + b);
+        int amountOfCarryOvers = amountOfDigits - 1;
+        int additionalCarryOver = 0;
+        if ((a + b) % 10 == 0) {
+            additionalCarryOver = 1;
+        }
+
+        double[] result = new double[amountOfDigits + amountOfCarryOvers + additionalCarryOver + 1];
+        int carryOver = 0;
+        int tempA = a;
+        int tempB = b;
+
+        for (int i = 0; i < countDigits(a + b); i++) {
+            result[2 * i] = (tempA % 10 + tempB % 10 + carryOver) % 10;
+            carryOver = (tempA % 10 + tempB % 10 + carryOver >= 10) ? 1 : 0;
+            if (carryOver == 1 || tempA / 10 != 0 || tempB / 10 != 0) {
+                result[2 * i + 1] = carryOver;
+            }
+            tempA /= 10;
+            tempB /= 10;
+        }
+
+        result[result.length - 1] = a + b;
+
+        return new MathsExercise(result, new double[result.length], "Calculate " + a + " + " + b + " using long addition", calculationValues, ExerciseSubType.LONGADDITION);
+    }
+
+    private static Exercise generateLongSubtraction(Grade grade, int technicalScore) {
+        LOG.info("Generating long subtraction exercise");
+        int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
+        int a = random.nextInt(max + 1);
+        int b;
+        do {
+            b = random.nextInt(max + 1);
+        } while (a < b);
+        double[] calculationValues = {a, b};
+
+        int amountOfDigits = countDigits(a);
+        int amountOfCarryOvers = amountOfDigits - 1;
+
+        double[] result = new double[amountOfDigits + amountOfCarryOvers + 1];
+        int carryOver = 0;
+        int tempA = a;
+        int tempB = b;
+
+        for (int i = 0; i < countDigits(a - b); i++) {
+            int difference = tempA % 10 - tempB % 10 - carryOver;
+            if (difference < 0) result[2 * i] = 10 - Math.abs(difference);
+            else result[2 * i] = Math.abs(difference);
+            carryOver = (tempA % 10 - tempB % 10 - carryOver < 0) ? 1 : 0;
+            if (carryOver == 1 || tempA / 10 != 0 || tempB / 10 != 0) {
+                result[2 * i + 1] = carryOver;
+            }
+            tempA /= 10;
+            tempB /= 10;
+        }
+
+        result[result.length - 1] = a - b;
+
+        return new MathsExercise(result, new double[result.length], "Calculate " + a + " - " + b + " using long subtraction", calculationValues, ExerciseSubType.LONGSUBTRACTION);
+    }
+
     private static int getRandomFactor(int num) {
         int factor = num;
         while (factor == num) {
@@ -227,5 +314,15 @@ public class MathsGenerator {
         if (num <= 6) return 0.5;
         if (num <= 9) return 0.75;
         return 1;
+    }
+
+    private static int countDigits(int num) {
+        if (num == 0) return 1;
+        int count = 0;
+        while (num != 0) {
+            num /= 10;
+            count++;
+        }
+        return count;
     }
 }
