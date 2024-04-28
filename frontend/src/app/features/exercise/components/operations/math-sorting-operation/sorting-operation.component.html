@@ -1,11 +1,11 @@
 <div class="container">
   <h1>Math Exercise - {{ exercise ? exercise.exerciseSubType : '' }}</h1>
-  <h2 class="exercise">{{ exercise ? exercise.exercise : '' }}</h2>
+  <h2 class="exercise">Sort the following numbers:</h2>
   <div class="input-section">
     <div class="input-group">
       <div cdkDropList cdkDropListOrientation="horizontal" class="number-sort" (cdkDropListDropped)="drop($event)">
-        @for (timePeriod of timePeriods; track timePeriod) {
-          <div class="example-box" cdkDrag>{{timePeriod}}</div>
+        @for (number of numbers; track number) {
+          <div class="example-box" cdkDrag>{{number}}</div>
         }
       </div>
       <button (click)="displaySolution()" class="submit-button" color="primary" mat-raised-button>Submit</button>

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Exercise} from '../../../../../../model/exercise';
 import {MatButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
@@ -21,20 +21,20 @@ import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from "@angular/cdk/d
   templateUrl: './sorting-operation.component.html',
   styleUrl: './sorting-operation.component.scss'
 })
-export class SortingOperationComponent {
+export class SortingOperationComponent implements OnInit{
   @Input() exercise?: Exercise;
 
-  timePeriods = [
-    '1',
-    '3',
-    '6',
-  ];
+  numbers: number[] = []
 
   showSolution: boolean = false;
   showHint: boolean = false;
   hint: string = "Remember to multiply, not add.";
 
   constructor() {
+  }
+
+  ngOnInit(): void {
+    this.numbers = JSON.parse(this.exercise?.calculationValues ?? '[]');
   }
 
   displaySolution(): void {
@@ -46,7 +46,7 @@ export class SortingOperationComponent {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.timePeriods, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.numbers, event.previousIndex, event.currentIndex);
   }
 
 }

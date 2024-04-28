@@ -59,24 +59,17 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    /*this.mathExerciseService.retrieveExercise().subscribe({
+    this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
         this.exercise = {
-          exercise: response.exercise + ' = ?',
-          result: response.result,
           exerciseSubType: this.findCategory(response.exerciseSubType),
-          userResult: undefined,
-          calculationValues: undefined
+          exercise: response.exercise,
+          result: response.result,
+          userResult: '',
+          calculationValues: response.calculationValues
         }
       }
-    });*/
-    this.exercise = {
-      exercise: '[7, 9, 0]',
-      result: '[7, 9]',
-      exerciseSubType: this.findCategory('SORTING'),
-      userResult: undefined,
-      calculationValues: undefined
-    }
+    });
   }
 
   findCategory(operation: string): string {
