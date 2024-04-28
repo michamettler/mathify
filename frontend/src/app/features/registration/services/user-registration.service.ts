@@ -30,7 +30,7 @@ export class UserRegistrationService {
   }
 
   register(user: User): Observable<any> {
-    let url = `${this.apiUrl}users`;
+    let url = `${this.apiUrl}register`;
     if (user.username && user.password && user.email && user.grade) {
       return this.http.post(url, {
         username: user.username,

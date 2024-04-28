@@ -111,4 +111,12 @@ public final class UserRepository implements Repository<User> {
     public User getByUserName(String username) throws NoSuchElementException {
         return users.stream().filter(u -> u.getUsername().equals(username)).findFirst().orElseThrow();
     }
+
+    /**
+     * @param username the name of the user to check
+     * @return true if the user with the given name exists, false otherwise
+     */
+    public boolean checkIfUserExists(String username) {
+        return users.stream().anyMatch(u -> u.getUsername().equals(username));
+    }
 }

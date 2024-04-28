@@ -105,7 +105,7 @@ public final class  SessionHandler {
                 .stream()
                 .filter(user -> sessions.get(user).equals(token))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(); 
     }
 
     /**
