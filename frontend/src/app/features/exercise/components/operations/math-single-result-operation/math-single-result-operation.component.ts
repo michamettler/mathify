@@ -57,11 +57,7 @@ export class MathSingleResultOperationComponent {
         next: (response) => {
           console.log(response)
           if (response === true) {
-            this._snackBar.open("Result was correct, congratulations!", "dismiss", {
-              verticalPosition: 'top',
-              horizontalPosition: 'end'
-            });
-            this.router.navigate(['/exercise']);
+            window.location.reload(); //TODO maybe find a better way to get new exercises
           } else {
             this._snackBar.open("Result was incorrect, sorry!", "dismiss", {
               verticalPosition: 'top',
