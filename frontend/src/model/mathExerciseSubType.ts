@@ -9,16 +9,16 @@ export namespace MathExerciseSubType {
     DOUBLING = 'DOUBLING',
     HALVING = 'HALVING',
     COMPARISON = 'COMPARISON',
+    THREESTEPADDITION = 'THREESTEPADDITION',
+    THREESTEPSUBTRACTION = 'THREESTEPSUBTRACTION',
   }
 
   export enum MultipleResultOperation {
-    SORTING = 'SORTING',
     NEIGHBORS = 'NEIGHBORS',
-}
+  }
 
-  export enum MultipleStepOperation {
-    THREESTEPADDITION = 'THREESTEPADDITION',
-    THREESTEPSUBTRACTION = 'THREESTEPSUBTRACTION',
+  export enum SortingOperation {
+    SORTING = 'SORTING',
   }
 
   export enum TableOperation {

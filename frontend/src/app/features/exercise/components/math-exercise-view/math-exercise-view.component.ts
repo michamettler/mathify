@@ -14,13 +14,11 @@ import {Exercise} from "../../../../../model/exercise";
 import {
   MathSingleResultOperationComponent
 } from "../operations/math-single-result-operation/math-single-result-operation.component";
-import {MathExerciseSubType} from "../../../../../model/mathExerciseSubType";
 import {
   MathMultipleResultOperationComponent
 } from "../operations/math-multiple-result-operation/math-multiple-result-operation.component";
-import {
-  MathMultipleStepOperationComponent
-} from "../operations/math-multiple-step-operation/math-multiple-step-operation.component";
+import {SortingOperationComponent} from "../operations/math-sorting-operation/sorting-operation.component";
+import {MathExerciseSubType} from "../../../../../model/mathExerciseSubType";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -39,7 +37,7 @@ import {
     MatProgressBar,
     MathSingleResultOperationComponent,
     MathMultipleResultOperationComponent,
-    MathMultipleStepOperationComponent
+    SortingOperationComponent
   ],
   templateUrl: './math-exercise-view.component.html',
   styleUrl: './math-exercise-view.component.scss'
@@ -75,7 +73,7 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   findCategory(operation: string): string {
-    const {SingleResultOperation, MultipleResultOperation, MultipleStepOperation, TableOperation} = MathExerciseSubType;
+    const {SingleResultOperation, MultipleResultOperation, SortingOperation, TableOperation} = MathExerciseSubType;
 
     if (Object.values(SingleResultOperation).includes(operation as any)) {
       this.category = 'SingleResultOperation';
@@ -83,8 +81,8 @@ export class MathExerciseViewComponent implements OnInit {
     } else if (Object.values(MultipleResultOperation).includes(operation as any)) {
       this.category = 'MultipleResultOperation';
       return operation;
-    } else if (Object.values(MultipleStepOperation).includes(operation as any)) {
-      this.category = 'MultipleStepOperation';
+    } else if (Object.values(SortingOperation).includes(operation as any)) {
+      this.category = 'SortingOperation';
       return operation;
     } else if (Object.values(TableOperation).includes(operation as any)) {
       this.category = 'TableOperation';
