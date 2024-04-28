@@ -14,9 +14,7 @@ import {Exercise} from "../../../../../model/exercise";
 import {
   MathSingleResultOperationComponent
 } from "../operations/math-single-result-operation/math-single-result-operation.component";
-import {
-  MathNeighborOperationComponent
-} from "../operations/math-neighbor-operation/math-neighbor-operation.component";
+import {MathNeighborOperationComponent} from "../operations/math-neighbor-operation/math-neighbor-operation.component";
 import {SortingOperationComponent} from "../operations/math-sorting-operation/sorting-operation.component";
 import {MathExerciseSubType} from "../../../../../model/mathExerciseSubType";
 
@@ -90,10 +88,6 @@ export class MathExerciseViewComponent implements OnInit {
     }
 
     return 'Unknown Category';
-  }
-
-  verify(): void {
-    //TODO verify user result
   }
 
 }
