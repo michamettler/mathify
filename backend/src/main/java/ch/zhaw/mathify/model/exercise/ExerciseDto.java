@@ -12,7 +12,8 @@ import java.util.Arrays;
  * @param result          the result of the exercise
  * @param exerciseSubType the exercise subtype
  */
-public record ExerciseDto(String result, String userResult, String exercise, String calculationValues, String exerciseSubType) {
+public record ExerciseDto(String result, String userResult, String exercise, String calculationValues,
+                          String exerciseSubType) {
     private static final Logger LOG = LoggerFactory.getLogger(ExerciseDto.class);
 
     /**
@@ -25,15 +26,15 @@ public record ExerciseDto(String result, String userResult, String exercise, Str
         LOG.info("Converting dto to exercise");
         try {
             return new MathsExercise(
-                    Arrays.stream(this.result().split(",")).mapToDouble(Double::parseDouble).toArray(),
-                    Arrays.stream(this.userResult.split(",")).mapToDouble(Double::parseDouble).toArray(),
+                    Arrays.stream(this.result().substring(1, this.result().length() - 1).split(",")).mapToDouble(Double::parseDouble).toArray(),
+                    Arrays.stream(this.userResult.substring(1, this.userResult.length() - 1).split(",")).mapToDouble(Double::parseDouble).toArray(),
                     this.exercise(),
-                    Arrays.stream(this.calculationValues().split(",")).mapToDouble(Double::parseDouble).toArray(),
+                    Arrays.stream(this.calculationValues().substring(1, this.calculationValues().length() - 1).split(",")).mapToDouble(Double::parseDouble).toArray(),
                     ExerciseSubType.valueOfIgnoreCase(this.exerciseSubType())
             );
         } catch (IllegalArgumentException e) {
-            LOG.error("Invalid exercise subtype - {}", e.getMessage());
-            throw new IllegalArgumentException("Invalid exercise subtype");
+            LOG.error("Could not parse exercise from dto - {}", e.getMessage());
+            throw new IllegalArgumentException("Could not parse exercise from dto");
         }
     }
 }
