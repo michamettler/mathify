@@ -7,18 +7,18 @@
   <div class="main">
     <div class="col-md-6 col-sm-12">
       <div class="login-form">
-        <form [formGroup]="form" (ngSubmit)="register()">
+        <form (ngSubmit)="register()" [formGroup]="form">
           <div class="form-group">
             <mat-form-field>
               <mat-label>Username</mat-label>
-              <input matInput formControlName="username" placeholder="Username">
+              <input formControlName="username" matInput placeholder="Username">
               @if (form.get('username')?.errors?.['required']) {
                 <mat-error>Please choose a username</mat-error>
               }
             </mat-form-field>
             <mat-form-field>
               <mat-label>Email</mat-label>
-              <input matInput formControlName="email" placeholder="Enter your email">
+              <input formControlName="email" matInput placeholder="Enter your email">
               @if (form.get('email')?.errors?.['required']) {
                 <mat-error>Please choose an email</mat-error>
               }
@@ -28,14 +28,14 @@
             </mat-form-field>
             <mat-form-field>
               <mat-label>Password</mat-label>
-              <input matInput formControlName="password" placeholder="Password" type="password">
+              <input formControlName="password" matInput placeholder="Password" type="password">
               @if (form.get('password')?.errors?.['required']) {
                 <mat-error>Please choose a password</mat-error>
               }
             </mat-form-field>
             <mat-form-field>
               <mat-label>Repeat Password</mat-label>
-              <input matInput formControlName="repeatPassword" placeholder="Repeat Password" type="password">
+              <input formControlName="repeatPassword" matInput placeholder="Repeat Password" type="password">
               @if (passwordMismatch) {
                 <mat-error>Passwords do not match</mat-error>
               }

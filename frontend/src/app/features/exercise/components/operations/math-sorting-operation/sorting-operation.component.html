@@ -3,12 +3,12 @@
   <h2 class="exercise">Sort the following numbers:</h2>
   <div class="input-section">
     <div class="input-group">
-      <div cdkDropList cdkDropListOrientation="horizontal" class="number-sort" (cdkDropListDropped)="drop($event)">
+      <div (cdkDropListDropped)="drop($event)" cdkDropList cdkDropListOrientation="horizontal" class="number-sort">
         @for (number of numbers; track number) {
-          <div class="example-box" cdkDrag>{{number}}</div>
+          <div class="number-box" cdkDrag>{{ number }}</div>
         }
       </div>
-      <button (click)="displaySolution()" class="submit-button" color="primary" mat-raised-button>Submit</button>
+      <button (click)="verify()" class="submit-button" color="primary" mat-raised-button>Submit</button>
     </div>
     <div class="button-group">
       <button (click)="displaySolution()" color="primary" mat-stroked-button>Show Solution</button>

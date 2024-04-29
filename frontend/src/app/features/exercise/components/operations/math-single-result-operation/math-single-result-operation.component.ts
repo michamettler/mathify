@@ -8,6 +8,9 @@ import {MatInput} from "@angular/material/input";
 import {HeaderComponent} from "../../../../../core/components/header/header.component";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {Exercise} from "../../../../../../model/exercise";
+import {MathExerciseService} from "../../../services/math-exercise.service";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-math-single-result-operation',
@@ -30,11 +33,13 @@ import {Exercise} from "../../../../../../model/exercise";
 })
 export class MathSingleResultOperationComponent {
   @Input() exercise?: Exercise;
+  userSolution: string = '';
+
   showSolution: boolean = false;
   showHint: boolean = false;
-  hint: string = "Remember to multiply, not add.";
+  hint: string = 'Placeholder hint';
 
-  constructor() {
+  constructor(private mathExerciseService: MathExerciseService, private router: Router, private _snackBar: MatSnackBar) {
   }
 
   displaySolution(): void {
@@ -43,6 +48,25 @@ export class MathSingleResultOperationComponent {
 
   toggleHint(): void {
     this.showHint = !this.showHint;
+  }
+
+  verify(): void {
+    if (this.exercise) {
+      this.exercise.userResult = JSON.stringify([Number(this.userSolution)]);
+      this.mathExerciseService.verifyExercise(this.exercise).subscribe({
+        next: (response) => {
+          console.log(response)
+          if (response === true) {
+            window.location.reload(); //TODO maybe find a better way to get new exercises
+          } else {
+            this._snackBar.open("Result was incorrect, sorry!", "dismiss", {
+              verticalPosition: 'top',
+              horizontalPosition: 'end'
+            });
+          }
+        }
+      });
+    }
   }
 
 }
