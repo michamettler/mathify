@@ -96,18 +96,11 @@ public class UserApiController implements CrudHandler {
      */
     @Override
     public void update(@NotNull Context context, @NotNull String guid) {
-        validateUser(context);
-
         User user = context.bodyAsClass(User.class);
-        user.setPassword(User.hashPassword(user.getPassword()));
+        User userFromRepo = userRepository.get().stream().filter(u -> u.getGuid().equals(guid)).findFirst().orElse(null);
 
-        if (userRepository.get().stream().anyMatch(u -> u.getGuid().equals(guid))) {
-            userRepository.remove(userRepository.get().stream()
-                    .filter(u -> u.getGuid().equals(guid))
-                    .findFirst()
-                    .orElse(null));
-            userRepository.add(user);
-            userRepository.save();
+        if (userFromRepo != null) {
+            userFromRepo.updateUser(user);
             context.status(204);
             context.result("User updated successfully!");
             LOG.info("User updated successfully!");
