@@ -92,7 +92,7 @@ public class User {
      */
     public static boolean verifyPassword(String password, String hash) {
         LOG.debug("Verifying password");
-        try{
+        try {
             return BCrypt.checkpw(password, hash);
         } catch (IllegalArgumentException e) {
             LOG.error("Invalid hash", e);
@@ -182,15 +182,16 @@ public class User {
 
     /**
      * Update user with new values
+     *
      * @param user user to update
      */
     public void updateUser(User user) {
-        if(user.getUsername() != null) setUsername(user.getUsername());
-        if(user.getEmail() != null) setEmail(user.getEmail());
-        if(user.getPassword() != null) setPassword(hashPassword(user.getPassword()));
-        if(user.getGrade() != null) setGrade(user.getGrade());
-        if(user.getRole() != null) setRole(user.getRole());
-        if(user.getLevel() != 0) setLevel(user.getLevel());
-        if(user.getExperience() != 0) setExperience(user.getExperience());
+        if (user.getUsername() != null) setUsername(user.getUsername());
+        if (user.getEmail() != null) setEmail(user.getEmail());
+        if (user.getPassword() != null) setPassword(hashPassword(user.getPassword()));
+        if (user.getGrade() != null) setGrade(user.getGrade());
+        if (user.getRole() != null) setRole(user.getRole());
+        if (user.getLevel() != 0) setLevel(user.getLevel());
+        if (user.getExperience() != 0) setExperience(user.getExperience());
     }
 }
