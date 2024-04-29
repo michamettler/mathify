@@ -1,15 +1,18 @@
 package ch.zhaw.mathify.model;
 
 import ch.zhaw.mathify.model.exercise.ExerciseSubType;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User model with username, level and experience
- * Every 100exp, the level will increase by one
+ * Every 100exp, the level will increase by one.
+ * Username, password and email are required.
  */
 public class User {
     private static final Logger LOG = LoggerFactory.getLogger(User.class);
@@ -89,8 +92,6 @@ public class User {
      */
     public static boolean verifyPassword(String password, String hash) {
         LOG.debug("Verifying password");
-        LOG.info("Password: {}", password);
-        LOG.info("Hash: {}", hash);
         try{
             return BCrypt.checkpw(password, hash);
         } catch (IllegalArgumentException e) {
@@ -171,11 +172,25 @@ public class User {
         this.role = role;
     }
 
-    public HashMap<ExerciseSubType, Integer> getTechnicalScore() {
+    public Map<ExerciseSubType, Integer> getTechnicalScore() {
         return technicalScore;
     }
 
     public void setTechnicalScore(ExerciseSubType subType, int score) {
         technicalScore.put(subType, score);
+    }
+
+    /**
+     * Update user with new values
+     * @param user user to update
+     */
+    public void updateUser(User user) {
+        if(user.getUsername() != null) setUsername(user.getUsername());
+        if(user.getEmail() != null) setEmail(user.getEmail());
+        if(user.getPassword() != null) setPassword(hashPassword(user.getPassword()));
+        if(user.getGrade() != null) setGrade(user.getGrade());
+        if(user.getRole() != null) setRole(user.getRole());
+        if(user.getLevel() != 0) setLevel(user.getLevel());
+        if(user.getExperience() != 0) setExperience(user.getExperience());
     }
 }

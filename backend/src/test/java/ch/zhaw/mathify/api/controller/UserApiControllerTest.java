@@ -78,4 +78,27 @@ class UserApiControllerTest {
 
         assertFalse(userRepository.get().contains(userToDelete));
     }
+
+    @Test
+    void testUpdateUser() {
+        UserRepository.destroy();
+        User newUser = new User("abcd", "Test User", "testpassword", Grade.FIRST);
+        when(contextMock.bodyAsClass(User.class)).thenReturn(newUser);
+        when(contextMock.bodyValidator(User.class)).thenReturn(new BodyValidator<>("body", User.class, () -> newUser));
+
+        String guid = userRepository.getByUserName("zehndjon").getGuid();
+
+        userApiController.update(contextMock, guid);
+
+        ArgumentCaptor<Integer> statusCaptor = ArgumentCaptor.forClass(Integer.class);
+        verify(contextMock).status(statusCaptor.capture());
+        assertEquals(204, statusCaptor.getValue());
+
+        ArgumentCaptor<String> resultCaptor = ArgumentCaptor.forClass(String.class);
+        verify(contextMock).result(resultCaptor.capture());
+        assertTrue(resultCaptor.getValue().contains("User updated successfully!"));
+
+        User updatedUser = userRepository.getByUserName("abcd");
+        assertEquals(guid, updatedUser.getGuid());
+    }
 }
