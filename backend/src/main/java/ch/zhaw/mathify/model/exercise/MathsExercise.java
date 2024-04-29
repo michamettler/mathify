@@ -36,7 +36,7 @@ public record MathsExercise(double[] result, double[] userResult, String exercis
     @Override
     public ExerciseDto toDto() {
         LOG.info("Converting exercise to dto...");
-        return new ExerciseDto(Arrays.toString(result), Arrays.toString(userResult), exercise, Arrays.toString(calculationValues), exerciseSubType.toString());
+        return new ExerciseDto(Arrays.toString(result), Arrays.toString(userResult), exercise, Arrays.toString(calculationValues), exerciseSubType.toString(), exerciseSubType.getDisplayName());
     }
 
     @Override
