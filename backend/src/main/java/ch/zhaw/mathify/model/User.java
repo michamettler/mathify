@@ -1,7 +1,6 @@
 package ch.zhaw.mathify.model;
 
 import ch.zhaw.mathify.model.exercise.ExerciseSubType;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCrypt;
