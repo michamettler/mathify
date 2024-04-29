@@ -96,11 +96,9 @@ public class UserApiController implements CrudHandler {
      */
     @Override
     public void update(@NotNull Context context, @NotNull String guid) {
-        validateUser(context);
-
         User user = context.bodyAsClass(User.class);
         User userFromRepo = userRepository.get().stream().filter(u -> u.getGuid().equals(guid)).findFirst().orElse(null);
-        
+
         if (userFromRepo != null) {
             userFromRepo.updateUser(user);
             context.status(204);
