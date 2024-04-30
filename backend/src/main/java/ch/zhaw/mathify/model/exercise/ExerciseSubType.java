@@ -22,7 +22,7 @@ public enum ExerciseSubType {
     LONGADDITION,
     LONGSUBTRACTION,
     LONGMULTIPLICATION,
-    LONGDIVISION;
+    ORDEROFOPERATIONS;
 
 
     /**

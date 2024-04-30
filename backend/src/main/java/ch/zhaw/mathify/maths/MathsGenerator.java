@@ -46,6 +46,7 @@ public class MathsGenerator {
             case LONGADDITION -> generateLongAddition(grade, technicalScore);
             case LONGSUBTRACTION -> generateLongSubtraction(grade, technicalScore);
             case LONGMULTIPLICATION -> generateLongMultiplication(grade, technicalScore);
+            case ORDEROFOPERATIONS -> generateOrderOfOperations(grade, technicalScore);
             default -> throw new IllegalArgumentException("Sub type " + subType + " is not supported!");
         };
     }
@@ -333,6 +334,58 @@ public class MathsGenerator {
         return new MathsExercise(result, new double[result.length], "Calculate " + a + " * " + b + " using long multiplication", calculationValues, ExerciseSubType.LONGMULTIPLICATION);
     }
 
+    private static Exercise generateOrderOfOperations(Grade grade, int technicalScore) {
+        LOG.info("Generating order of operations exercise");
+        int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
+        int a = random.nextInt(max + 1);
+        int b = getRandomFactor(a);
+        int c = getRandomFactor(b);
+        int operator1 = random.nextInt(4);
+        int operator2 = random.nextInt(4);
+        char operatorSymbol1 = getRandomOperator(operator1);
+        char operatorSymbol2 = getRandomOperator(operator2);
+        double[] result = new double[1];
+
+        switch (operator1) {
+            case 0 -> {
+                switch (operator2) {
+                    case 0 -> result[0] = a + b + c;
+                    case 1 -> result[0] = a + b - c;
+                    case 2 -> result[0] = a + b * c;
+                    case 3 -> result[0] = a + (double) b / c;
+                }
+            }
+            case 1 -> {
+                switch (operator2) {
+                    case 0 -> result[0] = a - b + c;
+                    case 1 -> result[0] = a - b - c;
+                    case 2 -> result[0] = a - b * c;
+                    case 3 -> result[0] = a - (double) b / c;
+                }
+            }
+            case 2 -> {
+                switch (operator2) {
+                    case 0 -> result[0] = a * b + c;
+                    case 1 -> result[0] = a * b - c;
+                    case 2 -> result[0] = a * b * c;
+                    case 3 -> result[0] = (double) (a * b) / c;
+                }
+            }
+            case 3 -> {
+                switch (operator2) {
+                    case 0 -> result[0] = (double) a / b + c;
+                    case 1 -> result[0] = (double) a / b - c;
+                    case 2 -> result[0] = (double) a / b * c;
+                    case 3 -> result[0] = (double) a / b / c;
+                }
+            }
+        }
+
+        double[] calculationValues = {a, b, c};
+
+        return new MathsExercise(result, new double[result.length], "Solve the following exercise following the order of operations: " + a + " " + operatorSymbol1 + " " + b + " " + operatorSymbol2 + " " + c, calculationValues, ExerciseSubType.ORDEROFOPERATIONS);
+    }
+
     private static int getRandomFactor(int num) {
         int factor = num;
         while (factor == num) {
@@ -362,5 +415,16 @@ public class MathsGenerator {
             count++;
         }
         return count;
+    }
+
+    private static char getRandomOperator(int num) {
+        char operatorSymbol = ' ';
+        switch (num) {
+            case 0 -> operatorSymbol = '+';
+            case 1 -> operatorSymbol = '-';
+            case 2 -> operatorSymbol = '*';
+            case 3 -> operatorSymbol = '/';
+        }
+        return operatorSymbol;
     }
 }
