@@ -7,6 +7,8 @@ import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.exercise.MathsExercise;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
@@ -396,6 +398,22 @@ class MathsGeneratorTest {
             } else {
                 assertTrue(mathsExercise.result()[i] == 0 || mathsExercise.result()[i] == 1);
             }
+        }
+    }
+
+    @Test
+    void testLongMultiplication() {
+        int technicalScore = 5;
+        Exercise exercise = MathsGenerator.generate(Grade.THIRD, ExerciseSubType.LONGMULTIPLICATION, technicalScore);
+        assertInstanceOf(MathsExercise.class, exercise);
+        MathsExercise mathsExercise = (MathsExercise) exercise;
+
+        assertEquals(mathsExercise.result()[mathsExercise.result().length - 1], mathsExercise.calculationValues()[0] * mathsExercise.calculationValues()[1]);
+
+        System.out.println(Arrays.toString(mathsExercise.calculationValues()));
+        for (int i = 0; i < mathsExercise.result().length; i++) {
+            System.out.println(mathsExercise.result()[i]);
+            //assertTrue(mathsExercise.result()[i] >= 0 && mathsExercise.result()[i] <= 9);
         }
     }
 }

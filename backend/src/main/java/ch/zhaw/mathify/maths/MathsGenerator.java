@@ -5,7 +5,9 @@ import ch.zhaw.mathify.model.exercise.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -43,6 +45,7 @@ public class MathsGenerator {
             case ROUNDINGTEN -> generateRounding(grade, technicalScore);
             case LONGADDITION -> generateLongAddition(grade, technicalScore);
             case LONGSUBTRACTION -> generateLongSubtraction(grade, technicalScore);
+            case LONGMULTIPLICATION -> generateLongMultiplication(grade, technicalScore);
             default -> throw new IllegalArgumentException("Sub type " + subType + " is not supported!");
         };
     }
@@ -248,9 +251,7 @@ public class MathsGenerator {
         for (int i = 0; i < amountOfDigits; i++) {
             result[2 * i] = (tempA % 10 + tempB % 10 + carryOver) % 10;
             carryOver = (tempA % 10 + tempB % 10 + carryOver >= 10) ? 1 : 0;
-            if (carryOver == 1 || tempA / 10 != 0 || tempB / 10 != 0) {
-                result[2 * i + 1] = carryOver;
-            }
+            if (carryOver == 1 || tempA / 10 != 0 || tempB / 10 != 0) result[2 * i + 1] = carryOver;
             tempA /= 10;
             tempB /= 10;
         }
@@ -286,9 +287,7 @@ public class MathsGenerator {
                 result[2 * i] = Math.abs(difference);
             }
             carryOver = (tempA % 10 - tempB % 10 - carryOver < 0) ? 1 : 0;
-            if (carryOver == 1 || tempA / 10 != 0 || tempB / 10 != 0) {
-                result[2 * i + 1] = carryOver;
-            }
+            if (carryOver == 1 || tempA / 10 != 0 || tempB / 10 != 0) result[2 * i + 1] = carryOver;
             tempA /= 10;
             tempB /= 10;
         }
@@ -296,6 +295,42 @@ public class MathsGenerator {
         result[result.length - 1] = a - b;
 
         return new MathsExercise(result, new double[result.length], "Calculate " + a + " - " + b + " using long subtraction", calculationValues, ExerciseSubType.LONGSUBTRACTION);
+    }
+
+    private static Exercise generateLongMultiplication(Grade grade, int technicalScore) {
+        LOG.info("Generating long multiplication exercise");
+        int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
+        int a = random.nextInt(max + 1);
+        int b = random.nextInt(max + 1);
+        double[] calculationValues = {a, b};
+
+        int tempA = a;
+        int tempB = b;
+        List<Integer> tempList = new ArrayList<>();
+
+        if (a != 0 && b != 0) {
+            int carryOver = 0;
+            do {
+                do {
+                    tempList.add(((tempA % 10) * (tempB % 10) + carryOver) % 10);
+                    carryOver = (((tempA % 10) * (tempB % 10)) + carryOver) / 10;
+                    if (carryOver > 0 || tempB / 10 != 0) tempList.add(carryOver);
+                    tempB /= 10;
+                } while (tempB != 0);
+                if (carryOver != 0) tempList.add(carryOver);
+                carryOver = 0;
+                tempB = b;
+                tempA /= 10;
+            } while (tempA != 0);
+        }
+
+        tempList.add(a * b);
+
+        double[] result = tempList.stream()
+                .mapToDouble(Integer::doubleValue)
+                .toArray();
+
+        return new MathsExercise(result, new double[result.length], "Calculate " + a + " * " + b + " using long multiplication", calculationValues, ExerciseSubType.LONGMULTIPLICATION);
     }
 
     private static int getRandomFactor(int num) {
