@@ -12,7 +12,7 @@ EXPOSE 8080 8443
 
 # Install necessary packages
 RUN apt-get update && \
-    apt-get install -y openjdk-21-jdk git wget unzip && \
+    apt-get install -y openjdk-21-jdk wget unzip && \
     apt-get clean
 
 # Set up Gradle
@@ -26,13 +26,13 @@ RUN wget https://services.gradle.org/distributions/gradle-8.7-bin.zip && \
 COPY . /opt/repository
 
 # Copy certificates
-COPY NO_CHECKIN /etc/ssl
+COPY Certificates /etc/ssl
 
 # Set working directory
 WORKDIR /opt/repository
 
-# Delete NO_CHECKIN folder
-RUN rm -rf NO_CHECKIN
+# Delete certificates folder
+RUN rm -rf Certificates
 
 # Build the application using Gradle
 RUN gradle build
