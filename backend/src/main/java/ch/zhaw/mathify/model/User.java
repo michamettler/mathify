@@ -175,8 +175,10 @@ public class User {
         return technicalScore;
     }
 
-    public void setTechnicalScore(ExerciseSubType subType, int score) {
-        technicalScore.put(subType, score);
+    public void setTechnicalScore(ExerciseSubType subType, boolean resultWasCorrect) {
+        int currentScore = getTechnicalScore().get(subType);
+        if (resultWasCorrect && currentScore < 10) technicalScore.put(subType, currentScore + 1);
+        else if (!resultWasCorrect && currentScore > 1) technicalScore.put(subType, currentScore - 1);
     }
 
     /**
