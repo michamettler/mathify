@@ -421,5 +421,6 @@ class MathsGeneratorTest {
         MathsExercise mathsExercise = (MathsExercise) exercise;
 
         assertEquals(mathsExercise.result()[0], Math.floor(mathsExercise.result()[0]));
+        assertTrue(mathsExercise.result()[0] >= 0);
     }
 }

@@ -240,9 +240,7 @@ public class MathsGenerator {
         int amountOfDigits = countDigits(a + b);
         int amountOfCarryOvers = amountOfDigits - 1;
         int additionalCarryOver = 0;
-        if ((a + b) % 10 == 0) {
-            additionalCarryOver = 1;
-        }
+        if ((a + b) % 10 == 0) additionalCarryOver = 1;
 
         double[] result = new double[amountOfDigits + amountOfCarryOvers + additionalCarryOver + 1];
         int carryOver = 0;
@@ -381,7 +379,7 @@ public class MathsGenerator {
             }
         }
 
-        double[] calculationValues = {a, b, c};
+        double[] calculationValues = {a, b, c, operator1, operator2};
 
         return new MathsExercise(result, new double[result.length], "Solve the following exercise following the order of operations: " + a + " " + operatorSymbol1 + " " + b + " " + operatorSymbol2 + " " + c, calculationValues, ExerciseSubType.ORDEROFOPERATIONS);
     }
