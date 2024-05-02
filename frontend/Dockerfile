@@ -10,7 +10,7 @@ RUN ng build --output-path=dist/frontend
 FROM nginx:alpine
 COPY --from=build /project/dist/frontend/browser /usr/share/nginx/html
 # Copy SSL certificates for the frontend
-COPY NO_CHECKIN /etc/ssl
+COPY Certificates /etc/ssl
 
 # Copy custom NGINX configuration
 COPY nginx.conf /etc/nginx/nginx.conf
