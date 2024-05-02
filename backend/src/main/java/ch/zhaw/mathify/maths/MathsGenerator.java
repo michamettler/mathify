@@ -116,7 +116,7 @@ public class MathsGenerator {
         LOG.info("Generating division exercise");
         if (grade == Grade.FIRST) throw new IllegalArgumentException("Division is not supported for grade one!");
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
-        int a = random.nextInt(max + 1);
+        int a = random.nextInt(max + 1) + 1;
         int b = getRandomFactor(a);
         double[] result = {(double) a / b};
         double[] calculationValues = {a, b};
@@ -335,46 +335,32 @@ public class MathsGenerator {
     private static Exercise generateOrderOfOperations(Grade grade, int technicalScore) {
         LOG.info("Generating order of operations exercise");
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
-        int a = random.nextInt(max + 1);
+        int a = random.nextInt(max + 1) + 1;
         int b = getRandomFactor(a);
         int c = getRandomFactor(b);
-        int operator1 = random.nextInt(4);
-        int operator2 = random.nextInt(4);
+        int operator1 = random.nextInt(2);
+        int operator2 = random.nextInt(2) + 2;
         char operatorSymbol1 = getRandomOperator(operator1);
         char operatorSymbol2 = getRandomOperator(operator2);
         double[] result = new double[1];
 
-        switch (operator1) {
-            case 0 -> {
-                switch (operator2) {
-                    case 0 -> result[0] = a + b + c;
-                    case 1 -> result[0] = a + b - c;
-                    case 2 -> result[0] = a + b * c;
-                    case 3 -> result[0] = a + (double) b / c;
+        switch (operatorSymbol1) {
+            case '+' -> {
+                switch (operatorSymbol2) {
+                    case '*' -> result[0] = a + b * c;
+                    case '/' -> result[0] = a + (double) b / c;
                 }
             }
-            case 1 -> {
-                switch (operator2) {
-                    case 0 -> result[0] = a - b + c;
-                    case 1 -> result[0] = a - b - c;
-                    case 2 -> result[0] = a - b * c;
-                    case 3 -> result[0] = a - (double) b / c;
-                }
-            }
-            case 2 -> {
-                switch (operator2) {
-                    case 0 -> result[0] = a * b + c;
-                    case 1 -> result[0] = a * b - c;
-                    case 2 -> result[0] = a * b * c;
-                    case 3 -> result[0] = (double) (a * b) / c;
-                }
-            }
-            case 3 -> {
-                switch (operator2) {
-                    case 0 -> result[0] = (double) a / b + c;
-                    case 1 -> result[0] = (double) a / b - c;
-                    case 2 -> result[0] = (double) a / b * c;
-                    case 3 -> result[0] = (double) a / b / c;
+            case '-' -> {
+                switch (operatorSymbol2) {
+                    case '*' -> {
+                        while (a < b * c) {
+                            if (b > c) b--;
+                            else c--;
+                        }
+                        result[0] = a - b * c;
+                    }
+                    case '/' -> result[0] = a - (double) b / c;
                 }
             }
         }
@@ -385,6 +371,7 @@ public class MathsGenerator {
     }
 
     private static int getRandomFactor(int num) {
+        if (num == 1) return 1;
         int factor = num;
         while (factor == num) {
             factor = random.nextInt(num) + 1;
