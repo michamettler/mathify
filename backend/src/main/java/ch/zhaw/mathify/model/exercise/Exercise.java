@@ -7,4 +7,5 @@ public interface Exercise {
     ExerciseDto toDto();
 
     boolean verifyResult();
+    ExerciseSubType exerciseSubType();
 }

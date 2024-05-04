@@ -9,6 +9,7 @@ import io.javalin.http.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
@@ -19,7 +20,7 @@ public class ExerciseApiController {
     private final SessionHandler sessionHandler;
     private final ExerciseService exerciseService;
 
-    public ExerciseApiController(){
+    public ExerciseApiController() {
         this.sessionHandler = SessionHandler.getInstance();
         this.exerciseService = new ExerciseService();
     }
@@ -31,16 +32,19 @@ public class ExerciseApiController {
      */
     public void getExerciseFromSubtypeAndGrade(Context ctx) {
         User user;
-        try{
-            user = sessionHandler.getUserByToken(ctx.header("Authorization"));
-            Exercise exercise = exerciseService.createExerciseForUser(user);
-            ctx.json(exercise.toDto());
-        } catch (NoSuchElementException e){
+        try {
+            user = sessionHandler.getUserFromContext(ctx);
+
+        } catch (NoSuchElementException e) {
             String responseMessage = "Invalid token";
             LOG.error(responseMessage);
             ctx.result(responseMessage);
             ctx.status(401);
+            return;
         }
+
+        Exercise exercise = exerciseService.createExerciseForUser(user);
+        ctx.json(exercise.toDto());
     }
 
     /**
@@ -48,9 +52,10 @@ public class ExerciseApiController {
      *
      * @param ctx Context of the request
      */
-    public void handleResult(Context ctx) {
+    public void verifyResult(Context ctx) {
         LOG.info("Handling result...");
         ExerciseDto exerciseDto = ctx.bodyAsClass(ExerciseDto.class);
+
         if (exerciseDto == null) {
             String responseMessage = "Invalid request body";
             LOG.error(responseMessage);
@@ -59,10 +64,22 @@ public class ExerciseApiController {
             return;
         }
 
-        if (exerciseDto.fromDto().verifyResult()) {
+        Exercise exercise = exerciseDto.fromDto();
+        User user = sessionHandler.getUserFromContext(ctx);
+
+        int technicalScoreBefore = user.getTechnicalScore().get(exercise.exerciseSubType());
+        int experienceBefore = user.getExperience();
+
+        if (exerciseService.verifyResult(exercise, user)) {
             LOG.info("Result is correct");
             ctx.status(200);
-            ctx.json(true);
+            ctx.json(Map.of(
+                    "correct", true,
+                    "experience", user.getExperience(),
+                    "experienceBefore", experienceBefore,
+                    "technicalScore", user.getTechnicalScore(),
+                    "technicalScoreBefore", technicalScoreBefore
+            ));
         } else {
             LOG.info("Result is incorrect");
             ctx.status(200);
