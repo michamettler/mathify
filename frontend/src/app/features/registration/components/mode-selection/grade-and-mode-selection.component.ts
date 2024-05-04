@@ -13,7 +13,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
 import {Grade} from "../../../../../model/grade";
 
 @Component({
-  selector: 'app-grade-selection',
+  selector: 'app-grade-mode-selection',
   standalone: true,
   imports: [
     HeaderComponent,
@@ -33,10 +33,10 @@ import {Grade} from "../../../../../model/grade";
     MatLabel,
     MatError,
   ],
-  templateUrl: './mode-selection.component.html',
-  styleUrl: './mode-selection.component.scss'
+  templateUrl: './grade-and-mode-selection.component.html',
+  styleUrl: './grade-and-mode-selection.component.scss'
 })
-export class ModeSelectionComponent {
+export class GradeAndModeSelectionComponent {
 
   gradeCards = [
     {

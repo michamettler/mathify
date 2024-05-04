@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
 import {UserLoginComponent} from "./features/registration/components/user-login/user-login.component";
-import {ModeSelectionComponent} from "./features/registration/components/mode-selection/mode-selection.component";
+import {GradeAndModeSelectionComponent} from "./features/registration/components/mode-selection/grade-and-mode-selection.component";
 import {AuthGuard} from "./core/guards/auth.guard";
 import {
   ScoreboardOverviewComponent
@@ -16,7 +16,7 @@ export const routes: Routes = [
   {path: '', component: UserLoginComponent},
   {path: 'login', component: UserLoginComponent},
   {path: 'registration', component: UserRegistrationComponent},
-  {path: 'mode-selection', component: ModeSelectionComponent, canActivate: [AuthGuard]},
+  {path: 'grade-mode-selection', component: GradeAndModeSelectionComponent, canActivate: [AuthGuard]},
   {path: 'scoreboard', component: ScoreboardOverviewComponent, canActivate: [AuthGuard]},
   {path: 'exercise', component: MathExerciseViewComponent, canActivate: [AuthGuard]}
 ]

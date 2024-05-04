@@ -59,7 +59,7 @@ export class UserLoginComponent {
           if (token !== null) {
             console.log('Login successful')
             this.authService.login(token);
-            this.router.navigate(['/mode-selection']);
+            this.router.navigate(['/grade-mode-selection']);
           } else {
             this.handleError('');
           }
