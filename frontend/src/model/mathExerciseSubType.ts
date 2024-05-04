@@ -11,6 +11,7 @@ export namespace MathExerciseSubType {
     COMPARISON = 'COMPARISON',
     THREESTEPADDITION = 'THREESTEPADDITION',
     THREESTEPSUBTRACTION = 'THREESTEPSUBTRACTION',
+    ROUNDINGTEN = 'ROUNDINGTEN',
   }
 
   export enum NeighborOperation {
@@ -19,9 +20,16 @@ export namespace MathExerciseSubType {
 
   export enum SortingOperation {
     SORTING = 'SORTING',
+    ORDEROFOPERATIONS = 'ORDEROFOPERATIONS',
   }
 
   export enum TableOperation {
     MULTIPLICATIONTABLE = 'MULTIPLICATIONTABLE'
+  }
+
+  export enum LongOperations {
+    LONGADDITION = 'LONGADDITION',
+    LONGSUBTRACTION = 'LONGSUBTRACTION',
+    LONGMULTIPLICATION = 'LONGMULTIPLICATION',
   }
 }
