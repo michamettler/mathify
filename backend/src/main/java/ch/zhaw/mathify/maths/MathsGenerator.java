@@ -369,7 +369,7 @@ public class MathsGenerator {
 
         double[] calculationValues = {a, b, c, operator1, operator2};
 
-        return new MathsExercise(result, new double[result.length], "Solve the following exercise following the order of operations: " + a + " " + operatorSymbol1 + " " + b + " " + operatorSymbol2 + " " + c, calculationValues, ExerciseSubType.ORDEROFOPERATIONS);
+        return new MathsExercise(result, new double[result.length], "Solve the following exercise following the order of operations: " + a + " " + operatorSymbol1 + " " + b + " " + operatorSymbol2 + " " + c + " = ?", calculationValues, ExerciseSubType.ORDEROFOPERATIONS);
     }
 
     private static int getRandomFactor(int num) {
