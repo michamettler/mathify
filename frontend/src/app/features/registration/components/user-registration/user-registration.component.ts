@@ -13,6 +13,7 @@ import {Grade} from "../../../../../model/grade";
 import {HttpClientModule} from "@angular/common/http";
 import {MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-user-registration',
@@ -29,6 +30,7 @@ import {ToastModule} from "primeng/toast";
     MatOption,
     MatSelect,
     ToastModule,
+    MatButton,
   ],
   providers: [MessageService],
   templateUrl: './user-registration.component.html',
@@ -81,7 +83,6 @@ export class UserRegistrationComponent {
             summary: 'User has been created!',
             detail: 'You can now log in.'
           })
-          this.router.navigate(['/login']);
         },
         error: (error) => {
           console.error('Login failed:', error);
@@ -101,4 +102,7 @@ export class UserRegistrationComponent {
     return true;
   }
 
+  login() {
+    this.router.navigate(['/login']);
+  }
 }
