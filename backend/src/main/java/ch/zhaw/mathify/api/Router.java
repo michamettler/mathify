@@ -89,9 +89,9 @@ public class Router {
         crud("/users/{user-guid}", userApiController, Role.SYSTEM_CRUD, Role.ADMIN);
 
         path("/exercise", () -> {
-            get(exerciseApiController::getExerciseFromSubtypeAndGrade, Role.USER, Role.ADMIN);
+            get(exerciseApiController::getExerciseForUser, Role.USER, Role.ADMIN);
             get("/subtypes", ctx -> ctx.json(JsonMapper.toJson(ExerciseSubType.values())), Role.USER, Role.ADMIN);
-            post("/verify", exerciseApiController::handleResult, Role.USER, Role.ADMIN);
+            post("/verify", exerciseApiController::verifyResult, Role.USER, Role.ADMIN);
         });
 
         post("/register", AuthenticationHandler::register, Role.ANONYMOUS);

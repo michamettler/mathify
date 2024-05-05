@@ -1,5 +1,6 @@
 package ch.zhaw.mathify.service;
 
+import ch.zhaw.mathify.api.security.SessionHandler;
 import ch.zhaw.mathify.maths.ExerciseGenerator;
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
@@ -21,6 +22,10 @@ import static ch.zhaw.mathify.model.exercise.ExerciseSubType.*;
 public class ExerciseService {
     private static final Logger LOG = LoggerFactory.getLogger(ExerciseService.class);
     private static final Map<Grade, List<ExerciseSubType>> GRADE_EXERCISE_SUB_TYPE_MAP = new EnumMap<>(Grade.class);
+    private static final int TECHNICAL_SCORE_INCREASE = 1;
+    private static final int TECHNICAL_SCORE_DECREASE = 1;
+    private static final int EXPERIENCE_INCREASE = 10;
+    private static final int EXPERIENCE_DECREASE = -1;
     private final Map<User, Integer> userExerciseCount = new HashMap<>();
 
     /**
@@ -41,13 +46,28 @@ public class ExerciseService {
 
         ExerciseSubType exerciseSubType = getExerciseSubTypeForUser(user);
 
-        int technicalScore = user.getTechnicalScore().entrySet().stream()
-                .filter(entry -> entry.getKey().equals(exerciseSubType))
-                .mapToInt(Map.Entry::getValue)
-                .findFirst()
-                .orElse(1);
+        int technicalScore = user.getTechnicalScore().entrySet().stream().filter(entry -> entry.getKey().equals(exerciseSubType)).mapToInt(Map.Entry::getValue).findFirst().orElse(1);
 
         return ExerciseGenerator.generate(user.getGrade(), exerciseSubType, technicalScore);
+    }
+
+    /**
+     * @param exercise The exercise to verify
+     * @param user     The user who solved the exercise
+     * @return true if the exercise was solved correctly, false otherwise
+     */
+    public boolean verifyResult(Exercise exercise, User user) {
+        if (exercise.verifyResult()) {
+            LOG.info("User {} solved the exercise correctly", user.getUsername());
+            user.addExp(EXPERIENCE_INCREASE);
+            user.addTechnicalScore(exercise.exerciseSubType(), TECHNICAL_SCORE_INCREASE);
+            return true;
+        } else {
+            LOG.info("User {} solved the exercise incorrectly", user.getUsername());
+            user.addExp(-EXPERIENCE_DECREASE);
+            user.addTechnicalScore(exercise.exerciseSubType(), -TECHNICAL_SCORE_DECREASE);
+            return false;
+        }
     }
 
     private ExerciseSubType getExerciseSubTypeForUser(User user) {
@@ -61,38 +81,11 @@ public class ExerciseService {
     }
 
     private static void populateGradeExerciseSubtypeMapping() {
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(
-                Grade.FIRST,
-                List.of(
-                        ADDITION,
-                        SUBTRACTION,
-                        COMPARISON,
-                        NEIGHBORS,
-                        SORTING,
-                        NUMBERCOMPLETION,
-                        COMPARISON,
-                        TENSCOMPARISON
-                )
-        );
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(
-                Grade.SECOND,
-                List.of(ExerciseSubType.values())
-        );
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(
-                Grade.THIRD,
-                List.of(ExerciseSubType.values())
-        );
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(
-                Grade.FOURTH,
-                List.of(ExerciseSubType.values())
-        );
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(
-                Grade.FIFTH,
-                List.of(ExerciseSubType.values())
-        );
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(
-                Grade.SIXTH,
-                List.of(ExerciseSubType.values())
-        );
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FIRST, List.of(ADDITION, SUBTRACTION, COMPARISON, NEIGHBORS, SORTING, NUMBERCOMPLETION, COMPARISON, TENSCOMPARISON));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.SECOND, List.of(ExerciseSubType.values()));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.THIRD, List.of(ExerciseSubType.values()));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FOURTH, List.of(ExerciseSubType.values()));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FIFTH, List.of(ExerciseSubType.values()));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.SIXTH, List.of(ExerciseSubType.values()));
     }
 }
