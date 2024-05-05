@@ -80,7 +80,7 @@ public class Router {
         get("/scoreboard", ctx -> {
             ctx.json(scoreboard.inOrderTraversal(scoreboard.getRoot()));
             LOG.info("Scoreboard page was accessed");
-        }, Role.USER);
+        }, Role.USER, Role.ADMIN);
         get("/page-not-found", ctx -> {
             ctx.result("Page " + ctx.queryParam("invalid-endpoint") + " not found!");
             LOG.error("Page {} not found!", ctx.queryParam("invalid-endpoint"));
