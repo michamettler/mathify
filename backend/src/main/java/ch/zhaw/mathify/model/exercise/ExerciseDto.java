@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Represents an exercise dto
@@ -12,7 +13,7 @@ import java.util.Arrays;
  * @param result          the result of the exercise
  * @param exerciseSubType the exercise subtype
  */
-public record ExerciseDto(String result, String userResult, String exercise, String calculationValues,
+public record ExerciseDto(String result, String userResult, String exercise, String calculationValues, String hint,
                           String exerciseSubType) {
     private static final Logger LOG = LoggerFactory.getLogger(ExerciseDto.class);
 
@@ -30,6 +31,7 @@ public record ExerciseDto(String result, String userResult, String exercise, Str
                     Arrays.stream(this.userResult.substring(1, this.userResult.length() - 1).split(",")).mapToDouble(Double::parseDouble).toArray(),
                     this.exercise(),
                     Arrays.stream(this.calculationValues().substring(1, this.calculationValues().length() - 1).split(",")).mapToDouble(Double::parseDouble).toArray(),
+                    Arrays.stream(this.hint().substring(1, this.hint().length() - 1).split(",")).map(String::trim).collect(Collectors.joining(", ")),
                     ExerciseSubType.valueOfIgnoreCase(this.exerciseSubType())
             );
         } catch (IllegalArgumentException e) {

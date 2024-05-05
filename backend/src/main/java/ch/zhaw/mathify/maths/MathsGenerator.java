@@ -63,7 +63,9 @@ public class MathsGenerator {
         double[] calculationValues = {a, b, c};
         String arrayUnsorted = Arrays.toString(result);
         Arrays.sort(result);
-        return new MathsExercise(result, new double[result.length], arrayUnsorted, calculationValues, ExerciseSubType.SORTING);
+        return new MathsExercise(result, new double[result.length], arrayUnsorted, calculationValues,
+                "Think about putting things in order from smallest to largest or vice versa. How would you arrange a line of toys or a set of cards?",
+                ExerciseSubType.SORTING);
     }
 
     private static Exercise generateNeighbors(Grade grade, int technicalScore) {
@@ -72,7 +74,9 @@ public class MathsGenerator {
         int a = random.nextInt(1, max + 1);
         double[] result = {a - 1, a + 1};
         double[] calculationValues = {a};
-        return new MathsExercise(result, new double[result.length], "Find the neighbors of " + a + "!", calculationValues, ExerciseSubType.NEIGHBORS);
+        return new MathsExercise(result, new double[result.length], "Find the neighbors of " + a + "!", calculationValues,
+                "Look at the numbers or objects next to each other. What comes before and after? How are they related?",
+                ExerciseSubType.NEIGHBORS);
     }
 
     private static Exercise generateComparison(Grade grade, int technicalScore) {
@@ -86,7 +90,9 @@ public class MathsGenerator {
         } while (a == b || a == c || b == c);
         double[] result = {Math.max(a, Math.max(b, c))};
         double[] calculationValues = {a, b, c};
-        return new MathsExercise(result, new double[result.length], "Find the biggest number in the list: " + a + ", " + b + ", " + c, calculationValues, ExerciseSubType.COMPARISON);
+        return new MathsExercise(result, new double[result.length], "Find the biggest number in the list: " + a + ", " + b + ", " + c, calculationValues,
+                "Compare things to see which one is bigger, smaller, or the same. How would you decide which toy has more blocks or which fruit is heavier?",
+                ExerciseSubType.COMPARISON);
     }
 
     private static Exercise generateNumberCompletion(Grade grade, int technicalScore) {
@@ -99,7 +105,9 @@ public class MathsGenerator {
         } while (b <= a);
         double[] result = {b - a};
         double[] calculationValues = {a, b};
-        return new MathsExercise(result, new double[result.length], "What number do you add to " + a + " to make " + b + "?", calculationValues, ExerciseSubType.NUMBERCOMPLETION);
+        return new MathsExercise(result, new double[result.length], "What number do you add to " + a + " to make " + b + "?", calculationValues,
+                "Look for patterns or sequences in numbers. What comes next after 2, 4, 6, ...?",
+                ExerciseSubType.NUMBERCOMPLETION);
     }
 
     private static Exercise generateTensComparison(int technicalScore) {
@@ -111,18 +119,33 @@ public class MathsGenerator {
         } while (b == a);
         double[] result = {Math.max(a, b)};
         double[] calculationValues = {a, b};
-        return new MathsExercise(result, new double[result.length], "Which tens number is bigger: " + a + " or " + b + "?", calculationValues, ExerciseSubType.TENSCOMPARISON);
+        return new MathsExercise(result, new double[result.length], "Which tens number is bigger: " + a + " or " + b + "?", calculationValues,
+                "Look at the tens place in numbers. Which number has more tens? How many tens are in 20 or 30?",
+                ExerciseSubType.TENSCOMPARISON);
     }
 
-    private static Exercise generateDivision(Grade grade, int technicalScore) {
-        LOG.info("Generating division exercise");
-        if (grade == Grade.FIRST) throw new IllegalArgumentException("Division is not supported for grade one!");
+    private static Exercise generateAddition(Grade grade, int technicalScore) {
+        LOG.info("Generating addition exercise");
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
-        int a = random.nextInt(max + 1) + 1;
-        int b = getRandomFactor(a);
-        double[] result = {(double) a / b};
+        int a = random.nextInt(max + 1);
+        int b = random.nextInt(max - a + 1);
+        double[] result = {a + b};
         double[] calculationValues = {a, b};
-        return new MathsExercise(result, new double[result.length], a + " / " + b + " = ?", calculationValues, ExerciseSubType.DIVISION);
+        return new MathsExercise(result, new double[result.length], a + " + " + b + " = ?", calculationValues,
+                "Put two groups of things together. If you have 3 apples and get 2 more, how many apples do you have now?",
+                ExerciseSubType.ADDITION);
+    }
+
+    private static Exercise generateSubtraction(Grade grade, int technicalScore) {
+        LOG.info("Generating subtraction exercise");
+        int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
+        int a = random.nextInt(max + 1);
+        int b = random.nextInt(a + 1);
+        double[] result = {a - b};
+        double[] calculationValues = {a, b};
+        return new MathsExercise(result, new double[result.length], a + " - " + b + " = ?", calculationValues,
+                "Take away some things from a group. If you have 5 candies and eat 2, how many candies do you have left?",
+                ExerciseSubType.SUBTRACTION);
     }
 
     private static Exercise generateMultiplication(Grade grade, int technicalScore) {
@@ -133,27 +156,22 @@ public class MathsGenerator {
         int b = random.nextInt(max + 1);
         double[] result = {a * b};
         double[] calculationValues = {a, b};
-        return new MathsExercise(result, new double[result.length], a + " * " + b + " = ?", calculationValues, ExerciseSubType.MULTIPLICATION);
+        return new MathsExercise(result, new double[result.length], a + " * " + b + " = ?", calculationValues,
+                "Make groups of things. If you have 3 groups of 4 blocks, how many blocks do you have in total?",
+                ExerciseSubType.MULTIPLICATION);
     }
 
-    private static Exercise generateSubtraction(Grade grade, int technicalScore) {
-        LOG.info("Generating subtraction exercise");
+    private static Exercise generateDivision(Grade grade, int technicalScore) {
+        LOG.info("Generating division exercise");
+        if (grade == Grade.FIRST) throw new IllegalArgumentException("Division is not supported for grade one!");
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
-        int a = random.nextInt(max + 1);
-        int b = random.nextInt(a + 1);
-        double[] result = {a - b};
+        int a = random.nextInt(max + 1) + 1;
+        int b = getRandomFactor(a);
+        double[] result = {(double) a / b};
         double[] calculationValues = {a, b};
-        return new MathsExercise(result, new double[result.length], a + " - " + b + " = ?", calculationValues, ExerciseSubType.SUBTRACTION);
-    }
-
-    private static Exercise generateAddition(Grade grade, int technicalScore) {
-        LOG.info("Generating addition exercise");
-        int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
-        int a = random.nextInt(max + 1);
-        int b = random.nextInt(max - a + 1);
-        double[] result = {a + b};
-        double[] calculationValues = {a, b};
-        return new MathsExercise(result, new double[result.length], a + " + " + b + " = ?", calculationValues, ExerciseSubType.ADDITION);
+        return new MathsExercise(result, new double[result.length], a + " / " + b + " = ?", calculationValues,
+                "Share things equally into groups. If you have 12 candies and want to share them equally among 4 friends, how many candies does each friend get?",
+                ExerciseSubType.DIVISION);
     }
 
     private static Exercise generateDoubling(Grade grade, int technicalScore) {
@@ -162,7 +180,9 @@ public class MathsGenerator {
         int a = random.nextInt(max + 1) * 2;
         double[] result = {a};
         double[] calculationValues = {a};
-        return new MathsExercise(result, new double[result.length], "Double the following number: " + (a / 2), calculationValues, ExerciseSubType.DOUBLING);
+        return new MathsExercise(result, new double[result.length], "Double the following number: " + (a / 2), calculationValues,
+                "Double means to have twice as many. If you have 4 cookies and double them, how many cookies do you have now?",
+                ExerciseSubType.DOUBLING);
     }
 
     private static Exercise generateHalving(Grade grade, int technicalScore) {
@@ -174,7 +194,9 @@ public class MathsGenerator {
         } while (a % 2 != 0);
         double[] result = {a};
         double[] calculationValues = {a};
-        return new MathsExercise(result, new double[result.length], "Halve the following number: " + (a * 2), calculationValues, ExerciseSubType.HALVING);
+        return new MathsExercise(result, new double[result.length], "Halve the following number: " + (a * 2), calculationValues,
+                "Halving means to split something into two equal parts. If you have 8 candies and halve them, how many candies does each person get?",
+                ExerciseSubType.HALVING);
     }
 
     private static Exercise generateThreeStepAddition(Grade grade, int technicalScore) {
@@ -188,7 +210,9 @@ public class MathsGenerator {
         } while (a + b + c > max);
         double[] result = {a + b + c};
         double[] calculationValues = {a, b, c};
-        return new MathsExercise(result, new double[result.length], a + " + " + b + " + " + c + " = ?", calculationValues, ExerciseSubType.THREESTEPADDITION);
+        return new MathsExercise(result, new double[result.length], a + " + " + b + " + " + c + " = ?", calculationValues,
+                "To add three numbers, first add the first two, then add the result to the third number.",
+                ExerciseSubType.THREESTEPADDITION);
     }
 
     private static Exercise generateThreeStepSubtraction(Grade grade, int technicalScore) {
@@ -202,7 +226,9 @@ public class MathsGenerator {
         } while (a - b - c < 0);
         double[] result = {a - b - c};
         double[] calculationValues = {a, b, c};
-        return new MathsExercise(result, new double[result.length], a + " - " + b + " - " + c + " = ?", calculationValues, ExerciseSubType.THREESTEPSUBTRACTION);
+        return new MathsExercise(result, new double[result.length], a + " - " + b + " - " + c + " = ?", calculationValues,
+                "To subtract three numbers, first subtract the second from the first, then subtract the third from the result.",
+                ExerciseSubType.THREESTEPSUBTRACTION);
     }
 
     private static Exercise generateMultiplicationTable(Grade grade, int technicalScore) {
@@ -214,7 +240,9 @@ public class MathsGenerator {
         for (int i = 0; i < result.length; i++) {
             result[i] = a * (i + 1);
         }
-        return new MathsExercise(result, new double[result.length], "Generate the multiplication table for " + a, calculationValues, ExerciseSubType.MULTIPLICATIONTABLE);
+        return new MathsExercise(result, new double[result.length], "Generate the multiplication table for " + a, calculationValues,
+                "To make a multiplication table, multiply a number by the numbers from 1 to 10.",
+                ExerciseSubType.MULTIPLICATIONTABLE);
     }
 
     private static Exercise generateRounding(Grade grade, int technicalScore) {
@@ -229,7 +257,9 @@ public class MathsGenerator {
         int a = random.nextInt(max + 1);
         double roundedNumber = Math.round(a / 10.0) * 10.0;
         double[] result = {roundedNumber};
-        return new MathsExercise(result, new double[result.length], "Round the following number to the next ten: " + a, result, ExerciseSubType.ROUNDINGTEN);
+        return new MathsExercise(result, new double[result.length], "Round the following number to the next ten: " + a, result,
+                "Round numbers to the nearest ten. If you have 17 apples, how many tens do you have?",
+                ExerciseSubType.ROUNDINGTEN);
     }
 
     private static Exercise generateLongAddition(Grade grade, int technicalScore) {
@@ -259,7 +289,9 @@ public class MathsGenerator {
 
         result[result.length - 1] = a + b;
 
-        return new MathsExercise(result, new double[result.length], "Calculate " + a + " + " + b + " using long addition", calculationValues, ExerciseSubType.LONGADDITION);
+        return new MathsExercise(result, new double[result.length], "Calculate " + a + " + " + b + " using long addition", calculationValues,
+                "When adding large numbers, start from the right and work your way left. Add each column separately, carrying over any excess to the next column if needed.",
+                ExerciseSubType.LONGADDITION);
     }
 
     private static Exercise generateLongSubtraction(Grade grade, int technicalScore) {
@@ -295,7 +327,9 @@ public class MathsGenerator {
 
         result[result.length - 1] = a - b;
 
-        return new MathsExercise(result, new double[result.length], "Calculate " + a + " - " + b + " using long subtraction", calculationValues, ExerciseSubType.LONGSUBTRACTION);
+        return new MathsExercise(result, new double[result.length], "Calculate " + a + " - " + b + " using long subtraction", calculationValues,
+                "When subtracting large numbers, start from the right and work your way left. If the digit on top is smaller than the one below, borrow from the next digit to the left. Subtract each digit and remember to carry over if needed.",
+                ExerciseSubType.LONGSUBTRACTION);
     }
 
     private static Exercise generateLongMultiplication(Grade grade, int technicalScore) {
@@ -331,7 +365,9 @@ public class MathsGenerator {
                 .mapToDouble(Integer::doubleValue)
                 .toArray();
 
-        return new MathsExercise(result, new double[result.length], "Calculate " + a + " * " + b + " using long multiplication", calculationValues, ExerciseSubType.LONGMULTIPLICATION);
+        return new MathsExercise(result, new double[result.length], "Calculate " + a + " * " + b + " using long multiplication", calculationValues,
+                "Multiply each digit of one number by each digit of the other number, starting from the right and working your way left. Then, add up all the partial products to get the final result.",
+                ExerciseSubType.LONGMULTIPLICATION);
     }
 
     private static Exercise generateOrderOfOperations(Grade grade, int technicalScore) {
@@ -369,7 +405,9 @@ public class MathsGenerator {
 
         double[] calculationValues = {a, b, c, operator1, operator2};
 
-        return new MathsExercise(result, new double[result.length], "Solve the following exercise following the order of operations: " + a + " " + operatorSymbol1 + " " + b + " " + operatorSymbol2 + " " + c, calculationValues, ExerciseSubType.ORDEROFOPERATIONS);
+        return new MathsExercise(result, new double[result.length], "Solve the following exercise following the order of operations: " + a + " " + operatorSymbol1 + " " + b + " " + operatorSymbol2 + " " + c, calculationValues,
+                "Perform multiplication and division before addition and subtraction, and from left to right.",
+                ExerciseSubType.ORDEROFOPERATIONS);
     }
 
     private static int getRandomFactor(int num) {
