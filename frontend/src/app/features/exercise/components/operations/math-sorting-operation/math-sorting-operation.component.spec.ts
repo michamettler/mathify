@@ -1,18 +1,18 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {SortingOperationComponent} from './sorting-operation.component';
+import {MathSortingOperationComponent} from './math-sorting-operation.component';
 
 describe('MathMultipleStepOperationComponent', () => {
-  let component: SortingOperationComponent;
-  let fixture: ComponentFixture<SortingOperationComponent>;
+  let component: MathSortingOperationComponent;
+  let fixture: ComponentFixture<MathSortingOperationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SortingOperationComponent]
+      imports: [MathSortingOperationComponent]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(SortingOperationComponent);
+    fixture = TestBed.createComponent(MathSortingOperationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

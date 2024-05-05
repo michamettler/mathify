@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {HeaderComponent} from "../../../../core/components/header/header.component";
 import {MatButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
@@ -15,11 +15,14 @@ import {
   MathSingleResultOperationComponent
 } from "../operations/math-single-result-operation/math-single-result-operation.component";
 import {MathNeighborOperationComponent} from "../operations/math-neighbor-operation/math-neighbor-operation.component";
-import {SortingOperationComponent} from "../operations/math-sorting-operation/sorting-operation.component";
+import {MathSortingOperationComponent} from "../operations/math-sorting-operation/math-sorting-operation.component";
 import {MathExerciseSubType} from "../../../../../model/mathExerciseSubType";
 import {
   MathMultiplicationTableComponent
 } from "../operations/math-multiplication-table/math-multiplication-table.component";
+import {MessageService} from "primeng/api";
+import {ToastModule} from "primeng/toast";
+import {UserInputs} from "../../../../../model/userInputs";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -38,16 +41,31 @@ import {
     MatProgressBar,
     MathSingleResultOperationComponent,
     MathNeighborOperationComponent,
-    SortingOperationComponent,
-    MathMultiplicationTableComponent
+    MathSortingOperationComponent,
+    MathMultiplicationTableComponent,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './math-exercise-view.component.html',
   styleUrl: './math-exercise-view.component.scss'
 })
 export class MathExerciseViewComponent implements OnInit {
 
+  @ViewChild(MathSingleResultOperationComponent) mathSingleResultOperationComponent: MathSingleResultOperationComponent | undefined;
+  @ViewChild(MathNeighborOperationComponent) mathNeighborOperationComponent: MathNeighborOperationComponent | undefined;
+  @ViewChild(MathMultiplicationTableComponent) mathMultiplicationTableComponent: MathMultiplicationTableComponent | undefined;
+  @ViewChild(MathSortingOperationComponent) mathSortingOperationComponent: MathSortingOperationComponent | undefined;
+
   exercise?: Exercise;
   category?: string;
+
+  userInputs: UserInputs = {
+    singleSolution: '',
+    lowerNeighbor: '',
+    upperNeighbor: '',
+    numbersSorting: [],
+    numbersMultiplicationTable: Array(10).fill('')
+  };
 
   @Input() user: User = { //TODO read from session
     grade: 'first',
@@ -57,10 +75,14 @@ export class MathExerciseViewComponent implements OnInit {
     experience: 30
   };
 
-  constructor(private mathExerciseService: MathExerciseService, private router: Router) {
+  constructor(private mathExerciseService: MathExerciseService, private router: Router, private messageService: MessageService) {
   }
 
   ngOnInit(): void {
+    this.loadExercise();
+  }
+
+  loadExercise() {
     this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
         this.exercise = {
@@ -93,6 +115,41 @@ export class MathExerciseViewComponent implements OnInit {
     }
 
     return 'Unknown Category';
+  }
+
+  verify(): void {
+    if (this.exercise && this.exercise.userResult !== '' && this.exercise.userResult !== undefined) {
+      this.mathExerciseService.verifyExercise(this.exercise).subscribe({
+        next: (response) => {
+          console.log(response)
+          if (response === true) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Input was correct',
+              detail: 'Congratulations! You got it right! Keep it up!'
+            })
+            this.clear();
+            this.loadExercise();
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'User result was wrong',
+              detail: 'Dont worry, Im sure you will get it the next time!'
+            })
+          }
+        }
+      });
+    }
+  }
+
+  clear(): void {
+    this.userInputs = {
+      singleSolution: '',
+      lowerNeighbor: '',
+      upperNeighbor: '',
+      numbersSorting: [],
+      numbersMultiplicationTable: Array(10).fill('')
+    };
   }
 
 }

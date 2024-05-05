@@ -8,9 +8,7 @@ import {MatInput} from "@angular/material/input";
 import {HeaderComponent} from "../../../../../core/components/header/header.component";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {Exercise} from "../../../../../../model/exercise";
-import {MathExerciseService} from "../../../services/math-exercise.service";
-import {Router} from "@angular/router";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {UserInputs} from "../../../../../../model/userInputs";
 
 @Component({
   selector: 'app-math-single-result-operation',
@@ -33,14 +31,11 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class MathSingleResultOperationComponent {
   @Input() exercise?: Exercise;
-  userSolution: string = '';
+  @Input() userInputs?: UserInputs;
 
   showSolution: boolean = false;
   showHint: boolean = false;
   hint: string = 'Placeholder hint';
-
-  constructor(private mathExerciseService: MathExerciseService, private router: Router, private _snackBar: MatSnackBar) {
-  }
 
   displaySolution(): void {
     this.showSolution = true;
@@ -50,22 +45,12 @@ export class MathSingleResultOperationComponent {
     this.showHint = !this.showHint;
   }
 
-  verify(): void {
-    if (this.exercise) {
-      this.exercise.userResult = JSON.stringify([Number(this.userSolution)]);
-      this.mathExerciseService.verifyExercise(this.exercise).subscribe({
-        next: (response) => {
-          console.log(response)
-          if (response === true) {
-            window.location.reload(); //TODO maybe find a better way to get new exercises
-          } else {
-            this._snackBar.open("Result was incorrect, sorry!", "dismiss", {
-              verticalPosition: 'top',
-              horizontalPosition: 'end'
-            });
-          }
-        }
-      });
+  loadResult(event: Event): void {
+    if (this.userInputs) {
+      this.userInputs.singleSolution = (event.target as HTMLInputElement).value;
+      if (this.exercise) {
+        this.exercise.userResult = JSON.stringify([Number(this.userInputs.singleSolution)]);
+      }
     }
   }
 

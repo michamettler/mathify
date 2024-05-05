@@ -5,9 +5,8 @@
     <div class="input-group">
       <mat-form-field appearance="fill">
         <mat-label>Your Answer</mat-label>
-        <input [(ngModel)]="userSolution" matInput>
+        <input (change)="loadResult($event)" [value]="userInputs?.singleSolution" matInput>
       </mat-form-field>
-      <button (click)="verify()" class="submit-button" color="primary" mat-raised-button>Submit</button>
     </div>
     <div class="button-group">
       <button (click)="displaySolution()" color="primary" mat-stroked-button>Show Solution</button>

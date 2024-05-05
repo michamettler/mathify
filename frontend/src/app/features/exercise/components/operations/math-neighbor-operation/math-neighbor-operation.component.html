@@ -5,13 +5,12 @@
     <div class="input-group">
       <mat-form-field appearance="fill">
         <mat-label>Lower Neighbor</mat-label>
-        <input [(ngModel)]="firstAnswer" matInput>
+        <input (change)="changeLowerNeighbor($event)" [value]="userInputs?.lowerNeighbor" matInput>
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Upper Neighbor</mat-label>
-        <input [(ngModel)]="secondAnswer" matInput>
+        <input (change)="changeUpperNeighbor($event)" [value]="userInputs?.upperNeighbor" matInput>
       </mat-form-field>
-      <button (click)="verify()" class="submit-button" color="primary" mat-raised-button>Submit</button>
     </div>
     <div class="button-group">
       <button (click)="displaySolution()" color="primary" mat-stroked-button>Show Solution</button>
