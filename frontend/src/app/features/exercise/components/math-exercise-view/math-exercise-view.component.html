@@ -9,6 +9,9 @@
   <div *ngIf="category==='SortingOperation'">
     <app-math-sorting-operation [exercise]="exercise"></app-math-sorting-operation>
   </div>
+  <div *ngIf="category==='TableOperation'">
+    <app-math-multiplication-table [exercise]="exercise"></app-math-multiplication-table>
+  </div>
   <div class="number-ray-section">
     <img alt="Number Ray for Visualization" class="number-ray" src="assets/number-ray.svg">
   </div>
