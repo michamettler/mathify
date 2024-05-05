@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HeaderComponent} from "../../../../core/components/header/header.component";
 import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {NgForOf} from "@angular/common";
-import {FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {Router} from "@angular/router";
@@ -10,7 +10,6 @@ import {MatButton} from "@angular/material/button";
 import {Title} from "@angular/platform-browser";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatOption, MatSelect} from "@angular/material/select";
-import {Grade} from "../../../../../model/grade";
 
 @Component({
   selector: 'app-grade-mode-selection',
@@ -36,56 +35,59 @@ import {Grade} from "../../../../../model/grade";
   templateUrl: './grade-and-mode-selection.component.html',
   styleUrl: './grade-and-mode-selection.component.scss'
 })
-export class GradeAndModeSelectionComponent {
+export class GradeAndModeSelectionComponent implements OnInit {
 
   gradeCards = [
     {
       grade: 1,
+      gradeValue: 'first',
       text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'
     },
     {
       grade: 2,
+      gradeValue: 'second',
       text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'
     },
     {
       grade: 3,
+      gradeValue: 'third',
       text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'
     }
   ]
-
-  grades: Grade[] = [
-    {title: 'Grade 1', value: 'first'},
-    {title: 'Grade 2', value: 'second'},
-    {title: 'Grade 3', value: 'third'},
-  ];
 
   modeCards = [
     {
       icon: 'shuffle',
       mode: 'Mixed Mode',
+      modeValue: 'mixed',
       text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
       isEnabled: true
     },
     {
       icon: 'whatshot',
       mode: 'Challenge Mode',
+      modeValue: 'challenge',
       text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
       isEnabled: false
     },
     {
       icon: 'build',
       mode: 'Custom Mode',
+      modeValue: 'custom',
       text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
       isEnabled: false
     }
   ];
 
-  gradeControl: FormControl<Grade | null> = new FormControl<Grade | null>(this.grades[0], Validators.required);
-
   selectedMode: string | null = null;
+  selectedGrade: string | null = null;
 
   constructor(private router: Router, private titleService: Title) {
     this.titleService.setTitle('Mathify!');
+  }
+
+  ngOnInit() {
+    this.selectedGrade = localStorage.getItem('grade') !== '' ? localStorage.getItem('grade') : null;
   }
 
   OnModeChange(event: any) {
@@ -93,8 +95,13 @@ export class GradeAndModeSelectionComponent {
     console.log('Selected Mode:', this.selectedMode);
   }
 
+  OnGradeChange(event: any) {
+    this.selectedGrade = event.value;
+    console.log('Selected Grade:', this.selectedGrade);
+  }
+
   isGameReadyToStart() {
-    return this.gradeControl.value && this.selectedMode;
+    return this.selectedGrade && this.selectedMode;
   }
 
   startGame() {
