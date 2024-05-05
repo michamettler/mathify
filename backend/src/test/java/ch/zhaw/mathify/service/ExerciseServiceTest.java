@@ -7,8 +7,7 @@ import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ExerciseServiceTest {
@@ -34,9 +33,22 @@ class ExerciseServiceTest {
         Exercise exercise = mock(Exercise.class);
         when(exercise.verifyResult()).thenReturn(true);
         when(exercise.exerciseSubType()).thenReturn(ExerciseSubType.ADDITION);
-        exerciseService.verifyResult(exercise, user);
+
+        assertTrue(exerciseService.verifyResult(exercise, user));
 
         verify(user, times(1)).addExp(10);
         verify(user, times(1)).addTechnicalScore(ExerciseSubType.ADDITION, 1);
+    }
+
+    @Test
+    void testVerifyResultNegative() {
+        Exercise exercise = mock(Exercise.class);
+        when(exercise.verifyResult()).thenReturn(false);
+        when(exercise.exerciseSubType()).thenReturn(ExerciseSubType.ADDITION);
+
+        assertFalse(exerciseService.verifyResult(exercise, user));
+
+        verify(user, times(1)).addExp(1);
+        verify(user, times(1)).addTechnicalScore(ExerciseSubType.ADDITION, -1);
     }
 }

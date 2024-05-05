@@ -23,7 +23,7 @@ public class ExerciseService {
     private static final Logger LOG = LoggerFactory.getLogger(ExerciseService.class);
     private static final Map<Grade, List<ExerciseSubType>> GRADE_EXERCISE_SUB_TYPE_MAP = new EnumMap<>(Grade.class);
     private static final int TECHNICAL_SCORE_INCREASE = 1;
-    private static final int TECHNICAL_SCORE_DECREASE = 11;
+    private static final int TECHNICAL_SCORE_DECREASE = 1;
     private static final int EXPERIENCE_INCREASE = 10;
     private static final int EXPERIENCE_DECREASE = -1;
     private final Map<User, Integer> userExerciseCount = new HashMap<>();

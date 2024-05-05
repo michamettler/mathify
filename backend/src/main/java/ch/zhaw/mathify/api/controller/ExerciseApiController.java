@@ -30,7 +30,7 @@ public class ExerciseApiController {
      *
      * @param ctx Context of the request
      */
-    public void getExerciseFromSubtypeAndGrade(Context ctx) {
+    public void getExerciseForUser(Context ctx) {
         User user;
         try {
             user = sessionHandler.getUserFromContext(ctx);

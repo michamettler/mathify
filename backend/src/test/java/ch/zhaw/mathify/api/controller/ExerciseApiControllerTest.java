@@ -18,14 +18,13 @@ import static org.mockito.Mockito.*;
 class ExerciseApiControllerTest {
     private Context ctxMock;
     private ExerciseApiController exerciseApiController;
-    private SessionHandler sessionHandler;
     private User user;
 
     @BeforeEach
     public void setUp() {
         exerciseApiController = new ExerciseApiController();
         user = new User("abc", "abc", "abc", Grade.FIRST);
-        sessionHandler = SessionHandler.getInstance();
+        SessionHandler sessionHandler = SessionHandler.getInstance();
         sessionHandler.createSession(user, "abc");
     }
 
@@ -45,7 +44,6 @@ class ExerciseApiControllerTest {
         when(ctxMock.header("Authorization")).thenReturn("abc");
 
         Map<ExerciseSubType, Integer> technicalScore = user.getTechnicalScore();
-        Map<ExerciseSubType, Integer> technicalScoreBefore = user.getTechnicalScore();
         technicalScore.put(ExerciseSubType.ADDITION, 2);
 
         exerciseApiController.verifyResult(ctxMock);
