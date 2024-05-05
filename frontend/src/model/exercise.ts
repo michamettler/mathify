@@ -1,6 +1,6 @@
 export interface Exercise {
   result: string,
-  userResult: string | undefined,
+  userResult: string,
   exercise: string,
   calculationValues: string | undefined,
   exerciseSubType: string,
