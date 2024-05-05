@@ -1,5 +1,6 @@
 package ch.zhaw.mathify.api.controller;
 
+import ch.zhaw.mathify.api.security.SessionHandler;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.repository.UserRepository;
 import io.javalin.apibuilder.CrudHandler;
@@ -8,6 +9,8 @@ import io.javalin.validation.ValidationError;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.NoSuchElementException;
 
 /**
  * Class responsible for handling user CRUD operations
@@ -42,21 +45,19 @@ public class UserApiController implements CrudHandler {
 
     /**
      * @param context the context of the request
-     * @param guid    the guid of the user to delete
+     * @param token    the token of the user to delete
      */
     @Override
-    public void delete(@NotNull Context context, @NotNull String guid) {
-        if (userRepository.get().stream().anyMatch(u -> u.getGuid().equals(guid))) {
-            userRepository.remove(userRepository.get().stream()
-                    .filter(u -> u.getGuid().equals(guid))
-                    .findFirst()
-                    .orElse(null));
+    public void delete(@NotNull Context context, @NotNull String token) {
+        try {
+            User user = SessionHandler.getInstance().getUserByToken(token);
+            userRepository.remove(user);
             String responseMessage = "User deleted successfully!";
             userRepository.save();
             context.status(204);
             context.result(responseMessage);
             LOG.info(responseMessage);
-        } else {
+        } catch (NoSuchElementException e) {
             String responseMessage = "User not found!";
             context.status(404);
             context.result(responseMessage);
@@ -75,15 +76,15 @@ public class UserApiController implements CrudHandler {
 
     /**
      * @param context the context of the request
-     * @param guid    the guid of the user to retrieve
+     * @param token    the token of the user to retrieve
      */
     @Override
-    public void getOne(@NotNull Context context, @NotNull String guid) {
-        User user = userRepository.get().stream().filter(u -> u.getGuid().equals(guid)).findFirst().orElse(null);
-        if (user != null) {
+    public void getOne(@NotNull Context context, @NotNull String token) {
+        try {
+            User user = SessionHandler.getInstance().getUserByToken(token);
             context.json(user);
-            LOG.info("user {} was retrieved via GET /users/{} endpoint", guid, guid);
-        } else {
+            LOG.info("user {} was retrieved via GET /users/{} endpoint", token, token);
+        } catch (NoSuchElementException e) {
             context.status(404);
             context.result("User not found!");
             LOG.error("User not found!");
@@ -92,19 +93,18 @@ public class UserApiController implements CrudHandler {
 
     /**
      * @param context the context of the request
-     * @param guid    the guid of the user to update
+     * @param token    the token of the user to update
      */
     @Override
-    public void update(@NotNull Context context, @NotNull String guid) {
+    public void update(@NotNull Context context, @NotNull String token) {
         User user = context.bodyAsClass(User.class);
-        User userFromRepo = userRepository.get().stream().filter(u -> u.getGuid().equals(guid)).findFirst().orElse(null);
-
-        if (userFromRepo != null) {
+        try {
+            User userFromRepo = SessionHandler.getInstance().getUserByToken(token);
             userFromRepo.updateUser(user);
             context.status(204);
             context.result("User updated successfully!");
             LOG.info("User updated successfully!");
-        } else {
+        } catch (NoSuchElementException e) {
             context.status(404);
             context.result("User not found!");
             LOG.error("User not found!");
