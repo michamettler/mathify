@@ -98,6 +98,6 @@ export class GradeAndModeSelectionComponent {
   }
 
   startGame() {
-    this.router.navigate(['/exercise']);
+    this.router.navigate(['/scoreboard']);
   }
 }

@@ -1,2 +1,37 @@
 <app-header [gradeSelected]="true"></app-header>
-<p>scoreboard-overview works!</p>
+<h1 class="scoreboard-title">Scoreboard</h1>
+<div class="scoreboard">
+  <table [dataSource]="dataSource" mat-table>
+
+    <ng-container matColumnDef="position">
+      <th *matHeaderCellDef mat-header-cell> No.</th>
+      <td *matCellDef="let element" mat-cell> {{ element.position }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="username">
+      <th *matHeaderCellDef mat-header-cell> Username</th>
+      <td *matCellDef="let element" mat-cell> {{ element.username }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="level">
+      <th *matHeaderCellDef mat-header-cell> Level</th>
+      <td *matCellDef="let element" mat-cell> {{ element.level }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="experience">
+      <th *matHeaderCellDef mat-header-cell> Experience</th>
+      <td *matCellDef="let element" mat-cell> {{ element.experience }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="grade">
+      <th *matHeaderCellDef mat-header-cell> Grade</th>
+      <td *matCellDef="let element" mat-cell> {{ element.grade }}</td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+</div>
+<div class="playButton">
+  <button (click)="startGame()" color="primary" mat-raised-button>Play</button>
+</div>
