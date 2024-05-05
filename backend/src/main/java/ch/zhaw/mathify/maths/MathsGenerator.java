@@ -408,7 +408,6 @@ public class MathsGenerator {
         return new MathsExercise(result, new double[result.length], "Solve the following exercise following the order of operations: " + a + " " + operatorSymbol1 + " " + b + " " + operatorSymbol2 + " " + c, calculationValues,
                 "Perform multiplication and division before addition and subtraction, and from left to right.",
                 ExerciseSubType.ORDEROFOPERATIONS);
-    }
 
     private static int getRandomFactor(int num) {
         if (num == 1) return 1;

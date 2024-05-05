@@ -80,7 +80,7 @@ public class Router {
         get("/scoreboard", ctx -> {
             ctx.json(scoreboard.inOrderTraversal(scoreboard.getRoot()));
             LOG.info("Scoreboard page was accessed");
-        }, Role.USER);
+        }, Role.USER, Role.ADMIN);
         get("/page-not-found", ctx -> {
             ctx.result("Page " + ctx.queryParam("invalid-endpoint") + " not found!");
             LOG.error("Page {} not found!", ctx.queryParam("invalid-endpoint"));
@@ -89,9 +89,9 @@ public class Router {
         crud("/users/{user-guid}", userApiController, Role.SYSTEM_CRUD, Role.ADMIN);
 
         path("/exercise", () -> {
-            get(exerciseApiController::getExerciseFromSubtypeAndGrade, Role.USER, Role.ADMIN);
+            get(exerciseApiController::getExerciseForUser, Role.USER, Role.ADMIN);
             get("/subtypes", ctx -> ctx.json(JsonMapper.toJson(ExerciseSubType.values())), Role.USER, Role.ADMIN);
-            post("/verify", exerciseApiController::handleResult, Role.USER, Role.ADMIN);
+            post("/verify", exerciseApiController::verifyResult, Role.USER, Role.ADMIN);
         });
 
         post("/register", AuthenticationHandler::register, Role.ANONYMOUS);

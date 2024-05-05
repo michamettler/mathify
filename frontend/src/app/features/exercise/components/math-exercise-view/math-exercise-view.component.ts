@@ -17,6 +17,9 @@ import {
 import {MathNeighborOperationComponent} from "../operations/math-neighbor-operation/math-neighbor-operation.component";
 import {SortingOperationComponent} from "../operations/math-sorting-operation/sorting-operation.component";
 import {MathExerciseSubType} from "../../../../../model/mathExerciseSubType";
+import {
+  MathMultiplicationTableComponent
+} from "../operations/math-multiplication-table/math-multiplication-table.component";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -35,7 +38,8 @@ import {MathExerciseSubType} from "../../../../../model/mathExerciseSubType";
     MatProgressBar,
     MathSingleResultOperationComponent,
     MathNeighborOperationComponent,
-    SortingOperationComponent
+    SortingOperationComponent,
+    MathMultiplicationTableComponent
   ],
   templateUrl: './math-exercise-view.component.html',
   styleUrl: './math-exercise-view.component.scss'
@@ -64,7 +68,8 @@ export class MathExerciseViewComponent implements OnInit {
           exercise: response.exercise,
           result: response.result,
           userResult: '',
-          calculationValues: response.calculationValues
+          calculationValues: response.calculationValues,
+          //hint: response.hint ? response.hint : '' //TODO activate after it is implemented
         }
       }
     });

@@ -21,7 +21,9 @@ public class Scoreboard {
     public Scoreboard() {
         UserRepository userRepository = UserRepository.getInstance();
         for (User user : userRepository.get()) {
-            insert(new ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
+            if (user.getRole().equals(Role.USER)) {
+                insert(new ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
+            }
         }
     }
 

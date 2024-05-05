@@ -15,10 +15,10 @@ import java.util.Map;
  */
 public class User {
     private static final Logger LOG = LoggerFactory.getLogger(User.class);
+    private final HashMap<ExerciseSubType, Integer> technicalScore;
     private String username;
     private int level;
     private int experience;
-    private final HashMap<ExerciseSubType, Integer> technicalScore;
     private String guid;
     private String password;
     private String email;
@@ -99,12 +99,29 @@ public class User {
         }
     }
 
-    private HashMap<ExerciseSubType, Integer> initializeTechnicalScore() {
-        HashMap<ExerciseSubType, Integer> technicalScore = new HashMap<>();
-        for (ExerciseSubType subType : ExerciseSubType.values()) {
-            technicalScore.put(subType, 1);
-        }
-        return technicalScore;
+
+    /**
+     * @param exerciseSubType exerciseSubType to add technical score to
+     * @param technicalScore  technical score to add
+     */
+    public void addTechnicalScore(ExerciseSubType exerciseSubType, int technicalScore) {
+        LOG.debug("Adding {} technical score to {}", technicalScore, this.username);
+        this.technicalScore.put(exerciseSubType, this.technicalScore.get(exerciseSubType) + technicalScore);
+    }
+
+    /**
+     * Update user with new values
+     *
+     * @param user user to update
+     */
+    public void updateUser(User user) {
+        if (user.getUsername() != null) setUsername(user.getUsername());
+        if (user.getEmail() != null) setEmail(user.getEmail());
+        if (user.getPassword() != null) setPassword(hashPassword(user.getPassword()));
+        if (user.getGrade() != null) setGrade(user.getGrade());
+        if (user.getRole() != null) setRole(user.getRole());
+        if (user.getLevel() != 0) setLevel(user.getLevel());
+        if (user.getExperience() != 0) setExperience(user.getExperience());
     }
 
     public String getUsername() {
@@ -175,22 +192,11 @@ public class User {
         return technicalScore;
     }
 
-    public void setTechnicalScore(ExerciseSubType subType, int score) {
-        technicalScore.put(subType, score);
-    }
-
-    /**
-     * Update user with new values
-     *
-     * @param user user to update
-     */
-    public void updateUser(User user) {
-        if (user.getUsername() != null) setUsername(user.getUsername());
-        if (user.getEmail() != null) setEmail(user.getEmail());
-        if (user.getPassword() != null) setPassword(hashPassword(user.getPassword()));
-        if (user.getGrade() != null) setGrade(user.getGrade());
-        if (user.getRole() != null) setRole(user.getRole());
-        if (user.getLevel() != 0) setLevel(user.getLevel());
-        if (user.getExperience() != 0) setExperience(user.getExperience());
+    private HashMap<ExerciseSubType, Integer> initializeTechnicalScore() {
+        HashMap<ExerciseSubType, Integer> technicalScore = new HashMap<>();
+        for (ExerciseSubType subType : ExerciseSubType.values()) {
+            technicalScore.put(subType, 1);
+        }
+        return technicalScore;
     }
 }
