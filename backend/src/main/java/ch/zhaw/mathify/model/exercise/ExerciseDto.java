@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @param exerciseSubType the exercise subtype
  */
 public record ExerciseDto(String result, String userResult, String exercise, String calculationValues, String hint,
-                          String exerciseSubType) {
+                          String exerciseSubType, String exerciseSubTypeDisplayName) {
     private static final Logger LOG = LoggerFactory.getLogger(ExerciseDto.class);
 
     /**
@@ -32,7 +32,7 @@ public record ExerciseDto(String result, String userResult, String exercise, Str
                     this.exercise(),
                     Arrays.stream(this.calculationValues().substring(1, this.calculationValues().length() - 1).split(",")).mapToDouble(Double::parseDouble).toArray(),
                     Arrays.stream(this.hint().substring(1, this.hint().length() - 1).split(",")).map(String::trim).collect(Collectors.joining(", ")),
-                    ExerciseSubType.valueOfIgnoreCase(this.exerciseSubType())
+                    ExerciseSubType.valueOfIgnoreCase(this.exerciseSubType)
             );
         } catch (IllegalArgumentException e) {
             LOG.error("Could not parse exercise from dto - {}", e.getMessage());

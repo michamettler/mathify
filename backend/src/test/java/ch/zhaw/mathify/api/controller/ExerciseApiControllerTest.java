@@ -39,7 +39,8 @@ class ExerciseApiControllerTest {
                                 "exercise",
                                 "[1]",
                                 "Put two groups of things together. If you have 3 apples and get 2 more, how many apples do you have now?",
-                                "addition"
+                                "addition",
+                                "Addition"
                         )
                 );
         when(ctxMock.header("Authorization")).thenReturn("abc");
@@ -73,7 +74,8 @@ class ExerciseApiControllerTest {
                                 "exercise",
                                 "[1]",
                                 "Put two groups of things together. If you have 3 apples and get 2 more, how many apples do you have now?",
-                                "addition"
+                                "addition",
+                                "Addition"
                         )
                 );
         when(ctxMock.header("Authorization")).thenReturn("abc");
