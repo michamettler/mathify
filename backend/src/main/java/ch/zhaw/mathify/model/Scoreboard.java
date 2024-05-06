@@ -4,9 +4,7 @@ import ch.zhaw.mathify.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * This class represents an AVL-tree that stores the user's data in the scoreboard.
@@ -224,90 +222,34 @@ public class Scoreboard {
      * @param node The current node
      * @return The list of nodes in in-order
      */
-    public List<ScoreboardNode> inOrderTraversal(ScoreboardNode node) {
+    public Map<Grade, List<ScoreboardNode>> inOrderTraversal(ScoreboardNode node) {
         LOG.debug("Traversing the scoreboard in in-order");
-        List<ScoreboardNode> inOrderList = new LinkedList<>();
+        Map<Grade, List<ScoreboardNode>> gradeMap = new HashMap<>();
 
         if (node != null) {
-            if (node.leftScoreboardNode != null) {
-                inOrderList.addAll(inOrderTraversal(node.leftScoreboardNode));
-            }
-            inOrderList.addLast(node);
-            if (node.rightScoreboardNode != null) {
-                inOrderList.addAll(inOrderTraversal(node.rightScoreboardNode));
+            for (Grade grade : Grade.values()) {
+                if (!grade.equals(Grade.NONE)) {
+                    List<ScoreboardNode> usersOfGrade = getUsersByGrade(node, grade);
+                    gradeMap.put(grade, usersOfGrade);
+                }
             }
         }
-        return inOrderList;
+
+        return gradeMap;
     }
 
-    /**
-     * Traverses the Scoreboard in pre-order
-     *
-     * @param node The current node
-     * @return The list of nodes in pre-order
-     */
-    public List<ScoreboardNode> preOrderTraversal(ScoreboardNode node) {
-        LOG.debug("Traversing the scoreboard in pre-order");
-        List<ScoreboardNode> preOrderList = new LinkedList<>();
-
-        if (node != null) {
-            preOrderList.addLast(node);
-            if (node.leftScoreboardNode != null) {
-                preOrderList.addAll(inOrderTraversal(node.leftScoreboardNode));
-            }
-            if (node.rightScoreboardNode != null) {
-                preOrderList.addAll(inOrderTraversal(node.rightScoreboardNode));
-            }
+    private List<ScoreboardNode> getUsersByGrade(ScoreboardNode node, Grade grade) {
+        List<ScoreboardNode> users = new LinkedList<>();
+        if (node.leftScoreboardNode != null) {
+            users.addAll(getUsersByGrade(node.leftScoreboardNode, grade));
         }
-        return preOrderList;
-    }
-
-    /**
-     * Traverses the Scoreboard in post-order
-     *
-     * @param node The current node
-     * @return The list of nodes in post-order
-     */
-    public List<ScoreboardNode> postOrderTraversal(ScoreboardNode node) {
-        LOG.debug("Traversing the scoreboard in post-order");
-        List<ScoreboardNode> postOrderList = new LinkedList<>();
-
-        if (node != null) {
-            if (node.leftScoreboardNode != null) {
-                postOrderList.addAll(inOrderTraversal(node.leftScoreboardNode));
-            }
-            if (node.rightScoreboardNode != null) {
-                postOrderList.addAll(inOrderTraversal(node.rightScoreboardNode));
-            }
-            postOrderList.addLast(node);
+        if (node.getGrade() == grade) {
+            users.add(node);
         }
-        return postOrderList;
-    }
-
-    /**
-     * Traverses the Scoreboard in level-order
-     *
-     * @param node The current node
-     * @return The list of nodes in level-order
-     */
-    public List<ScoreboardNode> levelOrderTraversal(ScoreboardNode node) {
-        LOG.debug("Traversing the scoreboard in level-order");
-        List<ScoreboardNode> levelOrderList = new LinkedList<>();
-        Queue<ScoreboardNode> queue = new LinkedList<>();
-        if (node != null) {
-            queue.add(node);
+        if (node.rightScoreboardNode != null) {
+            users.addAll(getUsersByGrade(node.rightScoreboardNode, grade));
         }
-        while (!queue.isEmpty()) {
-            node = queue.poll();
-            levelOrderList.add(node);
-            if (node.leftScoreboardNode != null) {
-                queue.add(node.leftScoreboardNode);
-            }
-            if (node.rightScoreboardNode != null) {
-                queue.add(node.rightScoreboardNode);
-            }
-        }
-        return levelOrderList;
+        return users;
     }
 
     /**
