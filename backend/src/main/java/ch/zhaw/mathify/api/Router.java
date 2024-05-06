@@ -90,7 +90,7 @@ public class Router {
             get("/{user-token}", ctx -> userApiController.getOne(ctx, ctx.pathParam("user-token")), Role.SYSTEM_CRUD, Role.ADMIN);
             get(userApiController::getAll, Role.SYSTEM_CRUD, Role.ADMIN);
             post(userApiController::create, Role.SYSTEM_CRUD, Role.ADMIN);
-            patch("/{user-token}", ctx -> userApiController.update(ctx, ctx.pathParam("user-token")), Role.SYSTEM_CRUD, Role.ADMIN);
+            patch("/{user-token}", ctx -> userApiController.update(ctx, ctx.pathParam("user-token")), Role.USER, Role.SYSTEM_CRUD, Role.ADMIN);
             delete("/{user-token}", ctx -> userApiController.delete(ctx, ctx.pathParam("user-token")), Role.SYSTEM_CRUD, Role.ADMIN);
         });
         crud("/users/{user-guid}", userApiController, Role.SYSTEM_CRUD, Role.ADMIN);
