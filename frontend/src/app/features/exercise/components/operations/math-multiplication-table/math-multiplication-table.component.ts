@@ -7,6 +7,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
+import {UserInputs} from "../../../../../../model/userInputs";
 
 @Component({
   selector: 'app-math-multiplication-table',
@@ -26,6 +27,7 @@ import {FormsModule} from "@angular/forms";
 export class MathMultiplicationTableComponent implements OnInit {
 
   @Input() exercise?: Exercise;
+  @Input() userInputs?: UserInputs;
 
   numbers: string[] = Array(10).fill('');
   number: number | undefined;
@@ -33,7 +35,6 @@ export class MathMultiplicationTableComponent implements OnInit {
   showSolution: boolean = false;
   showHint: boolean = false;
   hint: string = "Remember to multiply, not add.";
-  userInputs: number[] = [];
   protected readonly Number = Number;
 
   constructor(private mathExerciseService: MathExerciseService, private _snackBar: MatSnackBar) {
@@ -51,22 +52,16 @@ export class MathMultiplicationTableComponent implements OnInit {
     this.showHint = !this.showHint;
   }
 
-  verify(): void {
-    if (this.exercise) {
+  handleChange(event: Event, i: number) {
+    if (this.userInputs) {
+      this.userInputs.numbersMultiplicationTable[i] = (event.target as HTMLInputElement).value;
+      this.loadResult();
+    }
+  }
+
+  loadResult(): void {
+    if (this.exercise && this.userInputs) {
       this.exercise.userResult = JSON.stringify(this.numbers);
-      this.mathExerciseService.verifyExercise(this.exercise).subscribe({
-        next: (response) => {
-          console.log(response)
-          if (response === true) {
-            window.location.reload(); //TODO maybe find a better way to get new exercises
-          } else {
-            this._snackBar.open("Result was incorrect, sorry!", "dismiss", {
-              verticalPosition: 'top',
-              horizontalPosition: 'end'
-            });
-          }
-        }
-      });
     }
   }
 }

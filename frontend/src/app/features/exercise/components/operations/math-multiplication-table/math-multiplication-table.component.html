@@ -7,8 +7,8 @@
         <div *ngFor="let item of numbers; let i = index" class="input-container">
           <mat-form-field appearance="fill">
             <mat-label>{{ number }} x {{ i + 1 }}</mat-label>
-            <input [(ngModel)]="userInputs[i]"
-                   [value]="userInputs[i]"
+            <input (change)="handleChange($event, i)"
+                   [value]="userInputs?.numbersMultiplicationTable[i]"
                    matInput>
           </mat-form-field>
           <br/>
