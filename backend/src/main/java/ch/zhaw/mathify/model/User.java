@@ -15,6 +15,8 @@ import java.util.Map;
  */
 public class User {
     private static final Logger LOG = LoggerFactory.getLogger(User.class);
+    private static final int MIN_TECHNICAL_SCORE = 1;
+    private static final int MAX_TECHNICAL_SCORE = 10;
     private final HashMap<ExerciseSubType, Integer> technicalScore;
     private String username;
     private int level;
@@ -106,7 +108,9 @@ public class User {
      */
     public void addTechnicalScore(ExerciseSubType exerciseSubType, int technicalScore) {
         LOG.debug("Adding {} technical score to {}", technicalScore, this.username);
-        this.technicalScore.put(exerciseSubType, this.technicalScore.get(exerciseSubType) + technicalScore);
+        int currentScore = this.technicalScore.get(exerciseSubType);
+        int newScore = Math.min(MAX_TECHNICAL_SCORE, Math.max(MIN_TECHNICAL_SCORE, currentScore + technicalScore));
+        this.technicalScore.put(exerciseSubType, newScore);
     }
 
     /**
