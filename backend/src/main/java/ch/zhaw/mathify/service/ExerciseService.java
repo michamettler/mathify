@@ -1,6 +1,5 @@
 package ch.zhaw.mathify.service;
 
-import ch.zhaw.mathify.api.security.SessionHandler;
 import ch.zhaw.mathify.maths.ExerciseGenerator;
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;

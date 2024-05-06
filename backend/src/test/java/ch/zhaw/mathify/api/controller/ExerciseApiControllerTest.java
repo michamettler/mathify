@@ -38,6 +38,7 @@ class ExerciseApiControllerTest {
                                 "[1]",
                                 "exercise",
                                 "[1]",
+                                "Put two groups of things together. If you have 3 apples and get 2 more, how many apples do you have now?",
                                 "addition",
                                 "Addition"
                         )
@@ -72,6 +73,7 @@ class ExerciseApiControllerTest {
                                 "[2]",
                                 "exercise",
                                 "[1]",
+                                "Put two groups of things together. If you have 3 apples and get 2 more, how many apples do you have now?",
                                 "addition",
                                 "Addition"
                         )
