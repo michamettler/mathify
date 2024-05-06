@@ -20,9 +20,10 @@ import {MathExerciseSubType} from "../../../../../model/mathExerciseSubType";
 import {
   MathMultiplicationTableComponent
 } from "../operations/math-multiplication-table/math-multiplication-table.component";
-import {MessageService} from "primeng/api";
+import {Message, MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
 import {UserInputs} from "../../../../../model/userInputs";
+import {MessagesModule} from "primeng/messages";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -43,7 +44,8 @@ import {UserInputs} from "../../../../../model/userInputs";
     MathNeighborOperationComponent,
     MathSortingOperationComponent,
     MathMultiplicationTableComponent,
-    ToastModule
+    ToastModule,
+    MessagesModule
   ],
   providers: [MessageService],
   templateUrl: './math-exercise-view.component.html',
@@ -58,6 +60,8 @@ export class MathExerciseViewComponent implements OnInit {
 
   exercise?: Exercise;
   category?: string;
+  hintMessage: Message[] = [{ severity: 'info', detail: ''}]
+  showHint: boolean = false;
 
   userInputs: UserInputs = {
     singleSolution: '',
@@ -86,13 +90,14 @@ export class MathExerciseViewComponent implements OnInit {
     this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
         this.exercise = {
-          exerciseSubType: this.findCategory(response.exerciseSubType, response.calculationValues),
+          exerciseSubType: this.findCategory(response.exerciseSubType),
           exercise: response.exercise,
           result: response.result,
           userResult: '',
           calculationValues: response.calculationValues,
-          //hint: response.hint ? response.hint : '' //TODO activate after it is implemented
+          hint: response.hint ? response.hint : ''
         }
+        this.hintMessage = [{ severity: 'info', detail: this.exercise.hint}]
         if (this.category === 'SortingOperation') {
           if (this.exercise && this.exercise.calculationValues) {
             this.exercise.userResult = this.exercise.calculationValues;
@@ -103,7 +108,7 @@ export class MathExerciseViewComponent implements OnInit {
     });
   }
 
-  findCategory(operation: string, calculationValues: string): string {
+  findCategory(operation: string): string {
     const {SingleResultOperation, NeighborOperation, SortingOperation, TableOperation} = MathExerciseSubType;
 
     if (Object.values(SingleResultOperation).includes(operation as any)) {
@@ -158,4 +163,7 @@ export class MathExerciseViewComponent implements OnInit {
     };
   }
 
+  toggleHint(): void {
+    this.showHint = !this.showHint;
+  }
 }

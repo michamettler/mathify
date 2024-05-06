@@ -4,5 +4,5 @@ export interface Exercise {
   exercise: string,
   calculationValues: string | undefined,
   exerciseSubType: string,
-  //hint: string | undefined //TODO activate after it is implemented
+  hint: string
 }

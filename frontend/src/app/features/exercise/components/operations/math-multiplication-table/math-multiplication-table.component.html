@@ -8,7 +8,7 @@
           <mat-form-field appearance="fill">
             <mat-label>{{ number }} x {{ i + 1 }}</mat-label>
             <input (change)="handleChange($event, i)"
-                   [value]="userInputs?.numbersMultiplicationTable[i]"
+                   [value]="userInputs ? userInputs.numbersMultiplicationTable[i] : ''"
                    matInput>
           </mat-form-field>
           <br/>
@@ -18,10 +18,6 @@
     </div>
     <div class="button-group">
       <button (click)="displaySolution()" color="primary" mat-stroked-button>Show Solution</button>
-      <button (click)="toggleHint()" mat-stroked-button>Show hint</button>
-    </div>
-    <div *ngIf="showHint" class="hint">
-      <p>Hint: {{ hint }}</p>
     </div>
   </div>
 </div>

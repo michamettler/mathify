@@ -15,6 +15,13 @@
     <app-math-multiplication-table [exercise]="exercise"></app-math-multiplication-table>
   </div>
   <button (click)="verify()" class="submit-button" color="primary" mat-raised-button>Submit</button>
+  <button (click)="toggleHint()" mat-stroked-button>Show hint</button>
+  <div *ngIf="exercise && showHint" class="hint">
+    <p-messages
+      [(value)]="hintMessage"
+      [closable]="false"
+      [enableService]="false"/>
+  </div>
   <div class="number-ray-section">
     <img alt="Number Ray for Visualization" class="number-ray" src="assets/number-ray.svg">
   </div>

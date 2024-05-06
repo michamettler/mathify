@@ -14,13 +14,9 @@
     </div>
     <div class="button-group">
       <button (click)="displaySolution()" color="primary" mat-stroked-button>Show Solution</button>
-      <button (click)="toggleHint()" mat-stroked-button>Show hint</button>
     </div>
     <div *ngIf="showSolution" class="solution">
       <p>The correct answer is: {{ exercise ? exercise.result : '' }}</p>
-    </div>
-    <div *ngIf="showHint" class="hint">
-      <p>Hint: {{ hint }}</p>
     </div>
   </div>
 </div>

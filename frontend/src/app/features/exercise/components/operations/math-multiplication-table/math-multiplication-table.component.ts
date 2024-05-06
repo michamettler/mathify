@@ -1,7 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Exercise} from "../../../../../../model/exercise";
-import {MathExerciseService} from "../../../services/math-exercise.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatButton} from "@angular/material/button";
 import {NgForOf, NgIf} from "@angular/common";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
@@ -33,12 +31,7 @@ export class MathMultiplicationTableComponent implements OnInit {
   number: number | undefined;
 
   showSolution: boolean = false;
-  showHint: boolean = false;
-  hint: string = "Remember to multiply, not add.";
   protected readonly Number = Number;
-
-  constructor(private mathExerciseService: MathExerciseService, private _snackBar: MatSnackBar) {
-  }
 
   ngOnInit(): void {
     this.number = JSON.parse(this.exercise?.calculationValues ?? '[]')[0];
@@ -46,10 +39,6 @@ export class MathMultiplicationTableComponent implements OnInit {
 
   displaySolution(): void {
     this.showSolution = true;
-  }
-
-  toggleHint(): void {
-    this.showHint = !this.showHint;
   }
 
   handleChange(event: Event, i: number) {

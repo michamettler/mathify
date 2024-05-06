@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Exercise} from '../../../../../../model/exercise';
 import {MatButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
@@ -27,17 +27,12 @@ export class MathSortingOperationComponent {
   @Input() userInputs?: UserInputs;
 
   showSolution: boolean = false;
-  showHint: boolean = false;
   hint: string = "Remember to multiply, not add.";
 
   displaySolution(): void {
     if (this.userInputs) {
       this.showSolution = true;
     }
-  }
-
-  toggleHint(): void {
-    this.showHint = !this.showHint;
   }
 
   drop(event: CdkDragDrop<string[]>) {

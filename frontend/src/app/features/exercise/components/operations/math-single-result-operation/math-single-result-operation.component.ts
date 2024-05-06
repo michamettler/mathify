@@ -34,15 +34,10 @@ export class MathSingleResultOperationComponent {
   @Input() userInputs?: UserInputs;
 
   showSolution: boolean = false;
-  showHint: boolean = false;
   hint: string = 'Placeholder hint';
 
   displaySolution(): void {
     this.showSolution = true;
-  }
-
-  toggleHint(): void {
-    this.showHint = !this.showHint;
   }
 
   loadResult(event: Event): void {
