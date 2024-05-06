@@ -25,13 +25,6 @@ export class MathNeighborOperationComponent {
   @Input() exercise?: Exercise;
   @Input() userInputs?: UserInputs;
 
-  showSolution: boolean = false;
-  hint: string = "Remember to multiply, not add.";
-
-  displaySolution(): void {
-    this.showSolution = true;
-  }
-
   changeLowerNeighbor(event: Event) {
     if (this.userInputs) {
       this.userInputs.lowerNeighbor = (event.target as HTMLInputElement).value;

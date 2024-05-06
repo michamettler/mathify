@@ -1,6 +1,8 @@
 <app-header [gradeSelected]="true"></app-header>
 <p-toast/>
 <div class="container">
+  <h1>Math Exercise - {{ exercise ? exercise.exerciseSubType : '' }}</h1>
+  <p class="exercise">{{ exercise?.exercise }}</p>
   <div *ngIf="category==='SingleResultOperation'">
     <app-math-single-result-operation [exercise]="exercise"
                                       [userInputs]="userInputs"></app-math-single-result-operation>
@@ -14,16 +16,24 @@
   <div *ngIf="category==='TableOperation'">
     <app-math-multiplication-table [exercise]="exercise"></app-math-multiplication-table>
   </div>
-  <button (click)="verify()" class="submit-button" color="primary" mat-raised-button>Submit</button>
-  <button (click)="toggleHint()" mat-stroked-button>Show hint</button>
+  <div class="game-button-group">
+    <button (click)="verify()" class="submit-button" color="primary" mat-flat-button>Submit</button>
+  </div>
+  <div class="game-button-group">
+    <button (click)="toggleHint()" color="primary" mat-stroked-button>Show Hint</button>
+    <button (click)="op.toggle($event)" color="primary" mat-stroked-button>Show Number Ray</button>
+    <p-overlayPanel #op appendTo="body">
+      <div class="flex flex-column gap-3 w-25rem">
+        <img alt="Number Ray for Visualization" class="number-ray" src="assets/number-ray.svg">
+      </div>
+    </p-overlayPanel>
+    <button (click)="skipExercise()" color="warn" mat-stroked-button>Skip Exercise</button>
+  </div>
   <div *ngIf="exercise && showHint" class="hint">
     <p-messages
       [(value)]="hintMessage"
       [closable]="false"
       [enableService]="false"/>
-  </div>
-  <div class="number-ray-section">
-    <img alt="Number Ray for Visualization" class="number-ray" src="assets/number-ray.svg">
   </div>
   <div class="progress-section">
     <div>
@@ -34,5 +44,8 @@
              role="progressbar"></div>
       </div>
     </div>
+  </div>
+  <div class="game-button-group">
+    <button (click)="exit()" class="secondary-button" color="warn" mat-flat-button>Exit Exercises</button>
   </div>
 </div>

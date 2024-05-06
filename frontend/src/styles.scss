@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
 
 html, body {
   height: 100%;
@@ -83,6 +84,14 @@ body {
     text-align: center;
     margin: 0 5px;
   }
+}
+
+.game-input-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14vh;
 }
 
 .container {

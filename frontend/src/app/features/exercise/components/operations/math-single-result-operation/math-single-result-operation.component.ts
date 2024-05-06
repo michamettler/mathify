@@ -33,13 +33,6 @@ export class MathSingleResultOperationComponent {
   @Input() exercise?: Exercise;
   @Input() userInputs?: UserInputs;
 
-  showSolution: boolean = false;
-  hint: string = 'Placeholder hint';
-
-  displaySolution(): void {
-    this.showSolution = true;
-  }
-
   loadResult(event: Event): void {
     if (this.userInputs) {
       this.userInputs.singleSolution = (event.target as HTMLInputElement).value;

@@ -26,15 +26,6 @@ export class MathSortingOperationComponent {
   @Input() exercise?: Exercise;
   @Input() userInputs?: UserInputs;
 
-  showSolution: boolean = false;
-  hint: string = "Remember to multiply, not add.";
-
-  displaySolution(): void {
-    if (this.userInputs) {
-      this.showSolution = true;
-    }
-  }
-
   drop(event: CdkDragDrop<string[]>) {
     if (this.userInputs) {
       moveItemInArray(this.userInputs.numbersSorting, event.previousIndex, event.currentIndex);

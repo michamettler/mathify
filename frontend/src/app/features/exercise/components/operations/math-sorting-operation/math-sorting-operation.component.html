@@ -1,19 +1,9 @@
-<div class="container">
-  <h1>Math Exercise - {{ exercise ? exercise.exerciseSubType : '' }}</h1>
-  <h2 class="exercise">Sort the following numbers:</h2>
-  <div class="input-section">
-    <div class="input-group">
-      <div (cdkDropListDropped)="drop($event)" cdkDropList cdkDropListOrientation="horizontal" class="number-sort">
-        @for (number of userInputs?.numbersSorting; track number) {
-          <div class="number-box" cdkDrag>{{ number }}</div>
-        }
-      </div>
-    </div>
-    <div class="button-group">
-      <button (click)="displaySolution()" color="primary" mat-stroked-button>Show Solution</button>
-    </div>
-    <div *ngIf="showSolution" class="solution">
-      <p>The correct answer is: {{ exercise ? exercise.result : '' }}</p>
+<div class="game-input-section">
+  <div class="input-group">
+    <div (cdkDropListDropped)="drop($event)" cdkDropList cdkDropListOrientation="horizontal" class="number-sort">
+      @for (number of userInputs?.numbersSorting; track number) {
+        <div class="number-box" cdkDrag>{{ number }}</div>
+      }
     </div>
   </div>
 </div>

@@ -1,18 +1,8 @@
-<div class="container">
-  <h1>Math Exercise - {{ exercise ? exercise.exerciseSubType : '' }}</h1>
-  <h2 class="exercise">{{ exercise ? exercise.exercise : '' }}</h2>
-  <div class="input-section">
-    <div class="input-group">
-      <mat-form-field appearance="fill">
-        <mat-label>Your Answer</mat-label>
-        <input (change)="loadResult($event)" [value]="userInputs?.singleSolution" matInput>
-      </mat-form-field>
-    </div>
-    <div class="button-group">
-      <button (click)="displaySolution()" color="primary" mat-stroked-button>Show Solution</button>
-    </div>
-    <div *ngIf="showSolution" class="solution">
-      <p>The correct answer is: {{ exercise ? exercise.result : '' }}</p>
-    </div>
+<div class="game-input-section">
+  <div class="input-group">
+    <mat-form-field appearance="fill">
+      <mat-label>Your Answer</mat-label>
+      <input (change)="loadResult($event)" [value]="userInputs?.singleSolution" matInput>
+    </mat-form-field>
   </div>
 </div>

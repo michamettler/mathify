@@ -30,15 +30,10 @@ export class MathMultiplicationTableComponent implements OnInit {
   numbers: string[] = Array(10).fill('');
   number: number | undefined;
 
-  showSolution: boolean = false;
   protected readonly Number = Number;
 
   ngOnInit(): void {
     this.number = JSON.parse(this.exercise?.calculationValues ?? '[]')[0];
-  }
-
-  displaySolution(): void {
-    this.showSolution = true;
   }
 
   handleChange(event: Event, i: number) {

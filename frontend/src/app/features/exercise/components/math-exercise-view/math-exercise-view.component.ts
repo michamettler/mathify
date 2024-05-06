@@ -24,6 +24,8 @@ import {Message, MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
 import {UserInputs} from "../../../../../model/userInputs";
 import {MessagesModule} from "primeng/messages";
+import {SpeedDialModule} from "primeng/speeddial";
+import {OverlayPanelModule} from "primeng/overlaypanel";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -45,7 +47,9 @@ import {MessagesModule} from "primeng/messages";
     MathSortingOperationComponent,
     MathMultiplicationTableComponent,
     ToastModule,
-    MessagesModule
+    MessagesModule,
+    SpeedDialModule,
+    OverlayPanelModule
   ],
   providers: [MessageService],
   templateUrl: './math-exercise-view.component.html',
@@ -60,7 +64,7 @@ export class MathExerciseViewComponent implements OnInit {
 
   exercise?: Exercise;
   category?: string;
-  hintMessage: Message[] = [{ severity: 'info', detail: ''}]
+  hintMessage: Message[] = [{severity: 'info', detail: ''}]
   showHint: boolean = false;
 
   userInputs: UserInputs = {
@@ -97,7 +101,7 @@ export class MathExerciseViewComponent implements OnInit {
           calculationValues: response.calculationValues,
           hint: response.hint ? response.hint : ''
         }
-        this.hintMessage = [{ severity: 'info', detail: this.exercise.hint}]
+        this.hintMessage = [{severity: 'info', detail: this.exercise.hint}]
         if (this.category === 'SortingOperation') {
           if (this.exercise && this.exercise.calculationValues) {
             this.exercise.userResult = this.exercise.calculationValues;
@@ -126,6 +130,17 @@ export class MathExerciseViewComponent implements OnInit {
     }
 
     return 'Unknown Category';
+  }
+
+  skipExercise() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Skipped exercise',
+      detail: 'You have skipped the exercise, no experience added or removed. ' +
+        'I am sure you will get the next one! The result would have been: ' + this.exercise?.result
+    })
+    this.clear();
+    this.loadExercise();
   }
 
   verify(): void {
@@ -165,5 +180,9 @@ export class MathExerciseViewComponent implements OnInit {
 
   toggleHint(): void {
     this.showHint = !this.showHint;
+  }
+
+  exit() {
+    this.router.navigate(['/grade-mode-selection']);
   }
 }
