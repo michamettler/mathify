@@ -31,9 +31,6 @@ export class MathNeighborOperationComponent {
   showHint: boolean = false;
   hint: string = "Remember to multiply, not add.";
 
-  constructor(private mathExerciseService: MathExerciseService, private _snackBar: MatSnackBar) {
-  }
-
   displaySolution(): void {
     this.showSolution = true;
   }

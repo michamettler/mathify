@@ -5,6 +5,7 @@ import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {NgIf} from "@angular/common";
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from "@angular/cdk/drag-drop";
+import {UserInputs} from "../../../../../../model/userInputs";
 
 @Component({
   selector: 'app-math-sorting-operation',
@@ -21,20 +22,18 @@ import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from "@angular/cdk/d
   templateUrl: './math-sorting-operation.component.html',
   styleUrl: './math-sorting-operation.component.scss'
 })
-export class MathSortingOperationComponent implements OnInit {
+export class MathSortingOperationComponent {
   @Input() exercise?: Exercise;
-  @Input() numbers: number[] = []
+  @Input() userInputs?: UserInputs;
 
   showSolution: boolean = false;
   showHint: boolean = false;
   hint: string = "Remember to multiply, not add.";
 
-  ngOnInit(): void {
-    this.numbers = JSON.parse(this.exercise?.calculationValues ?? '[]');
-  }
-
   displaySolution(): void {
-    this.showSolution = true;
+    if (this.userInputs) {
+      this.showSolution = true;
+    }
   }
 
   toggleHint(): void {
@@ -42,13 +41,17 @@ export class MathSortingOperationComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.numbers, event.previousIndex, event.currentIndex);
-    this.loadResult();
+    if (this.userInputs) {
+      moveItemInArray(this.userInputs.numbersSorting, event.previousIndex, event.currentIndex);
+      this.loadResult();
+    }
   }
 
   loadResult(): void {
-    if (this.exercise) {
-      this.exercise.userResult = JSON.stringify(this.numbers);
+    if (this.userInputs) {
+      if (this.exercise) {
+        this.exercise.userResult = JSON.stringify(this.userInputs.numbersSorting);
+      }
     }
   }
 
