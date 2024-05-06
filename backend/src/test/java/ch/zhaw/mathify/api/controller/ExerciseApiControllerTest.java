@@ -38,7 +38,8 @@ class ExerciseApiControllerTest {
                                 "[1]",
                                 "exercise",
                                 "[1]",
-                                "addition"
+                                "addition",
+                                "Addition"
                         )
                 );
         when(ctxMock.header("Authorization")).thenReturn("abc");
@@ -71,7 +72,8 @@ class ExerciseApiControllerTest {
                                 "[2]",
                                 "exercise",
                                 "[1]",
-                                "addition"
+                                "addition",
+                                "Addition"
                         )
                 );
         when(ctxMock.header("Authorization")).thenReturn("abc");

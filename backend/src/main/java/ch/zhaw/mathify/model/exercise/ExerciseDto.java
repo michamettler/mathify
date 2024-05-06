@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @param exerciseSubType the exercise subtype
  */
 public record ExerciseDto(String result, String userResult, String exercise, String calculationValues,
-                          String exerciseSubType) {
+                          String exerciseSubType, String exerciseSubTypeDisplayName) {
     private static final Logger LOG = LoggerFactory.getLogger(ExerciseDto.class);
 
     /**
@@ -30,7 +30,7 @@ public record ExerciseDto(String result, String userResult, String exercise, Str
                     Arrays.stream(this.userResult.substring(1, this.userResult.length() - 1).split(",")).mapToDouble(Double::parseDouble).toArray(),
                     this.exercise(),
                     Arrays.stream(this.calculationValues().substring(1, this.calculationValues().length() - 1).split(",")).mapToDouble(Double::parseDouble).toArray(),
-                    ExerciseSubType.valueOfIgnoreCase(this.exerciseSubType())
+                    ExerciseSubType.valueOfIgnoreCase(this.exerciseSubType)
             );
         } catch (IllegalArgumentException e) {
             LOG.error("Could not parse exercise from dto - {}", e.getMessage());
