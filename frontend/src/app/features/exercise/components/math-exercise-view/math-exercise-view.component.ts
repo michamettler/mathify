@@ -86,18 +86,24 @@ export class MathExerciseViewComponent implements OnInit {
     this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
         this.exercise = {
-          exerciseSubType: this.findCategory(response.exerciseSubType),
+          exerciseSubType: this.findCategory(response.exerciseSubType, response.calculationValues),
           exercise: response.exercise,
           result: response.result,
           userResult: '',
           calculationValues: response.calculationValues,
           //hint: response.hint ? response.hint : '' //TODO activate after it is implemented
         }
+        if (this.category === 'SortingOperation') {
+          if (this.exercise && this.exercise.calculationValues) {
+            this.exercise.userResult = this.exercise.calculationValues;
+            this.userInputs.numbersSorting = JSON.parse(this.exercise.calculationValues);
+          }
+        }
       }
     });
   }
 
-  findCategory(operation: string): string {
+  findCategory(operation: string, calculationValues: string): string {
     const {SingleResultOperation, NeighborOperation, SortingOperation, TableOperation} = MathExerciseSubType;
 
     if (Object.values(SingleResultOperation).includes(operation as any)) {
@@ -118,7 +124,7 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   verify(): void {
-    if (this.exercise && this.exercise.userResult !== '' && this.exercise.userResult !== undefined) {
+    if (this.exercise) {
       this.mathExerciseService.verifyExercise(this.exercise).subscribe({
         next: (response) => {
           console.log(response)
