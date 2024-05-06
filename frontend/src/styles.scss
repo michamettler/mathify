@@ -95,8 +95,7 @@ body {
 }
 
 .container {
-  margin: 20px auto;
-  padding-top: 20px;
+  padding-top: 4vh;
   padding-bottom: 20px;
   display: flex;
   flex-direction: column;
@@ -106,7 +105,7 @@ body {
 .input-section {
   width: 100%;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 3vh;
 
   button {
     margin: 0 5px;

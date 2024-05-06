@@ -2,7 +2,9 @@
 <p-toast/>
 <div class="container">
   <h1>Math Exercise - {{ exercise ? exercise.exerciseSubType : '' }}</h1>
+  <div>
   <p class="exercise">{{ exercise?.exercise }}</p>
+  </div>
   <div *ngIf="category==='SingleResultOperation'">
     <app-math-single-result-operation [exercise]="exercise"
                                       [userInputs]="userInputs"></app-math-single-result-operation>

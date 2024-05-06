@@ -3,8 +3,10 @@ h1 {
 }
 
 .exercise {
-  margin-top: 9vh;
-  font-size: 7vh;
+  margin-top: 5vh;
+  font-size: 5vh;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .progress-section {

@@ -88,7 +88,7 @@ export class MathExerciseViewComponent implements OnInit {
 
   loadExercise() {
     this.userRegistrationService.getUser().subscribe({
-      next: (response) => {
+      next: (response: User) => {
         this.user = response;
       }
     });
@@ -149,7 +149,6 @@ export class MathExerciseViewComponent implements OnInit {
     if (this.exercise) {
       this.mathExerciseService.verifyExercise(this.exercise).subscribe({
         next: (response: any) => {
-          console.log(response)
           if (JSON.parse(response.correct) === true) {
             this.messageService.add({
               severity: 'success',

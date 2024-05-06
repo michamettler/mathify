@@ -10,6 +10,8 @@ import {MatButton} from "@angular/material/button";
 import {Title} from "@angular/platform-browser";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatOption, MatSelect} from "@angular/material/select";
+import {UserRegistrationService} from "../../services/user-registration.service";
+import {User} from "../../../../../model/user";
 
 @Component({
   selector: 'app-grade-mode-selection',
@@ -82,22 +84,24 @@ export class GradeAndModeSelectionComponent implements OnInit {
   selectedMode: string | null = null;
   selectedGrade: string | null = null;
 
-  constructor(private router: Router, private titleService: Title) {
+  constructor(private router: Router, private titleService: Title, private userRegistrationService: UserRegistrationService) {
     this.titleService.setTitle('Mathify!');
   }
 
   ngOnInit() {
-    this.selectedGrade = localStorage.getItem('grade') !== '' ? localStorage.getItem('grade') : null;
+    this.userRegistrationService.getUser().subscribe({
+      next: (response: User) => {
+        this.selectedGrade = response.grade ? response.grade : null;
+      }
+    });
   }
 
   OnModeChange(event: any) {
     this.selectedMode = event.value;
-    console.log('Selected Mode:', this.selectedMode);
   }
 
   OnGradeChange(event: any) {
     this.selectedGrade = event.value;
-    console.log('Selected Grade:', this.selectedGrade);
   }
 
   isGameReadyToStart() {
