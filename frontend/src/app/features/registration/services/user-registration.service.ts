@@ -45,6 +45,18 @@ export class UserRegistrationService {
     }
   }
 
+  getUser(): Observable<any> {
+    let url = `${this.apiUrl}users/` + localStorage.getItem('token')?.toString();
+
+    const headers = new HttpHeaders({
+      'Authorization': localStorage.getItem('token')?.toString() + '',
+    });
+    return this.http.get(url,{headers: headers})
+      .pipe(
+        catchError(this.handleError('getUser'))
+      );
+  }
+
   private handleError(operation = 'operation') {
     return (error: any): Observable<any> => {
       console.error(`${operation} failed: ${error.message}`);

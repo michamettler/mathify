@@ -63,7 +63,7 @@ public class MathsGenerator {
         double[] calculationValues = {a, b, c};
         String arrayUnsorted = Arrays.toString(result);
         Arrays.sort(result);
-        return new MathsExercise(result, new double[result.length], arrayUnsorted, calculationValues,
+        return new MathsExercise(result, new double[result.length], "Sort the following numbers", calculationValues,
                 "Think about putting things in order from smallest to largest or vice versa. How would you arrange a line of toys or a set of cards?",
                 ExerciseSubType.SORTING);
     }
@@ -90,7 +90,7 @@ public class MathsGenerator {
         } while (a == b || a == c || b == c);
         double[] result = {Math.max(a, Math.max(b, c))};
         double[] calculationValues = {a, b, c};
-        return new MathsExercise(result, new double[result.length], "Find the biggest number in the list: " + a + ", " + b + ", " + c, calculationValues,
+        return new MathsExercise(result, new double[result.length], "Find the biggest number: " + a + ", " + b + ", " + c, calculationValues,
                 "Compare things to see which one is bigger, smaller, or the same. How would you decide which toy has more blocks or which fruit is heavier?",
                 ExerciseSubType.COMPARISON);
     }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {HeaderComponent} from "../../../../core/components/header/header.component";
 import {MatButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
@@ -26,6 +26,7 @@ import {UserInputs} from "../../../../../model/userInputs";
 import {MessagesModule} from "primeng/messages";
 import {SpeedDialModule} from "primeng/speeddial";
 import {OverlayPanelModule} from "primeng/overlaypanel";
+import {UserRegistrationService} from "../../../registration/services/user-registration.service";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -75,15 +76,10 @@ export class MathExerciseViewComponent implements OnInit {
     numbersMultiplicationTable: Array(10).fill('')
   };
 
-  @Input() user: User = { //TODO read from session
-    grade: 'first',
-    username: 'System_Admin',
-    password: 'fg6i7i4bMa',
-    level: 1,
-    experience: 30
-  };
+  user?: User;
 
-  constructor(private mathExerciseService: MathExerciseService, private router: Router, private messageService: MessageService) {
+  constructor(private mathExerciseService: MathExerciseService, private userRegistrationService: UserRegistrationService,
+              private router: Router, private messageService: MessageService) {
   }
 
   ngOnInit(): void {
@@ -91,6 +87,12 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   loadExercise() {
+    this.userRegistrationService.getUser().subscribe({
+      next: (response) => {
+        this.user = response;
+      }
+    });
+
     this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
         this.exercise = {
@@ -146,12 +148,12 @@ export class MathExerciseViewComponent implements OnInit {
   verify(): void {
     if (this.exercise) {
       this.mathExerciseService.verifyExercise(this.exercise).subscribe({
-        next: (response) => {
+        next: (response: any) => {
           console.log(response)
-          if (response === true) {
+          if (JSON.parse(response.correct) === true) {
             this.messageService.add({
               severity: 'success',
-              summary: 'Input was correct',
+              summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
               detail: 'Congratulations! You got it right! Keep it up!'
             })
             this.clear();
@@ -159,7 +161,7 @@ export class MathExerciseViewComponent implements OnInit {
           } else {
             this.messageService.add({
               severity: 'error',
-              summary: 'User result was wrong',
+              summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
               detail: 'Dont worry, Im sure you will get it the next time!'
             })
           }
