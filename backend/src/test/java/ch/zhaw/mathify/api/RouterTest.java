@@ -1,9 +1,11 @@
 package ch.zhaw.mathify.api;
 
 import ch.zhaw.mathify.App;
+import ch.zhaw.mathify.api.security.SessionHandler;
 import ch.zhaw.mathify.model.SettingsNotFoundException;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.model.exercise.ExerciseSubType;
+import ch.zhaw.mathify.repository.UserRepository;
 import ch.zhaw.mathify.util.JsonMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.RestAssured;
@@ -91,12 +93,13 @@ public class RouterTest {
     @Test
     void testGETSingleUser() {
         String expectedUsername = "john_doe";
-        String guid = "5e6a7b8c-7543-454c-b28b-2761c07fb5b7";
+        User user = UserRepository.getInstance().getByUserName("john_doe");
+        SessionHandler.getInstance().createSession(user, "usertokenjohndoe");
         User fetchedUser =
                 given()
                         .header("Authorization", auth)
                         .when()
-                        .get("/users/{guid}", guid)
+                        .get("/users/{user-token}", "usertokenjohndoe")
                         .then()
                         .statusCode(200)
                         .extract().body().as(User.class);

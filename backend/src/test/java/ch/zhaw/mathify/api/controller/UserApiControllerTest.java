@@ -1,6 +1,6 @@
 package ch.zhaw.mathify.api.controller;
 
-import ch.zhaw.mathify.api.controller.UserApiController;
+import ch.zhaw.mathify.api.security.SessionHandler;
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.repository.UserRepository;
@@ -58,11 +58,11 @@ class UserApiControllerTest {
     void testGetOneUser() {
         UserRepository.destroy();
         User testUser = new User("testuser", "Test User", "testpassword", Grade.FIRST);
-        testUser.setGuid("testguid");
         userRepository.add(testUser);
-        when(contextMock.pathParam("s")).thenReturn("testuser");
 
-        userApiController.getOne(contextMock, "testguid");
+        SessionHandler.getInstance().createSession(testUser, "testtokentestuser");
+
+        userApiController.getOne(contextMock, "testtokentestuser");
 
         verify(contextMock).json(testUser);
     }
@@ -71,10 +71,11 @@ class UserApiControllerTest {
     void testDeleteUser() {
         UserRepository.destroy();
         User userToDelete = new User("abcd", "Test User", "testpassword", Grade.FIRST);
-        userToDelete.setGuid("testguid");
         userRepository.add(userToDelete);
 
-        userApiController.delete(contextMock, "testguid");
+        SessionHandler.getInstance().createSession(userToDelete, "testtokenabcd");
+
+        userApiController.delete(contextMock, "testtokenabcd");
 
         assertFalse(userRepository.get().contains(userToDelete));
     }
@@ -86,9 +87,11 @@ class UserApiControllerTest {
         when(contextMock.bodyAsClass(User.class)).thenReturn(newUser);
         when(contextMock.bodyValidator(User.class)).thenReturn(new BodyValidator<>("body", User.class, () -> newUser));
 
-        String guid = userRepository.getByUserName("zehndjon").getGuid();
+        User userToBeUpdated = userRepository.getByUserName("zehndjon");
+        SessionHandler.getInstance().createSession(userToBeUpdated, "testtokenzehndjon");
+        String guid = userToBeUpdated.getGuid();
 
-        userApiController.update(contextMock, guid);
+        userApiController.update(contextMock, "testtokenzehndjon");
 
         ArgumentCaptor<Integer> statusCaptor = ArgumentCaptor.forClass(Integer.class);
         verify(contextMock).status(statusCaptor.capture());
