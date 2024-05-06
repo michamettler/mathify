@@ -21,7 +21,7 @@ export class MathExerciseService {
     });
     return this.http.get(url, {headers: headers})
       .pipe(
-        catchError(this.handleError('login'))
+        catchError(this.handleError('exercise'))
       );
   }
 

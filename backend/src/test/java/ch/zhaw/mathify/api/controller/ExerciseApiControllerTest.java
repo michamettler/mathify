@@ -1,11 +1,16 @@
 package ch.zhaw.mathify.api.controller;
 
-import ch.zhaw.mathify.api.controller.ExerciseApiController;
+import ch.zhaw.mathify.api.security.SessionHandler;
+import ch.zhaw.mathify.model.Grade;
+import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.model.exercise.ExerciseDto;
+import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import io.javalin.http.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -13,14 +18,18 @@ import static org.mockito.Mockito.*;
 class ExerciseApiControllerTest {
     private Context ctxMock;
     private ExerciseApiController exerciseApiController;
+    private User user;
 
     @BeforeEach
     public void setUp() {
         exerciseApiController = new ExerciseApiController();
+        user = new User("abc", "abc", "abc", Grade.FIRST);
+        SessionHandler sessionHandler = SessionHandler.getInstance();
+        sessionHandler.createSession(user, "abc");
     }
 
     @Test
-    void testHandleResultPositive() {
+    void testVerifyResultPositive() {
         ctxMock = mock(Context.class);
         when(ctxMock.bodyAsClass(ExerciseDto.class))
                 .thenReturn(
@@ -33,18 +42,28 @@ class ExerciseApiControllerTest {
                                 "Addition"
                         )
                 );
+        when(ctxMock.header("Authorization")).thenReturn("abc");
 
-        exerciseApiController.handleResult(ctxMock);
+        Map<ExerciseSubType, Integer> technicalScore = user.getTechnicalScore();
+        technicalScore.put(ExerciseSubType.ADDITION, 2);
+
+        exerciseApiController.verifyResult(ctxMock);
 
         ArgumentCaptor<Integer> statusCaptor = ArgumentCaptor.forClass(Integer.class);
         verify(ctxMock).status(statusCaptor.capture());
         assertEquals(200, statusCaptor.getValue());
 
-        verify(ctxMock).json(true);
+        verify(ctxMock).json(Map.of(
+                "correct", true,
+                "experience", 10,
+                "experienceBefore", 0,
+                "technicalScore", technicalScore,
+                "technicalScoreBefore", 2
+        ));
     }
 
     @Test
-    void testHandleResultNegative() {
+    void testVerifyResultNegative() {
         ctxMock = mock(Context.class);
         when(ctxMock.bodyAsClass(ExerciseDto.class))
                 .thenReturn(
@@ -57,13 +76,13 @@ class ExerciseApiControllerTest {
                                 "Addition"
                         )
                 );
+        when(ctxMock.header("Authorization")).thenReturn("abc");
 
-        exerciseApiController.handleResult(ctxMock);
+        exerciseApiController.verifyResult(ctxMock);
 
         ArgumentCaptor<Integer> statusCaptor = ArgumentCaptor.forClass(Integer.class);
         verify(ctxMock).status(statusCaptor.capture());
         assertEquals(200, statusCaptor.getValue());
-
         verify(ctxMock).json(false);
     }
 }

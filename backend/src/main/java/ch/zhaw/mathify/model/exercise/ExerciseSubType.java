@@ -20,8 +20,11 @@ public enum ExerciseSubType {
     THREESTEPADDITION("Adding in three steps"),
     THREESTEPSUBTRACTION("Subtracting in three steps"),
     MULTIPLICATIONTABLE("Multiplying in three steps"),
-    ;
-
+    ROUNDINGTEN("Rounding to tens"),
+    LONGADDITION("Long addition"),
+    LONGSUBTRACTION("Long subraction"),
+    LONGMULTIPLICATION("Long Multiplication"),
+    ORDEROFOPERATIONS("Order of operations");
     private final String displayName;
 
     ExerciseSubType(String displayName) {

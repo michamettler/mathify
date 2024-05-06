@@ -1,0 +1,11 @@
+.input-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-container {
+  flex: 1;
+  padding: 10px;
+}

@@ -6,17 +6,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User model with username, level and experience
- * Every 100exp, the level will increase by one
+ * Every 100exp, the level will increase by one.
+ * Username, password and email are required.
  */
 public class User {
     private static final Logger LOG = LoggerFactory.getLogger(User.class);
+    private final HashMap<ExerciseSubType, Integer> technicalScore;
     private String username;
     private int level;
     private int experience;
-    private final HashMap<ExerciseSubType, Integer> technicalScore;
     private String guid;
     private String password;
     private String email;
@@ -89,9 +91,7 @@ public class User {
      */
     public static boolean verifyPassword(String password, String hash) {
         LOG.debug("Verifying password");
-        LOG.info("Password: {}", password);
-        LOG.info("Hash: {}", hash);
-        try{
+        try {
             return BCrypt.checkpw(password, hash);
         } catch (IllegalArgumentException e) {
             LOG.error("Invalid hash", e);
@@ -99,12 +99,29 @@ public class User {
         }
     }
 
-    private HashMap<ExerciseSubType, Integer> initializeTechnicalScore() {
-        HashMap<ExerciseSubType, Integer> technicalScore = new HashMap<>();
-        for (ExerciseSubType subType : ExerciseSubType.values()) {
-            technicalScore.put(subType, 1);
-        }
-        return technicalScore;
+
+    /**
+     * @param exerciseSubType exerciseSubType to add technical score to
+     * @param technicalScore  technical score to add
+     */
+    public void addTechnicalScore(ExerciseSubType exerciseSubType, int technicalScore) {
+        LOG.debug("Adding {} technical score to {}", technicalScore, this.username);
+        this.technicalScore.put(exerciseSubType, this.technicalScore.get(exerciseSubType) + technicalScore);
+    }
+
+    /**
+     * Update user with new values
+     *
+     * @param user user to update
+     */
+    public void updateUser(User user) {
+        if (user.getUsername() != null) setUsername(user.getUsername());
+        if (user.getEmail() != null) setEmail(user.getEmail());
+        if (user.getPassword() != null) setPassword(hashPassword(user.getPassword()));
+        if (user.getGrade() != null) setGrade(user.getGrade());
+        if (user.getRole() != null) setRole(user.getRole());
+        if (user.getLevel() != 0) setLevel(user.getLevel());
+        if (user.getExperience() != 0) setExperience(user.getExperience());
     }
 
     public String getUsername() {
@@ -171,11 +188,15 @@ public class User {
         this.role = role;
     }
 
-    public HashMap<ExerciseSubType, Integer> getTechnicalScore() {
+    public Map<ExerciseSubType, Integer> getTechnicalScore() {
         return technicalScore;
     }
 
-    public void setTechnicalScore(ExerciseSubType subType, int score) {
-        technicalScore.put(subType, score);
+    private HashMap<ExerciseSubType, Integer> initializeTechnicalScore() {
+        HashMap<ExerciseSubType, Integer> technicalScore = new HashMap<>();
+        for (ExerciseSubType subType : ExerciseSubType.values()) {
+            technicalScore.put(subType, 1);
+        }
+        return technicalScore;
     }
 }
