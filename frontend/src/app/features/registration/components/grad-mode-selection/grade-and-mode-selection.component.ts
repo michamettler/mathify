@@ -43,17 +43,17 @@ export class GradeAndModeSelectionComponent implements OnInit {
     {
       grade: 1,
       gradeValue: 'first',
-      text: 'Includes exercises on identifying neighboring numbers (1-5), ordering and comparing numbers, and completing calculations in addition and subtraction up to 100.'
+      text: 'Includes exercises on identifying neighbors (1-5), ordering and comparing numbers, plus addition and subtraction up to 100.'
     },
     {
       grade: 2,
       gradeValue: 'second',
-      text: 'Features exercises such as halving and doubling (1-10), three-step addition and subtraction, two-digit calculations, and division without remainders up to 20.'
+      text: 'Features exercises such as halving and doubling (1-10), three-step arithmetic, two-digit calculations, and division up to 20.'
     },
     {
       grade: 3,
       gradeValue: 'third',
-      text: 'Covers exercises like addition and subtraction, finding neighbors up to 1000, rounding numbers to 100, and performing longhand arithmetic.'
+      text: 'Covers exercises in addition and subtraction, finding neighbors up to 1000, rounding numbers to 100, and longhand arithmetic.'
     }
   ]
 
