@@ -94,7 +94,6 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   loadExercise() {
-
     this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
         this.exercise = {
@@ -137,13 +136,15 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   skipExercise() {
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Experience + 0 XP!',
-      detail: 'Exercise skipped, result would have been: ' + this.exercise?.result
-    })
-    this.clear();
-    this.loadExercise();
+    if (this.exercise) {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Experience + 0 XP!',
+        detail: 'Exercise skipped, result would have been: ' + (JSON.parse(this.exercise.result).join(', '))
+      })
+      this.clear();
+      this.loadExercise();
+    }
   }
 
   verify(): void {
@@ -167,21 +168,24 @@ export class MathExerciseViewComponent implements OnInit {
                 no-repeat
               `
             })
-          }
-          if (JSON.parse(response.correct) === true) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
-              detail: 'Congratulations! You got it right! Keep it up!'
-            })
             this.clear();
             this.loadExercise();
           } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
-              detail: 'Dont worry, Im sure you will get it the next time!'
-            })
+            if (JSON.parse(response.correct) === true) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
+                detail: 'Congratulations! You got it right! Keep it up!'
+              })
+              this.clear();
+              this.loadExercise();
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
+                detail: 'Dont worry, Im sure you will get it the next time!'
+              })
+            }
           }
         }
       });
