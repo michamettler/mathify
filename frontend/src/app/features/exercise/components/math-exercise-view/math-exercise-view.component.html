@@ -16,7 +16,7 @@
     <app-math-sorting-operation [exercise]="exercise" [userInputs]="userInputs"></app-math-sorting-operation>
   </div>
   <div *ngIf="category==='TableOperation'">
-    <app-math-multiplication-table [exercise]="exercise"></app-math-multiplication-table>
+    <app-math-multiplication-table [exercise]="exercise" [userInputs]="userInputs"></app-math-multiplication-table>
   </div>
   <div class="game-button-group">
     <button (click)="verify()" class="submit-button" color="primary" mat-flat-button>Submit</button>
