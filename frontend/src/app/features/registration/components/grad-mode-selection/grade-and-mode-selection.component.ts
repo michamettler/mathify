@@ -43,17 +43,17 @@ export class GradeAndModeSelectionComponent implements OnInit {
     {
       grade: 1,
       gradeValue: 'first',
-      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'
+      text: 'Includes exercises on identifying neighboring numbers (1-5), ordering and comparing numbers, and completing calculations in addition and subtraction up to 100.'
     },
     {
       grade: 2,
       gradeValue: 'second',
-      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'
+      text: 'Features exercises such as halving and doubling (1-10), three-step addition and subtraction, two-digit calculations, and division without remainders up to 20.'
     },
     {
       grade: 3,
       gradeValue: 'third',
-      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'
+      text: 'Covers exercises like addition and subtraction, finding neighbors up to 1000, rounding numbers to 100, and performing longhand arithmetic.'
     }
   ]
 
@@ -62,21 +62,21 @@ export class GradeAndModeSelectionComponent implements OnInit {
       icon: 'shuffle',
       mode: 'Mixed Mode',
       modeValue: 'mixed',
-      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+      text: 'Mixed mode to dynamically combine various types of exercises and enhance learning flexibility.',
       isEnabled: true
     },
     {
       icon: 'whatshot',
       mode: 'Challenge Mode',
       modeValue: 'challenge',
-      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+      text: 'Challenge mode introduces a time-based element, testing your speed and accuracy under pressure.',
       isEnabled: false
     },
     {
       icon: 'build',
       mode: 'Custom Mode',
       modeValue: 'custom',
-      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+      text: 'Custom Mode allows you to tailor the exercises to your specific needs and preferences.',
       isEnabled: false
     }
   ];

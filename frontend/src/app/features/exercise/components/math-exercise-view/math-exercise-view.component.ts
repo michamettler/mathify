@@ -85,14 +85,15 @@ export class MathExerciseViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadExercise();
-  }
 
-  loadExercise() {
     this.userRegistrationService.getUser().subscribe({
       next: (response: User) => {
         this.user = response;
       }
     });
+  }
+
+  loadExercise() {
 
     this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
@@ -149,6 +150,9 @@ export class MathExerciseViewComponent implements OnInit {
     if (this.exercise) {
       this.mathExerciseService.verifyExercise(this.exercise).subscribe({
         next: (response: any) => {
+          if (this.user) {
+            this.user.experience = response.experience
+          }
           if (response.experience < response.experienceBefore) {
             Swal.fire({
               icon: "success",
