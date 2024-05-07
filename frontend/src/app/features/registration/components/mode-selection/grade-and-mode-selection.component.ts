@@ -83,6 +83,7 @@ export class GradeAndModeSelectionComponent implements OnInit {
 
   selectedMode: string | null = null;
   selectedGrade: string | null = null;
+  initialGrade: string | null = null;
 
   constructor(private router: Router, private titleService: Title, private userRegistrationService: UserRegistrationService) {
     this.titleService.setTitle('Mathify!');
@@ -92,6 +93,7 @@ export class GradeAndModeSelectionComponent implements OnInit {
     this.userRegistrationService.getUser().subscribe({
       next: (response: User) => {
         this.selectedGrade = response.grade ? response.grade : null;
+        this.initialGrade = response.grade ? response.grade : null;
       }
     });
   }
@@ -109,6 +111,21 @@ export class GradeAndModeSelectionComponent implements OnInit {
   }
 
   startGame() {
-    this.router.navigate(['/scoreboard']);
+    if (this.selectedGrade && this.selectedMode) {
+      this.userRegistrationService.getUser().subscribe({
+        next: (response: User) => {
+          response.grade = this.selectedGrade;
+          this.userRegistrationService.updateUser({
+            grade: this.selectedGrade
+          }).subscribe({
+            next: () => {
+              this.router.navigate(['/scoreboard']);
+            }
+          });
+        }
+      });
+    } else {
+      this.router.navigate(['/scoreboard']);
+    }
   }
 }

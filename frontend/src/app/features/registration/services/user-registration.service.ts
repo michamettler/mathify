@@ -51,10 +51,20 @@ export class UserRegistrationService {
     const headers = new HttpHeaders({
       'Authorization': localStorage.getItem('token')?.toString() + '',
     });
-    return this.http.get(url,{headers: headers})
+    return this.http.get(url, {headers: headers})
       .pipe(
         catchError(this.handleError('getUser'))
       );
+  }
+
+  updateUser(user: any): Observable<any> {
+    let url = `${this.apiUrl}users/` + localStorage.getItem('token')?.toString();
+
+    const headers = new HttpHeaders({
+      'Authorization': localStorage.getItem('token')?.toString() + '',
+    });
+
+    return this.http.patch(url, user, {headers});
   }
 
   private handleError(operation = 'operation') {
