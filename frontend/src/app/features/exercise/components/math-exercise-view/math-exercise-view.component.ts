@@ -159,7 +159,13 @@ export class MathExerciseViewComponent implements OnInit {
               title: "Level Up!",
               text: "Congratulations! Keep it going!",
               showConfirmButton: false,
-              timer: 2000
+              timer: 4000,
+              backdrop: `
+                rgba(0,0,123,0.4)
+                url("https://sweetalert2.github.io/images/nyan-cat.gif")
+                left top
+                no-repeat
+              `
             })
           }
           if (JSON.parse(response.correct) === true) {
