@@ -71,6 +71,7 @@ class MathsGeneratorTest {
         double b = values[1];
 
         assertTrue(a != b);
+        assertTrue(a % 10 == 0 && b % 10 == 0);
         assertEquals(mathsExercise.result()[0], Math.max(a, b));
     }
 
