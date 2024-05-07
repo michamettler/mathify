@@ -27,6 +27,7 @@ import {MessagesModule} from "primeng/messages";
 import {SpeedDialModule} from "primeng/speeddial";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {UserRegistrationService} from "../../../registration/services/user-registration.service";
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -137,9 +138,8 @@ export class MathExerciseViewComponent implements OnInit {
   skipExercise() {
     this.messageService.add({
       severity: 'info',
-      summary: 'Skipped exercise',
-      detail: 'You have skipped the exercise, no experience added or removed. ' +
-        'I am sure you will get the next one! The result would have been: ' + this.exercise?.result
+      summary: 'Experience + 0 XP!',
+      detail: 'Exercise skipped, result would have been: ' + this.exercise?.result
     })
     this.clear();
     this.loadExercise();
@@ -149,6 +149,15 @@ export class MathExerciseViewComponent implements OnInit {
     if (this.exercise) {
       this.mathExerciseService.verifyExercise(this.exercise).subscribe({
         next: (response: any) => {
+          if (response.experience < response.experienceBefore) {
+            Swal.fire({
+              icon: "success",
+              title: "Level Up!",
+              text: "Congratulations! Keep it going!",
+              showConfirmButton: false,
+              timer: 2000
+            })
+          }
           if (JSON.parse(response.correct) === true) {
             this.messageService.add({
               severity: 'success',

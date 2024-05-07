@@ -1,9 +1,8 @@
 <app-header [gradeSelected]="true"></app-header>
 <p-toast/>
 <div class="container">
-  <h1>Math Exercise - {{ exercise ? exercise.exerciseSubType : '' }}</h1>
   <div>
-  <p class="exercise">{{ exercise?.exercise }}</p>
+    <h1 class="exercise">{{ exercise?.exercise }}</h1>
   </div>
   <div *ngIf="category==='SingleResultOperation'">
     <app-math-single-result-operation [exercise]="exercise"
