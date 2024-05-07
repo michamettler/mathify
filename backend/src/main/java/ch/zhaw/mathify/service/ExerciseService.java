@@ -8,10 +8,9 @@ import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static ch.zhaw.mathify.model.exercise.ExerciseSubType.*;
 
@@ -80,11 +79,26 @@ public class ExerciseService {
     }
 
     private static void populateGradeExerciseSubtypeMapping() {
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FIRST, List.of(ADDITION, SUBTRACTION, COMPARISON, NEIGHBORS, SORTING, NUMBERCOMPLETION, COMPARISON, TENSCOMPARISON));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.SECOND, List.of(ExerciseSubType.values()));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.THIRD, List.of(ExerciseSubType.values()));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FOURTH, List.of(ExerciseSubType.values()));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FIFTH, List.of(ExerciseSubType.values()));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.SIXTH, List.of(ExerciseSubType.values()));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FIRST, List.of(ADDITION, SUBTRACTION, COMPARISON, NEIGHBORS, SORTING, NUMBERCOMPLETION, TENSCOMPARISON));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.SECOND,
+                Stream.concat(GRADE_EXERCISE_SUB_TYPE_MAP.get(Grade.FIRST).stream(),
+                                Stream.of(DOUBLING, HALVING, THREESTEPADDITION, THREESTEPSUBTRACTION, MULTIPLICATION, MULTIPLICATIONTABLE, DIVISION))
+                        .collect(Collectors.toList()));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.THIRD,
+                Stream.concat(GRADE_EXERCISE_SUB_TYPE_MAP.get(Grade.SECOND).stream(),
+                                Stream.of(ROUNDINGTEN, LONGADDITION, LONGSUBTRACTION, LONGMULTIPLICATION, ORDEROFOPERATIONS))
+                        .collect(Collectors.toList()));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FOURTH,
+                Stream.concat(GRADE_EXERCISE_SUB_TYPE_MAP.get(Grade.THIRD).stream(),
+                                Arrays.stream(ExerciseSubType.values()))
+                        .collect(Collectors.toList()));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FIFTH,
+                Stream.concat(GRADE_EXERCISE_SUB_TYPE_MAP.get(Grade.FOURTH).stream(),
+                                Arrays.stream(ExerciseSubType.values()))
+                        .collect(Collectors.toList()));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.SIXTH,
+                Stream.concat(GRADE_EXERCISE_SUB_TYPE_MAP.get(Grade.FIFTH).stream(),
+                                Arrays.stream(ExerciseSubType.values()))
+                        .collect(Collectors.toList()));
     }
 }
