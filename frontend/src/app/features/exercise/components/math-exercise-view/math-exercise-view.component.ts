@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {HeaderComponent} from "../../../../core/components/header/header.component";
 import {MatButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
@@ -15,11 +15,18 @@ import {
   MathSingleResultOperationComponent
 } from "../operations/math-single-result-operation/math-single-result-operation.component";
 import {MathNeighborOperationComponent} from "../operations/math-neighbor-operation/math-neighbor-operation.component";
-import {SortingOperationComponent} from "../operations/math-sorting-operation/sorting-operation.component";
+import {MathSortingOperationComponent} from "../operations/math-sorting-operation/math-sorting-operation.component";
 import {MathExerciseSubType} from "../../../../../model/mathExerciseSubType";
 import {
   MathMultiplicationTableComponent
 } from "../operations/math-multiplication-table/math-multiplication-table.component";
+import {Message, MessageService} from "primeng/api";
+import {ToastModule} from "primeng/toast";
+import {UserInputs} from "../../../../../model/userInputs";
+import {MessagesModule} from "primeng/messages";
+import {SpeedDialModule} from "primeng/speeddial";
+import {OverlayPanelModule} from "primeng/overlaypanel";
+import {UserRegistrationService} from "../../../registration/services/user-registration.service";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -38,29 +45,54 @@ import {
     MatProgressBar,
     MathSingleResultOperationComponent,
     MathNeighborOperationComponent,
-    SortingOperationComponent,
-    MathMultiplicationTableComponent
+    MathSortingOperationComponent,
+    MathMultiplicationTableComponent,
+    ToastModule,
+    MessagesModule,
+    SpeedDialModule,
+    OverlayPanelModule
   ],
+  providers: [MessageService],
   templateUrl: './math-exercise-view.component.html',
   styleUrl: './math-exercise-view.component.scss'
 })
 export class MathExerciseViewComponent implements OnInit {
 
+  @ViewChild(MathSingleResultOperationComponent) mathSingleResultOperationComponent: MathSingleResultOperationComponent | undefined;
+  @ViewChild(MathNeighborOperationComponent) mathNeighborOperationComponent: MathNeighborOperationComponent | undefined;
+  @ViewChild(MathMultiplicationTableComponent) mathMultiplicationTableComponent: MathMultiplicationTableComponent | undefined;
+  @ViewChild(MathSortingOperationComponent) mathSortingOperationComponent: MathSortingOperationComponent | undefined;
+
   exercise?: Exercise;
   category?: string;
+  hintMessage: Message[] = [{severity: 'info', detail: ''}]
+  showHint: boolean = false;
 
-  @Input() user: User = { //TODO read from session
-    grade: 'first',
-    username: 'System_Admin',
-    password: 'fg6i7i4bMa',
-    level: 1,
-    experience: 30
+  userInputs: UserInputs = {
+    singleSolution: '',
+    lowerNeighbor: '',
+    upperNeighbor: '',
+    numbersSorting: [],
+    numbersMultiplicationTable: Array(10).fill('')
   };
 
-  constructor(private mathExerciseService: MathExerciseService, private router: Router) {
+  user?: User;
+
+  constructor(private mathExerciseService: MathExerciseService, private userRegistrationService: UserRegistrationService,
+              private router: Router, private messageService: MessageService) {
   }
 
   ngOnInit(): void {
+    this.loadExercise();
+  }
+
+  loadExercise() {
+    this.userRegistrationService.getUser().subscribe({
+      next: (response: User) => {
+        this.user = response;
+      }
+    });
+
     this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
         this.exercise = {
@@ -69,7 +101,14 @@ export class MathExerciseViewComponent implements OnInit {
           result: response.result,
           userResult: '',
           calculationValues: response.calculationValues,
-          //hint: response.hint ? response.hint : '' //TODO activate after it is implemented
+          hint: response.hint ? response.hint : ''
+        }
+        this.hintMessage = [{severity: 'info', detail: this.exercise.hint}]
+        if (this.category === 'SortingOperation') {
+          if (this.exercise && this.exercise.calculationValues) {
+            this.exercise.userResult = this.exercise.calculationValues;
+            this.userInputs.numbersSorting = JSON.parse(this.exercise.calculationValues);
+          }
         }
       }
     });
@@ -95,4 +134,56 @@ export class MathExerciseViewComponent implements OnInit {
     return 'Unknown Category';
   }
 
+  skipExercise() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Skipped exercise',
+      detail: 'You have skipped the exercise, no experience added or removed. ' +
+        'I am sure you will get the next one! The result would have been: ' + this.exercise?.result
+    })
+    this.clear();
+    this.loadExercise();
+  }
+
+  verify(): void {
+    if (this.exercise) {
+      this.mathExerciseService.verifyExercise(this.exercise).subscribe({
+        next: (response: any) => {
+          if (JSON.parse(response.correct) === true) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
+              detail: 'Congratulations! You got it right! Keep it up!'
+            })
+            this.clear();
+            this.loadExercise();
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
+              detail: 'Dont worry, Im sure you will get it the next time!'
+            })
+          }
+        }
+      });
+    }
+  }
+
+  clear(): void {
+    this.userInputs = {
+      singleSolution: '',
+      lowerNeighbor: '',
+      upperNeighbor: '',
+      numbersSorting: [],
+      numbersMultiplicationTable: Array(10).fill('')
+    };
+  }
+
+  toggleHint(): void {
+    this.showHint = !this.showHint;
+  }
+
+  exit() {
+    this.router.navigate(['/grade-mode-selection']);
+  }
 }

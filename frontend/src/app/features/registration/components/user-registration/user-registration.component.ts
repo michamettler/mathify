@@ -3,7 +3,6 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {Router} from "@angular/router";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserRegistrationService} from "../../services/user-registration.service";
 import {Title} from "@angular/platform-browser";
 import {NgIf} from "@angular/common";
@@ -12,6 +11,9 @@ import {MatSelect} from "@angular/material/select";
 import {User} from "../../../../../model/user";
 import {Grade} from "../../../../../model/grade";
 import {HttpClientModule} from "@angular/common/http";
+import {MessageService} from "primeng/api";
+import {ToastModule} from "primeng/toast";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-user-registration',
@@ -26,8 +28,11 @@ import {HttpClientModule} from "@angular/common/http";
     HttpClientModule,
     NgIf,
     MatOption,
-    MatSelect
+    MatSelect,
+    ToastModule,
+    MatButton,
   ],
+  providers: [MessageService],
   templateUrl: './user-registration.component.html',
   styleUrl: './user-registration.component.scss'
 })
@@ -49,7 +54,7 @@ export class UserRegistrationComponent {
 
   gradeControl: FormControl<Grade | null> = new FormControl<Grade | null>(null, Validators.required);
 
-  constructor(private router: Router, private _snackBar: MatSnackBar,
+  constructor(private router: Router, private messageService: MessageService,
               private userRegistrationService: UserRegistrationService,
               private titleService: Title) {
     this.titleService.setTitle('Registration');
@@ -73,18 +78,15 @@ export class UserRegistrationComponent {
       this.userRegistrationService.register(user).subscribe({
         next: (response) => {
           console.log('Login successful', response);
-          this._snackBar.open("User has been created! You can now log in.", "dismiss", {
-            verticalPosition: 'top',
-            horizontalPosition: 'end'
-          });
-          this.router.navigate(['/login']);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'User has been created!',
+            detail: 'You can now log in.'
+          })
         },
         error: (error) => {
           console.error('Login failed:', error);
-          this._snackBar.open("Registration failed!\n" + error, "dismiss", {
-            verticalPosition: 'top',
-            horizontalPosition: 'end'
-          });
+          this.messageService.add({severity: 'error', summary: 'Registration failed!', detail: error})
         }
       });
 
@@ -100,4 +102,7 @@ export class UserRegistrationComponent {
     return true;
   }
 
+  login() {
+    this.router.navigate(['/login']);
+  }
 }

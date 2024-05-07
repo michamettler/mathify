@@ -87,7 +87,7 @@ public class Router {
         }, Role.ANONYMOUS);
 
         path("/users", () -> {
-            get("/{user-token}", ctx -> userApiController.getOne(ctx, ctx.pathParam("user-token")), Role.SYSTEM_CRUD, Role.ADMIN);
+            get("/{user-token}", ctx -> userApiController.getOne(ctx, ctx.pathParam("user-token")), Role.USER, Role.SYSTEM_CRUD, Role.ADMIN);
             get(userApiController::getAll, Role.SYSTEM_CRUD, Role.ADMIN);
             post(userApiController::create, Role.SYSTEM_CRUD, Role.ADMIN);
             patch("/{user-token}", ctx -> userApiController.update(ctx, ctx.pathParam("user-token")), Role.USER, Role.SYSTEM_CRUD, Role.ADMIN);

@@ -1,28 +1,53 @@
 <app-header [gradeSelected]="true"></app-header>
+<p-toast/>
 <div class="container">
+  <h1>Math Exercise - {{ exercise ? exercise.exerciseSubType : '' }}</h1>
+  <div>
+  <p class="exercise">{{ exercise?.exercise }}</p>
+  </div>
   <div *ngIf="category==='SingleResultOperation'">
-    <app-math-single-result-operation [exercise]="exercise"></app-math-single-result-operation>
+    <app-math-single-result-operation [exercise]="exercise"
+                                      [userInputs]="userInputs"></app-math-single-result-operation>
   </div>
   <div *ngIf="category==='NeighborOperation'">
-    <app-math-neighbor-operation [exercise]="exercise"></app-math-neighbor-operation>
+    <app-math-neighbor-operation [exercise]="exercise" [userInputs]="userInputs"></app-math-neighbor-operation>
   </div>
   <div *ngIf="category==='SortingOperation'">
-    <app-math-sorting-operation [exercise]="exercise"></app-math-sorting-operation>
+    <app-math-sorting-operation [exercise]="exercise" [userInputs]="userInputs"></app-math-sorting-operation>
   </div>
   <div *ngIf="category==='TableOperation'">
     <app-math-multiplication-table [exercise]="exercise"></app-math-multiplication-table>
   </div>
-  <div class="number-ray-section">
-    <img alt="Number Ray for Visualization" class="number-ray" src="assets/number-ray.svg">
+  <div class="game-button-group">
+    <button (click)="verify()" class="submit-button" color="primary" mat-flat-button>Submit</button>
+  </div>
+  <div class="game-button-group">
+    <button (click)="toggleHint()" color="primary" mat-stroked-button>Show Hint</button>
+    <button (click)="op.toggle($event)" color="primary" mat-stroked-button>Show Number Ray</button>
+    <p-overlayPanel #op appendTo="body">
+      <div class="flex flex-column gap-3 w-25rem">
+        <img alt="Number Ray for Visualization" class="number-ray" src="assets/number-ray.svg">
+      </div>
+    </p-overlayPanel>
+    <button (click)="skipExercise()" color="warn" mat-stroked-button>Skip Exercise</button>
+  </div>
+  <div *ngIf="exercise && showHint" class="hint">
+    <p-messages
+      [(value)]="hintMessage"
+      [closable]="false"
+      [enableService]="false"/>
   </div>
   <div class="progress-section">
     <div>
-      <h2>{{ user.level }}</h2>
+      <h2>{{ user?.level }}</h2>
       <div class="progress" style="width: 100%">
-        <div [attr.aria-valuenow]="user.experience" [style.width]="user.experience + '%'"
+        <div [attr.aria-valuenow]="user?.experience" [style.width]="user?.experience + '%'"
              aria-valuemax="100" aria-valuemin="0" class="progress-bar progress-bar-striped progress-bar-animated"
              role="progressbar"></div>
       </div>
     </div>
+  </div>
+  <div class="game-button-group">
+    <button (click)="exit()" class="secondary-button" color="warn" mat-flat-button>Exit Exercises</button>
   </div>
 </div>

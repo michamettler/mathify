@@ -1,9 +1,17 @@
 h1 {
-  font-size: 40px;
+  font-size: 4vh;
+}
+
+.exercise {
+  margin-top: 5vh;
+  font-size: 5vh;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .progress-section {
   margin-top: 5%;
+  margin-bottom: 2%;
   color: #3F51B5;
   width: 100%;
   text-align: center;
@@ -13,15 +21,31 @@ h1 {
   }
 }
 
-.number-ray-section {
-  width: 100%;
-  text-align: center;
+.game-button-group {
+  display: flex;
+  margin-top: 2%;
 
-  .number-ray {
-    width: 50%;
+  button {
+    margin: 0 5px;
   }
 }
 
+.submit-button {
+  font-size: large;
+  border-radius: 30px !important;
+  height: 70px !important;
+  width: 180px !important;
+}
+
+.secondary-button {
+  border-radius: 30px;
+  height: 40px !important;
+  width: 150px !important;
+}
+
+.number-ray {
+  max-width: 60vh;
+}
 
 .d-flex {
   display: flex;

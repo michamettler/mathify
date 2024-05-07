@@ -1,5 +1,7 @@
 <app-header [gradeSelected]="true"></app-header>
-<h1 class="scoreboard-title">Scoreboard</h1>
+<div class="container">
+  <h1 class="scoreboard-title">Scoreboard</h1>
+</div>
 <div class="scoreboard">
   <table [dataSource]="dataSource" mat-table>
 
@@ -32,6 +34,7 @@
     <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   </table>
 </div>
-<div class="playButton">
-  <button (click)="startGame()" color="primary" mat-raised-button>Play</button>
+<div class="playButtonContainer">
+  <button (click)="startGame()" class="playButton" color="primary" mat-flat-button>Play</button>
 </div>
+
