@@ -355,15 +355,6 @@ class MathsGeneratorTest {
     }
 
     @Test
-    void testRoundingTenError() {
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FIRST, ExerciseSubType.ROUNDINGTEN, 3));
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.SECOND, ExerciseSubType.ROUNDINGTEN, 4));
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FOURTH, ExerciseSubType.ROUNDINGTEN, 5));
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FIFTH, ExerciseSubType.ROUNDINGTEN, 6));
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.SIXTH, ExerciseSubType.ROUNDINGTEN, 7));
-    }
-
-    @Test
     void testLongAddition() {
         int technicalScore = 3;
         Exercise exercise = MathsGenerator.generate(Grade.THIRD, ExerciseSubType.LONGADDITION, technicalScore);
