@@ -50,7 +50,7 @@ export class ScoreboardOverviewComponent implements OnInit {
 
   users: DisplayUser[] = [];
 
-  displayedColumns: string[] = ['position', 'username', 'level', 'experience'];
+  displayedColumns: string[] = ['position', 'username', 'level', 'experience', 'grade'];
   dataSource: DisplayUser[] = [];
 
   constructor(private router: Router, private titleService: Title, private scoreboardOverviewService: ScoreboardOverviewService, private userRegistrationService: UserRegistrationService) {
