@@ -27,6 +27,7 @@ import {MessagesModule} from "primeng/messages";
 import {SpeedDialModule} from "primeng/speeddial";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {UserRegistrationService} from "../../../registration/services/user-registration.service";
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -84,15 +85,15 @@ export class MathExerciseViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadExercise();
-  }
 
-  loadExercise() {
     this.userRegistrationService.getUser().subscribe({
       next: (response: User) => {
         this.user = response;
       }
     });
+  }
 
+  loadExercise() {
     this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
         this.exercise = {
@@ -135,34 +136,56 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   skipExercise() {
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Skipped exercise',
-      detail: 'You have skipped the exercise, no experience added or removed. ' +
-        'I am sure you will get the next one! The result would have been: ' + this.exercise?.result
-    })
-    this.clear();
-    this.loadExercise();
+    if (this.exercise) {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Experience + 0 XP!',
+        detail: 'Exercise skipped, result would have been: ' + (JSON.parse(this.exercise.result).join(', '))
+      })
+      this.clear();
+      this.loadExercise();
+    }
   }
 
   verify(): void {
     if (this.exercise) {
       this.mathExerciseService.verifyExercise(this.exercise).subscribe({
         next: (response: any) => {
-          if (JSON.parse(response.correct) === true) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
-              detail: 'Congratulations! You got it right! Keep it up!'
+          if (this.user) {
+            this.user.experience = response.experience
+          }
+          if (response.experience < response.experienceBefore) {
+            Swal.fire({
+              icon: "success",
+              title: "Level Up!",
+              text: "Congratulations! Keep it going!",
+              showConfirmButton: false,
+              timer: 4000,
+              backdrop: `
+                rgba(0,0,123,0.4)
+                url("https://sweetalert2.github.io/images/nyan-cat.gif")
+                left top
+                no-repeat
+              `
             })
             this.clear();
             this.loadExercise();
           } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
-              detail: 'Dont worry, Im sure you will get it the next time!'
-            })
+            if (JSON.parse(response.correct) === true) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
+                detail: 'Congratulations! You got it right! Keep it up!'
+              })
+              this.clear();
+              this.loadExercise();
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
+                detail: 'Dont worry, Im sure you will get it the next time!'
+              })
+            }
           }
         }
       });
