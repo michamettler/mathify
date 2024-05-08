@@ -1,0 +1,9 @@
+<div class="game-input-section">
+  <div class="input-group">
+    <div (cdkDropListDropped)="drop($event)" cdkDropList cdkDropListOrientation="horizontal" class="number-sort">
+      @for (number of userInputs?.numbersSorting; track number) {
+        <div class="number-box" cdkDrag>{{ number }}</div>
+      }
+    </div>
+  </div>
+</div>

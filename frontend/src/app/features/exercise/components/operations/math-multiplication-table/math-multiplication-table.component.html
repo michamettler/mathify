@@ -1,27 +1,14 @@
-<div class="container">
-  <h1>Math Exercise - {{ exercise ? exercise.exerciseSubType : '' }}</h1>
-  <h2 class="exercise">{{ exercise?.exercise }}</h2>
-  <div class="input-section">
-    <div class="mat-multiplication-table">
-      <div class="input-row">
-        <div *ngFor="let item of numbers; let i = index" class="input-container">
-          <mat-form-field appearance="fill">
-            <mat-label>{{ number }} x {{ i + 1 }}</mat-label>
-            <input [(ngModel)]="userInputs[i]"
-                   [value]="userInputs[i]"
-                   matInput>
-          </mat-form-field>
-          <br/>
-          <span *ngIf="showSolution" class="solution">{{ Number(number) * (i + 1) }}</span>
-        </div>
+<div class="game-input-section">
+  <div class="mat-multiplication-table">
+    <div class="input-row">
+      <div *ngFor="let item of numbers; let i = index" class="input-container">
+        <mat-form-field appearance="fill">
+          <mat-label>{{ number }} x {{ i + 1 }}</mat-label>
+          <input (change)="handleChange($event, i)"
+                 [value]="userInputs ? userInputs.numbersMultiplicationTable[i] : ''"
+                 matInput>
+        </mat-form-field>
       </div>
-    </div>
-    <div class="button-group">
-      <button (click)="displaySolution()" color="primary" mat-stroked-button>Show Solution</button>
-      <button (click)="toggleHint()" mat-stroked-button>Show hint</button>
-    </div>
-    <div *ngIf="showHint" class="hint">
-      <p>Hint: {{ hint }}</p>
     </div>
   </div>
 </div>

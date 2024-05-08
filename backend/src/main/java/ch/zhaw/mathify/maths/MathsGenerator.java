@@ -61,9 +61,8 @@ public class MathsGenerator {
         int c = random.nextInt(max + 1);
         double[] result = {a, b, c};
         double[] calculationValues = {a, b, c};
-        String arrayUnsorted = Arrays.toString(result);
         Arrays.sort(result);
-        return new MathsExercise(result, new double[result.length], arrayUnsorted, calculationValues,
+        return new MathsExercise(result, new double[result.length], "Sort the following numbers: " + a + ", " + b + ", " + c, calculationValues,
                 "Think about putting things in order from smallest to largest or vice versa. How would you arrange a line of toys or a set of cards?",
                 ExerciseSubType.SORTING);
     }
@@ -90,7 +89,7 @@ public class MathsGenerator {
         } while (a == b || a == c || b == c);
         double[] result = {Math.max(a, Math.max(b, c))};
         double[] calculationValues = {a, b, c};
-        return new MathsExercise(result, new double[result.length], "Find the biggest number in the list: " + a + ", " + b + ", " + c, calculationValues,
+        return new MathsExercise(result, new double[result.length], "Find the biggest number: " + a + ", " + b + ", " + c, calculationValues,
                 "Compare things to see which one is bigger, smaller, or the same. How would you decide which toy has more blocks or which fruit is heavier?",
                 ExerciseSubType.COMPARISON);
     }
@@ -112,10 +111,10 @@ public class MathsGenerator {
 
     private static Exercise generateTensComparison(int technicalScore) {
         LOG.info("Generating tens comparison exercise");
-        int a = (int) Math.round((random.nextInt(9) * 10 + 10) * getDifficultyFactor(technicalScore));
+        int a = random.nextInt((int) Math.round(9 * getDifficultyFactor(technicalScore))) * 10 + 10;
         int b;
         do {
-            b = (int) Math.round((random.nextInt(9) * 10 + 10) * getDifficultyFactor(technicalScore));
+            b = random.nextInt((int) Math.round(9 * getDifficultyFactor(technicalScore))) * 10 + 10;
         } while (b == a);
         double[] result = {Math.max(a, b)};
         double[] calculationValues = {a, b};
@@ -150,7 +149,6 @@ public class MathsGenerator {
 
     private static Exercise generateMultiplication(Grade grade, int technicalScore) {
         LOG.info("Generating multiplication exercise");
-        if (grade == Grade.FIRST) throw new IllegalArgumentException("Multiplication is not supported for grade one!");
         int max = (int) Math.sqrt(grade.getMax() * getDifficultyFactor(technicalScore));
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max + 1);
@@ -163,7 +161,6 @@ public class MathsGenerator {
 
     private static Exercise generateDivision(Grade grade, int technicalScore) {
         LOG.info("Generating division exercise");
-        if (grade == Grade.FIRST) throw new IllegalArgumentException("Division is not supported for grade one!");
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
         int a = random.nextInt(max + 1) + 1;
         int b = getRandomFactor(a);
@@ -247,11 +244,6 @@ public class MathsGenerator {
 
     private static Exercise generateRounding(Grade grade, int technicalScore) {
         LOG.info("Generating rounding exercise");
-
-        if (grade != Grade.THIRD) {
-            LOG.error("Rounding is only supported for grade three");
-            throw new IllegalArgumentException("Rounding is only supported for grade three");
-        }
 
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
         int a = random.nextInt(max + 1);

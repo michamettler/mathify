@@ -8,10 +8,7 @@ import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static ch.zhaw.mathify.model.exercise.ExerciseSubType.*;
 
@@ -71,7 +68,7 @@ public class ExerciseService {
 
     private ExerciseSubType getExerciseSubTypeForUser(User user) {
         int count = userExerciseCount.getOrDefault(user, 0);
-        ExerciseSubType exerciseSubType = GRADE_EXERCISE_SUB_TYPE_MAP.get(user.getGrade()).get(count % GRADE_EXERCISE_SUB_TYPE_MAP.size());
+        ExerciseSubType exerciseSubType = GRADE_EXERCISE_SUB_TYPE_MAP.get(user.getGrade()).get(count % GRADE_EXERCISE_SUB_TYPE_MAP.get(user.getGrade()).size());
         userExerciseCount.put(user, count + 1);
 
         LOG.debug("ExerciseSubType for user {} is {}", user.getUsername(), exerciseSubType.name());
@@ -80,11 +77,8 @@ public class ExerciseService {
     }
 
     private static void populateGradeExerciseSubtypeMapping() {
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FIRST, List.of(ADDITION, SUBTRACTION, COMPARISON, NEIGHBORS, SORTING, NUMBERCOMPLETION, COMPARISON, TENSCOMPARISON));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.SECOND, List.of(ExerciseSubType.values()));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.THIRD, List.of(ExerciseSubType.values()));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FOURTH, List.of(ExerciseSubType.values()));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FIFTH, List.of(ExerciseSubType.values()));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.SIXTH, List.of(ExerciseSubType.values()));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FIRST, List.of(ADDITION, SUBTRACTION, COMPARISON, NEIGHBORS, SORTING, NUMBERCOMPLETION, TENSCOMPARISON));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.SECOND, List.of(DOUBLING, HALVING, THREESTEPADDITION, THREESTEPSUBTRACTION, MULTIPLICATION, MULTIPLICATIONTABLE, DIVISION));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.THIRD, List.of(ROUNDINGTEN, LONGADDITION, LONGSUBTRACTION, LONGMULTIPLICATION, ORDEROFOPERATIONS));
     }
 }

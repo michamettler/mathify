@@ -2,14 +2,7 @@
   width: 100% !important;
   padding-left: 20%;
   padding-right: 20%;
-  padding-top: 15%;
-}
-
-.playButton {
-  width: 100% !important;
-  padding-left: 50%;
-  padding-right: 50%;
-  padding-top: 5%;
+  padding-top: 10%;
 }
 
 .card-disabled {
@@ -19,16 +12,26 @@
   pointer-events: none; /* Prevents all interactions */
 }
 
-.grade-mode-selection {
-  padding-top: 10%;
-  width: 100% !important;
-  text-align: center;
-}
-
 .card-disabled .card-body {
   cursor: not-allowed;
 }
 
 .card-disabled .material-icons {
   color: #ccc; /* Grey out the icons too */
+}
+
+.card-first {
+  background-color: #CDE8E5;
+}
+
+.card-second {
+  background-color: #FFF9D0;
+}
+
+.card-third {
+  background-color: #D4E7C5;
+}
+
+.card-mixed {
+  background-color: #FFCF96;
 }
