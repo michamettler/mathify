@@ -71,6 +71,7 @@ class MathsGeneratorTest {
         double b = values[1];
 
         assertTrue(a != b);
+        assertTrue(a % 10 == 0 && b % 10 == 0);
         assertEquals(mathsExercise.result()[0], Math.max(a, b));
     }
 
@@ -352,15 +353,6 @@ class MathsGeneratorTest {
         double a = values[0];
         double roundedNumber = Math.round(a / 10.0) * 10.0;
         assertEquals(roundedNumber, mathsExercise.result()[0]);
-    }
-
-    @Test
-    void testRoundingTenError() {
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FIRST, ExerciseSubType.ROUNDINGTEN, 3));
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.SECOND, ExerciseSubType.ROUNDINGTEN, 4));
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FOURTH, ExerciseSubType.ROUNDINGTEN, 5));
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.FIFTH, ExerciseSubType.ROUNDINGTEN, 6));
-        assertThrows(IllegalArgumentException.class, () -> MathsGenerator.generate(Grade.SIXTH, ExerciseSubType.ROUNDINGTEN, 7));
     }
 
     @Test

@@ -2,7 +2,7 @@ import {Routes} from '@angular/router';
 import {UserLoginComponent} from "./features/registration/components/user-login/user-login.component";
 import {
   GradeAndModeSelectionComponent
-} from "./features/registration/components/mode-selection/grade-and-mode-selection.component";
+} from "./features/registration/components/grad-mode-selection/grade-and-mode-selection.component";
 import {AuthGuard} from "./core/guards/auth.guard";
 import {
   ScoreboardOverviewComponent

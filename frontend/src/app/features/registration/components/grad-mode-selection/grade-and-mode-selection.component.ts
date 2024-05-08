@@ -43,17 +43,17 @@ export class GradeAndModeSelectionComponent implements OnInit {
     {
       grade: 1,
       gradeValue: 'first',
-      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'
+      text: 'Includes exercises on identifying neighbors (1-5), ordering and comparing numbers, plus addition and subtraction up to 100.'
     },
     {
       grade: 2,
       gradeValue: 'second',
-      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'
+      text: 'Features exercises such as halving and doubling (1-10), three-step arithmetic, two-digit calculations, and division up to 20.'
     },
     {
       grade: 3,
       gradeValue: 'third',
-      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam'
+      text: 'Covers exercises in addition and subtraction, finding neighbors up to 1000, rounding numbers to 100, and longhand arithmetic.'
     }
   ]
 
@@ -62,27 +62,28 @@ export class GradeAndModeSelectionComponent implements OnInit {
       icon: 'shuffle',
       mode: 'Mixed Mode',
       modeValue: 'mixed',
-      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+      text: 'Mixed mode to dynamically combine various types of exercises and enhance learning flexibility.',
       isEnabled: true
     },
     {
       icon: 'whatshot',
       mode: 'Challenge Mode',
       modeValue: 'challenge',
-      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+      text: 'Challenge mode introduces a time-based element, testing your speed and accuracy under pressure.',
       isEnabled: false
     },
     {
       icon: 'build',
       mode: 'Custom Mode',
       modeValue: 'custom',
-      text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+      text: 'Custom Mode allows you to tailor the exercises to your specific needs and preferences.',
       isEnabled: false
     }
   ];
 
   selectedMode: string | null = null;
   selectedGrade: string | null = null;
+  initialGrade: string | null = null;
 
   constructor(private router: Router, private titleService: Title, private userRegistrationService: UserRegistrationService) {
     this.titleService.setTitle('Mathify!');
@@ -92,6 +93,7 @@ export class GradeAndModeSelectionComponent implements OnInit {
     this.userRegistrationService.getUser().subscribe({
       next: (response: User) => {
         this.selectedGrade = response.grade ? response.grade : null;
+        this.initialGrade = response.grade ? response.grade : null;
       }
     });
   }
@@ -109,6 +111,21 @@ export class GradeAndModeSelectionComponent implements OnInit {
   }
 
   startGame() {
-    this.router.navigate(['/scoreboard']);
+    if (this.selectedGrade && this.selectedMode) {
+      this.userRegistrationService.getUser().subscribe({
+        next: (response: User) => {
+          response.grade = this.selectedGrade;
+          this.userRegistrationService.updateUser({
+            grade: this.selectedGrade
+          }).subscribe({
+            next: () => {
+              this.router.navigate(['/scoreboard']);
+            }
+          });
+        }
+      });
+    } else {
+      this.router.navigate(['/scoreboard']);
+    }
   }
 }
