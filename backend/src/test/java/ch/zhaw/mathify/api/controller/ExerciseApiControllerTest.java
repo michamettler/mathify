@@ -5,6 +5,7 @@ import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.model.exercise.ExerciseDto;
 import io.javalin.http.Context;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -23,8 +24,12 @@ class ExerciseApiControllerTest {
     public void setUp() {
         exerciseApiController = new ExerciseApiController();
         user = new User("abc", "abc", "abc", Grade.FIRST);
-        SessionHandler sessionHandler = SessionHandler.getInstance();
-        sessionHandler.createSession(user, "abc");
+        SessionHandler.getInstance().createSession(user, "abc");
+    }
+
+    @AfterEach
+    public void tearDown() {
+        SessionHandler.getInstance().destroySession("abc");
     }
 
     @Test
