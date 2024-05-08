@@ -61,9 +61,8 @@ public class MathsGenerator {
         int c = random.nextInt(max + 1);
         double[] result = {a, b, c};
         double[] calculationValues = {a, b, c};
-        String arrayUnsorted = Arrays.toString(result);
         Arrays.sort(result);
-        return new MathsExercise(result, new double[result.length], "Sort the following numbers", calculationValues,
+        return new MathsExercise(result, new double[result.length], "Sort the following numbers: " + a + ", " + b + ", " + c, calculationValues,
                 "Think about putting things in order from smallest to largest or vice versa. How would you arrange a line of toys or a set of cards?",
                 ExerciseSubType.SORTING);
     }
@@ -150,7 +149,6 @@ public class MathsGenerator {
 
     private static Exercise generateMultiplication(Grade grade, int technicalScore) {
         LOG.info("Generating multiplication exercise");
-        if (grade == Grade.FIRST) throw new IllegalArgumentException("Multiplication is not supported for grade one!");
         int max = (int) Math.sqrt(grade.getMax() * getDifficultyFactor(technicalScore));
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max + 1);
@@ -163,7 +161,6 @@ public class MathsGenerator {
 
     private static Exercise generateDivision(Grade grade, int technicalScore) {
         LOG.info("Generating division exercise");
-        if (grade == Grade.FIRST) throw new IllegalArgumentException("Division is not supported for grade one!");
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
         int a = random.nextInt(max + 1) + 1;
         int b = getRandomFactor(a);
@@ -247,11 +244,6 @@ public class MathsGenerator {
 
     private static Exercise generateRounding(Grade grade, int technicalScore) {
         LOG.info("Generating rounding exercise");
-
-        if (grade != Grade.THIRD) {
-            LOG.error("Rounding is only supported for grade three");
-            throw new IllegalArgumentException("Rounding is only supported for grade three");
-        }
 
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
         int a = random.nextInt(max + 1);
