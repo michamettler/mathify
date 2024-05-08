@@ -1,12 +1,11 @@
 <div class="game-input-section">
   <div class="mat-multiplication-table">
     <div class="input-row">
-      <div *ngFor="let item of numbers; let i = index" class="input-container">
+      <div *ngFor="let item of userInputs?.numbersMultiplicationTable; let i = index trackBy: trackByFn" class="input-container">
         <mat-form-field appearance="fill">
           <mat-label>{{ number }} x {{ i + 1 }}</mat-label>
-          <input (change)="handleChange($event, i)" [value]="userInputs ? userInputs.numbersMultiplicationTable[i] : ''"
-                 class="input-field"
-                 matInput>
+          <input [(ngModel)]="userInputs.numbersMultiplicationTable[i]" (change)="handleChange($event, i)"
+                 class="input-field" type="number" matInput>
         </mat-form-field>
       </div>
     </div>
