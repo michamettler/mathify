@@ -112,10 +112,10 @@ public class MathsGenerator {
 
     private static Exercise generateTensComparison(int technicalScore) {
         LOG.info("Generating tens comparison exercise");
-        int a = (int) Math.round((random.nextInt(9) * 10 + 10) * getDifficultyFactor(technicalScore));
+        int a = random.nextInt((int) Math.round(9 * getDifficultyFactor(technicalScore))) * 10 + 10;
         int b;
         do {
-            b = (int) Math.round((random.nextInt(9) * 10 + 10) * getDifficultyFactor(technicalScore));
+            b = random.nextInt((int) Math.round(9 * getDifficultyFactor(technicalScore))) * 10 + 10;
         } while (b == a);
         double[] result = {Math.max(a, b)};
         double[] calculationValues = {a, b};
