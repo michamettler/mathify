@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static ch.zhaw.mathify.model.exercise.ExerciseSubType.*;
 
@@ -70,7 +68,7 @@ public class ExerciseService {
 
     private ExerciseSubType getExerciseSubTypeForUser(User user) {
         int count = userExerciseCount.getOrDefault(user, 0);
-        ExerciseSubType exerciseSubType = GRADE_EXERCISE_SUB_TYPE_MAP.get(user.getGrade()).get(count % GRADE_EXERCISE_SUB_TYPE_MAP.size());
+        ExerciseSubType exerciseSubType = GRADE_EXERCISE_SUB_TYPE_MAP.get(user.getGrade()).get(count % GRADE_EXERCISE_SUB_TYPE_MAP.get(user.getGrade()).size());
         userExerciseCount.put(user, count + 1);
 
         LOG.debug("ExerciseSubType for user {} is {}", user.getUsername(), exerciseSubType.name());
@@ -80,25 +78,7 @@ public class ExerciseService {
 
     private static void populateGradeExerciseSubtypeMapping() {
         GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FIRST, List.of(ADDITION, SUBTRACTION, COMPARISON, NEIGHBORS, SORTING, NUMBERCOMPLETION, TENSCOMPARISON));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.SECOND,
-                Stream.concat(GRADE_EXERCISE_SUB_TYPE_MAP.get(Grade.FIRST).stream(),
-                                Stream.of(DOUBLING, HALVING, THREESTEPADDITION, THREESTEPSUBTRACTION, MULTIPLICATION, MULTIPLICATIONTABLE, DIVISION))
-                        .collect(Collectors.toList()));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.THIRD,
-                Stream.concat(GRADE_EXERCISE_SUB_TYPE_MAP.get(Grade.SECOND).stream(),
-                                Stream.of(ROUNDINGTEN, LONGADDITION, LONGSUBTRACTION, LONGMULTIPLICATION, ORDEROFOPERATIONS))
-                        .collect(Collectors.toList()));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FOURTH,
-                Stream.concat(GRADE_EXERCISE_SUB_TYPE_MAP.get(Grade.THIRD).stream(),
-                                Arrays.stream(ExerciseSubType.values()))
-                        .collect(Collectors.toList()));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.FIFTH,
-                Stream.concat(GRADE_EXERCISE_SUB_TYPE_MAP.get(Grade.FOURTH).stream(),
-                                Arrays.stream(ExerciseSubType.values()))
-                        .collect(Collectors.toList()));
-        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.SIXTH,
-                Stream.concat(GRADE_EXERCISE_SUB_TYPE_MAP.get(Grade.FIFTH).stream(),
-                                Arrays.stream(ExerciseSubType.values()))
-                        .collect(Collectors.toList()));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.SECOND, List.of(DOUBLING, HALVING, THREESTEPADDITION, THREESTEPSUBTRACTION, MULTIPLICATION, MULTIPLICATIONTABLE, DIVISION));
+        GRADE_EXERCISE_SUB_TYPE_MAP.put(Grade.THIRD, List.of(ROUNDINGTEN, LONGADDITION, LONGSUBTRACTION, LONGMULTIPLICATION, ORDEROFOPERATIONS));
     }
 }

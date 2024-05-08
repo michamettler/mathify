@@ -21,11 +21,11 @@ body {
     width: 30%;
     background-color: #3F51B5;
     overflow-x: hidden;
-    padding-top: 20px;
+    padding-top: 2vh;
 
     .login-main-text {
       margin-top: 20%;
-      padding: 60px;
+      padding: 4vh;
       color: #fff;
     }
 
@@ -46,14 +46,14 @@ body {
     }
 
     mat-form-field {
+      margin-top: 5vh;
       margin-right: 12px;
-      padding-bottom: 50px;
     }
 
     .form-group {
       display: flex;
       flex-direction: column;
-      margin-top: 20%;
+      margin-top: 3vh;
     }
   }
 }
@@ -61,7 +61,7 @@ body {
 .playButtonContainer {
   width: 100% !important;
   text-align: center !important;
-  padding-top: 5%;
+  padding-top: 4vh;
 
   .playButton {
     border-radius: 30px !important;
@@ -76,7 +76,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
 
   input {
     width: 100%;
@@ -91,12 +90,12 @@ body {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  margin-top: 14vh;
+  margin-top: 8vh;
 }
 
 .container {
   padding-top: 4vh;
-  padding-bottom: 20px;
+  padding-bottom: 2vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -125,13 +124,8 @@ body {
   }
 }
 
-.solution {
-  margin-top: 20px;
-  color: green;
-}
-
 .hint {
-  margin-top: 20px;
+  margin-top: 2vh;
 }
 
 .cdk-drag-preview {
