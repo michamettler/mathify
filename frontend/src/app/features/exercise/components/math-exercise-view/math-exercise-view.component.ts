@@ -153,6 +153,7 @@ export class MathExerciseViewComponent implements OnInit {
         next: (response: any) => {
           if (this.user) {
             this.user.experience = response.experience
+            this.user.level = response.level
           }
           if (response.experience < response.experienceBefore) {
             Swal.fire({
@@ -185,6 +186,8 @@ export class MathExerciseViewComponent implements OnInit {
                 summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
                 detail: 'Dont worry, Im sure you will get it the next time!'
               })
+              this.clear();
+              this.loadExercise();
             }
           }
         }
