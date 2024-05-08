@@ -25,13 +25,8 @@
       <td *matCellDef="let element" mat-cell> {{ element.experience }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="grade">
-      <th *matHeaderCellDef mat-header-cell> Grade</th>
-      <td *matCellDef="let element" mat-cell> {{ element.grade }}</td>
-    </ng-container>
-
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': row.isCurrentUser}" mat-row></tr>
   </table>
 </div>
 <div class="playButtonContainer">
