@@ -4,7 +4,6 @@ import ch.zhaw.mathify.api.security.SessionHandler;
 import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.User;
 import ch.zhaw.mathify.model.exercise.ExerciseDto;
-import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import io.javalin.http.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,8 +44,8 @@ class ExerciseApiControllerTest {
                 );
         when(ctxMock.header("Authorization")).thenReturn("abc");
 
-        Map<ExerciseSubType, Integer> technicalScore = user.getTechnicalScore();
-        technicalScore.put(ExerciseSubType.ADDITION, 2);
+        int experienceBefore = user.getExperience();
+        int levelBefore = user.getLevel();
 
         exerciseApiController.verifyResult(ctxMock);
 
@@ -57,9 +56,9 @@ class ExerciseApiControllerTest {
         verify(ctxMock).json(Map.of(
                 "correct", true,
                 "experience", 10,
-                "experienceBefore", 0,
-                "technicalScore", technicalScore,
-                "technicalScoreBefore", 2
+                "experienceBefore", experienceBefore,
+                "level", user.getLevel(),
+                "levelBefore", levelBefore
         ));
     }
 
@@ -80,11 +79,21 @@ class ExerciseApiControllerTest {
                 );
         when(ctxMock.header("Authorization")).thenReturn("abc");
 
+        int experienceBefore = user.getExperience();
+        int levelBefore = user.getLevel();
+
         exerciseApiController.verifyResult(ctxMock);
 
         ArgumentCaptor<Integer> statusCaptor = ArgumentCaptor.forClass(Integer.class);
         verify(ctxMock).status(statusCaptor.capture());
         assertEquals(200, statusCaptor.getValue());
-        verify(ctxMock).json(false);
+
+        verify(ctxMock).json(Map.of(
+                "correct", false,
+                "experience", 1,
+                "experienceBefore", experienceBefore,
+                "level", user.getLevel(),
+                "levelBefore", levelBefore
+        ));
     }
 }
