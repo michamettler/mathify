@@ -17,9 +17,14 @@ import {
   MatTable
 } from "@angular/material/table";
 import {MatButton} from "@angular/material/button";
+import {UserRegistrationService} from "../../../registration/services/user-registration.service";
+import {NgClass, NgForOf} from "@angular/common";
+import {TabViewModule} from "primeng/tabview";
+import {MatTab, MatTabGroup} from "@angular/material/tabs";
 
 export interface DisplayUser extends User {
-  position: number;  // Add position for display purposes
+  position: number;
+  isCurrentUser?: boolean;
 }
 
 @Component({
@@ -37,7 +42,12 @@ export interface DisplayUser extends User {
     MatHeaderCellDef,
     MatHeaderRowDef,
     MatRowDef,
-    MatButton
+    MatButton,
+    NgClass,
+    TabViewModule,
+    NgForOf,
+    MatTab,
+    MatTabGroup
   ],
   templateUrl: './scoreboard-overview.component.html',
   styleUrl: './scoreboard-overview.component.scss'
@@ -46,23 +56,49 @@ export class ScoreboardOverviewComponent implements OnInit {
 
   users: DisplayUser[] = [];
 
-  displayedColumns: string[] = ['position', 'username', 'level', 'experience', 'grade'];
-  dataSource: DisplayUser[] = [];
+  displayedColumns: string[] = ['position', 'username', 'level', 'experience'];
+  grades: string[] = ['first', 'second', 'third'];
+  selectedGradeIndex: number = 0;
 
-  constructor(private router: Router, private titleService: Title, private scoreboardOverviewService: ScoreboardOverviewService) {
+  dataSources: { [grade: string]: DisplayUser[] } = {}; // Stores user lists per grade
+
+  constructor(private router: Router, private titleService: Title, private scoreboardOverviewService: ScoreboardOverviewService, private userRegistrationService: UserRegistrationService) {
     this.titleService.setTitle('Mathify!');
   }
 
   ngOnInit(): void {
-    this.scoreboardOverviewService.getScoreboard().subscribe({
-      next: (response) => {
-        const reversedData = response.slice().reverse();
-        this.dataSource = reversedData.map((user: any, index: number) => ({
-          ...user,
-          position: index + 1
-        }));
+    this.userRegistrationService.getUser().subscribe({
+      next: (currentUser: User) => {
+        if (currentUser.grade === 'first') {
+          this.selectedGradeIndex = 0;
+        } else if (currentUser.grade === 'second') {
+          this.selectedGradeIndex = 1;
+        } else if (currentUser.grade === 'third') {
+          this.selectedGradeIndex = 2;
+        }
+
+        this.scoreboardOverviewService.getScoreboard().subscribe({
+          next: (response) => {
+            this.grades.forEach((grade) => {
+              const reversedData = response[grade].slice().reverse();
+              this.dataSources[grade] = reversedData.map((user: any, index: number) => ({
+                ...user,
+                position: index + 1
+              }));
+
+              this.dataSources[grade] =  this.dataSources[grade].map((user: DisplayUser) => {
+                if (user.username === currentUser.username) {
+                  user.username = 'You';
+                  user.isCurrentUser = true;
+                }
+                return user;
+              });
+            });
+          },
+          error: (err) => console.error('Failed to load scoreboard:', err)
+        });
       },
-      error: (err) => console.error('Failed to load scoreboard:', err)
+      error: (err) => console.error('Failed to load user:', err)
     });
   }
 
@@ -70,4 +106,14 @@ export class ScoreboardOverviewComponent implements OnInit {
     this.router.navigate(['/exercise']);
   }
 
+  getTableHeader(grade: string): string {
+    if (grade === 'first') {
+      return '1st Grade';
+    } else if (grade === 'second') {
+      return '2nd Grade';
+    } else if (grade === 'third') {
+      return '3rd Grade';
+    }
+    return '';
+  }
 }

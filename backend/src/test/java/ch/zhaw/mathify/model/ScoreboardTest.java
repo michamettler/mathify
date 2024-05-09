@@ -2,10 +2,7 @@ package ch.zhaw.mathify.model;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,17 +14,16 @@ class ScoreboardTest {
 
     @Test
     void testInOrderTraversal() {
-        List<Scoreboard.ScoreboardNode> sortedNodes = scoreboard.inOrderTraversal(scoreboard.getRoot());
-        List<Scoreboard.ScoreboardNode> expectedOrder = new ArrayList<>(sortedNodes);
-        expectedOrder.sort(Comparator
-                .comparingInt(Scoreboard.ScoreboardNode::getLevel)
-                .thenComparingInt(Scoreboard.ScoreboardNode::getExperience)
-        );
-
-        int counter = 0;
-        for (Scoreboard.ScoreboardNode node : sortedNodes) {
-            assertEquals(node.getUsername(), expectedOrder.get(counter).getUsername());
-            counter++;
+        Map<Grade, List<Scoreboard.ScoreboardNode>> sortedNodes = scoreboard.inOrderTraversal(scoreboard.getRoot());
+        for (Map.Entry<Grade, List<Scoreboard.ScoreboardNode>> entry : sortedNodes.entrySet()) {
+            List<Scoreboard.ScoreboardNode> expectedOrder = new ArrayList<>(entry.getValue());
+            expectedOrder.sort(Comparator
+                    .comparingInt(Scoreboard.ScoreboardNode::getLevel)
+                    .thenComparingInt(Scoreboard.ScoreboardNode::getExperience)
+            );
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                assertEquals(entry.getValue().get(i).getUsername(), expectedOrder.get(i).getUsername());
+            }
         }
     }
 
