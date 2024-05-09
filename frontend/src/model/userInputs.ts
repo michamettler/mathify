@@ -4,4 +4,5 @@ export interface UserInputs {
   upperNeighbor: string,
   numbersSorting: number[],
   numbersMultiplicationTable: string[]
+  numbersLongCalculation: string[]
 }

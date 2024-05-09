@@ -17,6 +17,9 @@
   <div *ngIf="category==='TableOperation'">
     <app-math-multiplication-table [exercise]="exercise" [userInputs]="userInputs"></app-math-multiplication-table>
   </div>
+  <div *ngIf="category==='LongCalculationOperation'">
+    <app-math-long-calculation [exercise]="exercise" [userInputs]="userInputs"></app-math-long-calculation>
+  </div>
   <div class="game-button-group">
     <button (click)="verify()" class="submit-button" color="primary" mat-flat-button>Submit</button>
   </div>

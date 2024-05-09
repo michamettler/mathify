@@ -28,6 +28,7 @@ import {SpeedDialModule} from "primeng/speeddial";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {UserRegistrationService} from "../../../registration/services/user-registration.service";
 import Swal from 'sweetalert2'
+import {MathLongCalculationComponent} from "../operations/math-long-calculation/math-long-calculation.component";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -51,7 +52,8 @@ import Swal from 'sweetalert2'
     ToastModule,
     MessagesModule,
     SpeedDialModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    MathLongCalculationComponent
   ],
   providers: [MessageService],
   templateUrl: './math-exercise-view.component.html',
@@ -74,7 +76,8 @@ export class MathExerciseViewComponent implements OnInit {
     lowerNeighbor: '',
     upperNeighbor: '',
     numbersSorting: [],
-    numbersMultiplicationTable: Array(10).fill('')
+    numbersMultiplicationTable: Array(10).fill(''),
+    numbersLongCalculation: Array(10).fill('')
   };
 
   user?: User;
@@ -116,7 +119,13 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   findCategory(operation: string): string {
-    const {SingleResultOperation, NeighborOperation, SortingOperation, TableOperation} = MathExerciseSubType;
+    const {
+      SingleResultOperation,
+      NeighborOperation,
+      SortingOperation,
+      TableOperation,
+      LongOperations
+    } = MathExerciseSubType;
 
     if (Object.values(SingleResultOperation).includes(operation as any)) {
       this.category = 'SingleResultOperation';
@@ -129,6 +138,9 @@ export class MathExerciseViewComponent implements OnInit {
       return operation;
     } else if (Object.values(TableOperation).includes(operation as any)) {
       this.category = 'TableOperation';
+      return operation;
+    } else if (Object.values(LongOperations).includes(operation as any)) {
+      this.category = 'LongCalculationOperation';
       return operation;
     }
 
@@ -201,7 +213,8 @@ export class MathExerciseViewComponent implements OnInit {
       lowerNeighbor: '',
       upperNeighbor: '',
       numbersSorting: [],
-      numbersMultiplicationTable: Array(10).fill('')
+      numbersMultiplicationTable: Array(10).fill(''),
+      numbersLongCalculation: Array(10).fill('')
     };
   }
 
