@@ -60,8 +60,8 @@ export class MathLongCalculationComponent implements OnInit, OnChanges {
     this.operand1 = JSON.parse(<string>this.exercise?.calculationValues)[0].toString().split('');
     this.operand2 = JSON.parse(<string>this.exercise?.calculationValues)[1].toString().split('');
 
-    this.takeOverInputs = new Array(this.operand1.length + 1).fill('');
-    this.resultInputs = new Array(this.operand1.length + 2).fill('');
+    this.takeOverInputs = new Array(Math.floor((resultList.length - 1) / 2)).fill('');
+    this.resultInputs = new Array(Math.floor((resultList.length - 1) / 2) + 1).fill('');
   }
 
   handleUserInput() {
@@ -70,18 +70,14 @@ export class MathLongCalculationComponent implements OnInit, OnChanges {
     for (let indexResult = this.resultInputs.length - 1; indexResult >= 0; indexResult--) {
       let indexTakeOver = indexResult - 1;
       reconstructedArray.push(JSON.parse(this.resultInputs[indexResult] ? this.resultInputs[indexResult] : '0'));
-      if ((this.resultInputs[indexResult - 1] !== '' || this.resultInputs[indexResult - 1] !== '0') && this.checkLeftTakeOver(this.resultInputs, indexResult - 1)) {
-        reconstructedArray.push(JSON.parse(this.takeOverInputs[indexTakeOver] ? this.takeOverInputs[indexTakeOver] : '0'));
+      if (indexResult === 0 && !this.takeOverInputs[indexTakeOver]) {
+        break;
       } else {
-        if (!this.checkLeftTakeOver(this.takeOverInputs, indexTakeOver)) {
-          break;
-        } else {
-          reconstructedArray.push(JSON.parse(this.takeOverInputs[indexTakeOver] ? this.takeOverInputs[indexTakeOver] : '0'));
-        }
+        reconstructedArray.push(JSON.parse(this.takeOverInputs[indexTakeOver] ? this.takeOverInputs[indexTakeOver] : '0'));
       }
     }
 
-    if (reconstructedArray[0] !== '0') {
+    if (reconstructedArray[0] !== '0' && reconstructedArray[0] !== '') {
       reconstructedArray.push(JSON.parse(this.result));
     }
     if (this.exercise) {
@@ -93,13 +89,4 @@ export class MathLongCalculationComponent implements OnInit, OnChanges {
     return index;
   }
 
-  private checkLeftTakeOver(resultInputs: string[], number: number) {
-    let leftTakeOver = false;
-    for (let i = number; i >= 0; i--) {
-      if (resultInputs[i] !== '' && (resultInputs[i] !== '0')) {
-        leftTakeOver = true;
-      }
-    }
-    return leftTakeOver;
-  }
 }

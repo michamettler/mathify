@@ -115,10 +115,6 @@ export class MathExerciseViewComponent implements OnInit {
             this.userInputs.numbersSorting = JSON.parse(this.exercise.calculationValues);
           }
         }
-        if (this.category !== 'LongCalculationOperation') { //TODO remove
-          this.clear();
-          this.loadExercise();
-        }
       }
     });
   }
