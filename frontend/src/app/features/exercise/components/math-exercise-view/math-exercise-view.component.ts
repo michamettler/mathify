@@ -65,6 +65,7 @@ export class MathExerciseViewComponent implements OnInit {
   @ViewChild(MathNeighborOperationComponent) mathNeighborOperationComponent: MathNeighborOperationComponent | undefined;
   @ViewChild(MathMultiplicationTableComponent) mathMultiplicationTableComponent: MathMultiplicationTableComponent | undefined;
   @ViewChild(MathSortingOperationComponent) mathSortingOperationComponent: MathSortingOperationComponent | undefined;
+  @ViewChild(MathLongCalculationComponent) mathLongCalculationComponent: MathLongCalculationComponent | undefined;
 
   exercise?: Exercise;
   category?: string;
@@ -113,6 +114,10 @@ export class MathExerciseViewComponent implements OnInit {
             this.exercise.userResult = this.exercise.calculationValues;
             this.userInputs.numbersSorting = JSON.parse(this.exercise.calculationValues);
           }
+        }
+        if (this.category !== 'LongCalculationOperation') {
+          this.clear();
+          this.loadExercise();
         }
       }
     });
@@ -227,14 +232,7 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   hasEmptyFields(): boolean {
-    if (this.category === 'SingleResultOperation') {
-      return this.userInputs.singleSolution === '';
-    } else if (this.category === 'NeighborOperation') {
-      return this.userInputs.lowerNeighbor === '' || this.userInputs.upperNeighbor === '';
-    } else if (this.category === 'TableOperation') {
-      return this.userInputs.numbersMultiplicationTable.includes('');
-    }
-    return true;
+    return this.exercise?.userResult === ''
   }
 
   toggleHint(): void {

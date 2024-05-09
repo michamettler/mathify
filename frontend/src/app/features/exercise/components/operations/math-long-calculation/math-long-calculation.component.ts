@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Exercise} from "../../../../../../model/exercise";
 import {UserInputs} from "../../../../../../model/userInputs";
 import {InputOtpModule} from "primeng/inputotp";
@@ -22,7 +22,7 @@ import {DividerModule} from "primeng/divider";
   templateUrl: './math-long-calculation.component.html',
   styleUrl: './math-long-calculation.component.scss'
 })
-export class MathLongCalculationComponent implements OnInit {
+export class MathLongCalculationComponent implements OnInit, OnChanges {
 
   @Input() exercise?: Exercise;
   @Input() userInputs?: UserInputs;
@@ -37,6 +37,10 @@ export class MathLongCalculationComponent implements OnInit {
   operand2: string[] = [];
 
   ngOnInit(): void {
+    this.loadExercise()
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
     this.loadExercise()
   }
 
@@ -65,19 +69,21 @@ export class MathLongCalculationComponent implements OnInit {
 
     for (let indexResult = this.resultInputs.length - 1; indexResult >= 0; indexResult--) {
       let indexTakeOver = indexResult - 1;
-      reconstructedArray.push(this.resultInputs[indexResult] ? this.resultInputs[indexResult] : '0');
+      reconstructedArray.push(JSON.parse(this.resultInputs[indexResult] ? this.resultInputs[indexResult] : '0'));
       if ((this.resultInputs[indexResult - 1] !== '' || this.resultInputs[indexResult - 1] !== '0') && this.checkLeftTakeOver(this.resultInputs, indexResult - 1)) {
-        reconstructedArray.push(this.takeOverInputs[indexTakeOver] ? this.takeOverInputs[indexTakeOver] : '0');
+        reconstructedArray.push(JSON.parse(this.takeOverInputs[indexTakeOver] ? this.takeOverInputs[indexTakeOver] : '0'));
       } else {
         if (!this.checkLeftTakeOver(this.takeOverInputs, indexTakeOver)) {
           break;
         } else {
-          reconstructedArray.push(this.takeOverInputs[indexTakeOver] ? this.takeOverInputs[indexTakeOver] : '0');
+          reconstructedArray.push(JSON.parse(this.takeOverInputs[indexTakeOver] ? this.takeOverInputs[indexTakeOver] : '0'));
         }
       }
     }
 
-    reconstructedArray.push(this.result);
+    if (reconstructedArray[0] !== '0') {
+      reconstructedArray.push(JSON.parse(this.result));
+    }
     if (this.exercise) {
       this.exercise.userResult = JSON.stringify(reconstructedArray);
     }
