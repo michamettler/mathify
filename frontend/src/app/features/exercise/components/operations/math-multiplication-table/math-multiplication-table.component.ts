@@ -25,9 +25,8 @@ import {UserInputs} from "../../../../../../model/userInputs";
 export class MathMultiplicationTableComponent implements OnInit {
 
   @Input() exercise?: Exercise;
-  @Input() userInputs?: UserInputs;
+  @Input() userInputs: UserInputs = {} as UserInputs;
 
-  numbers: string[] = Array(10).fill('');
   number: number | undefined;
 
   protected readonly Number = Number;
@@ -37,15 +36,19 @@ export class MathMultiplicationTableComponent implements OnInit {
   }
 
   handleChange(event: Event, i: number) {
-    if (this.userInputs) {
-      this.userInputs.numbersMultiplicationTable[i] = (event.target as HTMLInputElement).value;
+    if (this.userInputs && (event.target as HTMLInputElement).value) {
+      this.userInputs.numbersMultiplicationTable[i] = JSON.parse((event.target as HTMLInputElement).value);
       this.loadResult();
     }
   }
 
   loadResult(): void {
     if (this.exercise && this.userInputs) {
-      this.exercise.userResult = JSON.stringify(this.numbers);
+      this.exercise.userResult = JSON.stringify(this.userInputs.numbersMultiplicationTable);
     }
+  }
+
+  trackByFn(index: number): number {
+    return index;
   }
 }

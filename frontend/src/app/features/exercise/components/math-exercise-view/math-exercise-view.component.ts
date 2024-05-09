@@ -148,50 +148,58 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   verify(): void {
-    if (this.exercise) {
-      this.mathExerciseService.verifyExercise(this.exercise).subscribe({
-        next: (response: any) => {
-          if (this.user) {
-            this.user.experience = response.experience
-            this.user.level = response.level
-          }
-          if (response.experience < response.experienceBefore) {
-            Swal.fire({
-              icon: "success",
-              title: "Level Up!",
-              text: "Congratulations! Keep it going!",
-              showConfirmButton: false,
-              timer: 4000,
-              backdrop: `
+    if (this.hasEmptyFields()) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Input missing!',
+        detail: 'Please fill in all fields before verifying!'
+      })
+    } else {
+      if (this.exercise) {
+        this.mathExerciseService.verifyExercise(this.exercise).subscribe({
+          next: (response: any) => {
+            if (this.user) {
+              this.user.experience = response.experience
+              this.user.level = response.level
+            }
+            if (response.experience < response.experienceBefore) {
+              Swal.fire({
+                icon: "success",
+                title: "Level Up!",
+                text: "Congratulations! Keep it going!",
+                showConfirmButton: false,
+                timer: 4000,
+                backdrop: `
                 rgba(0,0,123,0.4)
                 url("https://sweetalert2.github.io/images/nyan-cat.gif")
                 left top
                 no-repeat
               `
-            })
-            this.clear();
-            this.loadExercise();
-          } else {
-            if (JSON.parse(response.correct) === true) {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
-                detail: 'Congratulations! You got it right! Keep it up!'
               })
               this.clear();
               this.loadExercise();
             } else {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
-                detail: 'Dont worry, Im sure you will get it the next time!'
-              })
-              this.clear();
-              this.loadExercise();
+              if (JSON.parse(response.correct) === true) {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
+                  detail: 'Congratulations! You got it right! Keep it up!'
+                })
+                this.clear();
+                this.loadExercise();
+              } else {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
+                  detail: 'Dont worry, Im sure you will get it the next time!'
+                })
+                this.clear();
+                this.loadExercise();
+              }
             }
           }
-        }
-      });
+        });
+      }
     }
   }
 
@@ -203,6 +211,17 @@ export class MathExerciseViewComponent implements OnInit {
       numbersSorting: [],
       numbersMultiplicationTable: Array(10).fill('')
     };
+  }
+
+  hasEmptyFields(): boolean {
+    if (this.category === 'SingleResultOperation') {
+      return this.userInputs.singleSolution === '';
+    } else if (this.category === 'NeighborOperation') {
+      return this.userInputs.lowerNeighbor === '' || this.userInputs.upperNeighbor === '';
+    } else if (this.category === 'TableOperation') {
+      return this.userInputs.numbersMultiplicationTable.includes('');
+    }
+    return true;
   }
 
   toggleHint(): void {
