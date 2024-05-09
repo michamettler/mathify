@@ -5,20 +5,19 @@
     <h1 class="exercise">{{ exercise?.exercise }}</h1>
   </div>
   <div *ngIf="category==='SingleResultOperation'">
-    <app-math-single-result-operation [exercise]="exercise"
-                                      [userInputs]="userInputs"></app-math-single-result-operation>
+    <app-math-single-result-operation [exercise]="exercise"></app-math-single-result-operation>
   </div>
   <div *ngIf="category==='NeighborOperation'">
-    <app-math-neighbor-operation [exercise]="exercise" [userInputs]="userInputs"></app-math-neighbor-operation>
+    <app-math-neighbor-operation [exercise]="exercise"></app-math-neighbor-operation>
   </div>
   <div *ngIf="category==='SortingOperation'">
-    <app-math-sorting-operation [exercise]="exercise" [userInputs]="userInputs"></app-math-sorting-operation>
+    <app-math-sorting-operation [exercise]="exercise"></app-math-sorting-operation>
   </div>
   <div *ngIf="category==='TableOperation'">
-    <app-math-multiplication-table [exercise]="exercise" [userInputs]="userInputs"></app-math-multiplication-table>
+    <app-math-multiplication-table [exercise]="exercise"></app-math-multiplication-table>
   </div>
   <div *ngIf="category==='LongCalculationOperation'">
-    <app-math-long-calculation [exercise]="exercise" [userInputs]="userInputs"></app-math-long-calculation>
+    <app-math-long-calculation [exercise]="exercise"></app-math-long-calculation>
   </div>
   <div class="game-button-group">
     <button (click)="verify()" class="submit-button" color="primary" mat-flat-button>Submit</button>

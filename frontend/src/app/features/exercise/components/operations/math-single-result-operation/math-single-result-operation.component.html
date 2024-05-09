@@ -2,7 +2,7 @@
   <div class="input-group">
     <mat-form-field appearance="fill">
       <mat-label>Your Answer</mat-label>
-      <input (change)="loadResult($event)" [value]="userInputs?.singleSolution" type="number" matInput>
+      <input [(ngModel)]="userSolution" (change)="loadResult()" type="number" matInput>
     </mat-form-field>
   </div>
 </div>

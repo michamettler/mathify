@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HeaderComponent} from "../../../../core/components/header/header.component";
 import {MatButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
@@ -22,7 +22,6 @@ import {
 } from "../operations/math-multiplication-table/math-multiplication-table.component";
 import {Message, MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
-import {UserInputs} from "../../../../../model/userInputs";
 import {MessagesModule} from "primeng/messages";
 import {SpeedDialModule} from "primeng/speeddial";
 import {OverlayPanelModule} from "primeng/overlaypanel";
@@ -61,25 +60,10 @@ import {MathLongCalculationComponent} from "../operations/math-long-calculation/
 })
 export class MathExerciseViewComponent implements OnInit {
 
-  @ViewChild(MathSingleResultOperationComponent) mathSingleResultOperationComponent: MathSingleResultOperationComponent | undefined;
-  @ViewChild(MathNeighborOperationComponent) mathNeighborOperationComponent: MathNeighborOperationComponent | undefined;
-  @ViewChild(MathMultiplicationTableComponent) mathMultiplicationTableComponent: MathMultiplicationTableComponent | undefined;
-  @ViewChild(MathSortingOperationComponent) mathSortingOperationComponent: MathSortingOperationComponent | undefined;
-  @ViewChild(MathLongCalculationComponent) mathLongCalculationComponent: MathLongCalculationComponent | undefined;
-
   exercise?: Exercise;
   category?: string;
   hintMessage: Message[] = [{severity: 'info', detail: ''}]
   showHint: boolean = false;
-
-  userInputs: UserInputs = {
-    singleSolution: '',
-    lowerNeighbor: '',
-    upperNeighbor: '',
-    numbersSorting: [],
-    numbersMultiplicationTable: Array(10).fill(''),
-    numbersLongCalculation: Array(10).fill('')
-  };
 
   user?: User;
 
@@ -109,12 +93,6 @@ export class MathExerciseViewComponent implements OnInit {
           hint: response.hint ? response.hint : ''
         }
         this.hintMessage = [{severity: 'info', detail: this.exercise.hint}]
-        if (this.category === 'SortingOperation') {
-          if (this.exercise && this.exercise.calculationValues) {
-            this.exercise.userResult = this.exercise.calculationValues;
-            this.userInputs.numbersSorting = JSON.parse(this.exercise.calculationValues);
-          }
-        }
       }
     });
   }
@@ -155,7 +133,6 @@ export class MathExerciseViewComponent implements OnInit {
         summary: 'Experience + 0 XP!',
         detail: 'Exercise skipped, result would have been: ' + (JSON.parse(this.exercise.result).join(', '))
       })
-      this.clear();
       this.loadExercise();
     }
   }
@@ -189,7 +166,6 @@ export class MathExerciseViewComponent implements OnInit {
                 no-repeat
               `
               })
-              this.clear();
               this.loadExercise();
             } else {
               if (JSON.parse(response.correct) === true) {
@@ -198,7 +174,6 @@ export class MathExerciseViewComponent implements OnInit {
                   summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
                   detail: 'Congratulations! You got it right! Keep it up!'
                 })
-                this.clear();
                 this.loadExercise();
               } else {
                 this.messageService.add({
@@ -206,7 +181,6 @@ export class MathExerciseViewComponent implements OnInit {
                   summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
                   detail: 'Dont worry, Im sure you will get it the next time!'
                 })
-                this.clear();
                 this.loadExercise();
               }
             }
@@ -216,19 +190,16 @@ export class MathExerciseViewComponent implements OnInit {
     }
   }
 
-  clear(): void {
-    this.userInputs = {
-      singleSolution: '',
-      lowerNeighbor: '',
-      upperNeighbor: '',
-      numbersSorting: [],
-      numbersMultiplicationTable: Array(10).fill(''),
-      numbersLongCalculation: Array(10).fill('')
-    };
-  }
-
   hasEmptyFields(): boolean {
-    return this.exercise?.userResult === ''
+    if (this.category === 'TableOperation') {
+      if (this.exercise) {
+        return JSON.parse(this.exercise?.userResult).includes('');
+      } else {
+        return true;
+      }
+    } else {
+      return this.exercise?.userResult === ''
+    }
   }
 
   toggleHint(): void {

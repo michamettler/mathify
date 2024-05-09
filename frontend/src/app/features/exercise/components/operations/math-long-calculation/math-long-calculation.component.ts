@@ -1,6 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Exercise} from "../../../../../../model/exercise";
-import {UserInputs} from "../../../../../../model/userInputs";
 import {InputOtpModule} from "primeng/inputotp";
 import {FormsModule} from "@angular/forms";
 import {NgForOf} from "@angular/common";
@@ -25,7 +24,6 @@ import {DividerModule} from "primeng/divider";
 export class MathLongCalculationComponent implements OnInit, OnChanges {
 
   @Input() exercise?: Exercise;
-  @Input() userInputs?: UserInputs;
 
   result: string = '';
   operator: string = '';
@@ -64,7 +62,7 @@ export class MathLongCalculationComponent implements OnInit, OnChanges {
     this.resultInputs = new Array(Math.floor((resultList.length - 1) / 2) + 1).fill('');
   }
 
-  handleUserInput() {
+  loadResult() {
     let reconstructedArray: string[] = [];
 
     for (let indexResult = this.resultInputs.length - 1; indexResult >= 0; indexResult--) {

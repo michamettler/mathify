@@ -1,11 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Exercise} from "../../../../../../model/exercise";
 import {MatButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {UserInputs} from "../../../../../../model/userInputs";
 
 @Component({
   selector: 'app-math-neighbor-operation',
@@ -21,27 +20,27 @@ import {UserInputs} from "../../../../../../model/userInputs";
   templateUrl: './math-neighbor-operation.component.html',
   styleUrl: './math-neighbor-operation.component.scss'
 })
-export class MathNeighborOperationComponent {
+export class MathNeighborOperationComponent implements OnInit, OnChanges {
   @Input() exercise?: Exercise;
-  @Input() userInputs?: UserInputs;
+  lowerNeighbor: string = '';
+  upperNeighbor: string =  '';
 
-  changeLowerNeighbor(event: Event) {
-    if (this.userInputs) {
-      this.userInputs.lowerNeighbor = (event.target as HTMLInputElement).value;
-      this.loadResult();
-    }
+  ngOnInit(): void {
+    this.loadExercise();
   }
 
-  changeUpperNeighbor(event: Event) {
-    if (this.userInputs) {
-      this.userInputs.upperNeighbor = (event.target as HTMLInputElement).value;
-      this.loadResult();
-    }
+  ngOnChanges(): void {
+    this.loadExercise();
+  }
+
+  loadExercise(): void {
+    this.lowerNeighbor = '';
+    this.upperNeighbor = '';
   }
 
   loadResult(): void {
-    if (this.exercise && this.userInputs) {
-      this.exercise.userResult = JSON.stringify([Number(this.userInputs.lowerNeighbor), Number(this.userInputs.upperNeighbor)]);
+    if (this.exercise) {
+      this.exercise.userResult = JSON.stringify([Number(this.lowerNeighbor), Number(this.upperNeighbor)]);
     }
   }
 }

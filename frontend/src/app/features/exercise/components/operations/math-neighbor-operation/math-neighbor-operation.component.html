@@ -2,11 +2,11 @@
   <div class="input-group">
     <mat-form-field appearance="fill">
       <mat-label>Lower Neighbor</mat-label>
-      <input (change)="changeLowerNeighbor($event)" [value]="userInputs?.lowerNeighbor" type="number" matInput>
+      <input [(ngModel)]="lowerNeighbor" (change)="loadResult()" type="number" matInput>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Upper Neighbor</mat-label>
-      <input (change)="changeUpperNeighbor($event)" [value]="userInputs?.upperNeighbor" type="number" matInput>
+      <input [(ngModel)]="upperNeighbor" (change)="loadResult()" type="number" matInput>
     </mat-form-field>
   </div>
 </div>
