@@ -67,7 +67,7 @@ public class ExerciseApiController {
         Exercise exercise = exerciseDto.fromDto();
         User user = sessionHandler.getUserFromContext(ctx);
 
-        int technicalScoreBefore = user.getTechnicalScore().get(exercise.exerciseSubType());
+        int levelBefore = user.getLevel();
         int experienceBefore = user.getExperience();
 
         if (exerciseService.verifyResult(exercise, user)) {
@@ -77,13 +77,19 @@ public class ExerciseApiController {
                     "correct", true,
                     "experience", user.getExperience(),
                     "experienceBefore", experienceBefore,
-                    "technicalScore", user.getTechnicalScore(),
-                    "technicalScoreBefore", technicalScoreBefore
+                    "level", user.getLevel(),
+                    "levelBefore", levelBefore
             ));
         } else {
             LOG.info("Result is incorrect");
             ctx.status(200);
-            ctx.json(false);
+            ctx.json(Map.of(
+                    "correct", false,
+                    "experience", user.getExperience(),
+                    "experienceBefore", experienceBefore,
+                    "level", user.getLevel(),
+                    "levelBefore", levelBefore
+            ));
         }
     }
 }
