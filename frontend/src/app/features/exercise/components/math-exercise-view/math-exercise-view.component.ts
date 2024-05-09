@@ -97,7 +97,7 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   loadExercise() {
-    /*this.mathExerciseService.retrieveExercise().subscribe({
+    this.mathExerciseService.retrieveExercise().subscribe({
       next: (response) => {
         this.exercise = {
           exerciseSubType: this.findCategory(response.exerciseSubType),
@@ -115,15 +115,7 @@ export class MathExerciseViewComponent implements OnInit {
           }
         }
       }
-    });*/
-    this.exercise = {
-      result: "[8.0, 0.0, 8.0, 0.0, 2.0, 288.0]",
-      userResult: '',
-      exercise: "Calculate 106 + 182 using long addition",
-      calculationValues: "[106.0, 182.0]",
-      hint: "When adding large numbers, start from the right and work your way left. Add each column separately, carrying over any excess to the next column if needed.",
-      exerciseSubType: this.findCategory("LONGADDITION"),
-    }
+    });
   }
 
   findCategory(operation: string): string {
@@ -168,7 +160,6 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   verify(): void {
-    console.log(this.exercise);
     if (this.hasEmptyFields()) {
       this.messageService.add({
         severity: 'warn',
