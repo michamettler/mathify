@@ -18,7 +18,9 @@ import {
 } from "@angular/material/table";
 import {MatButton} from "@angular/material/button";
 import {UserRegistrationService} from "../../../registration/services/user-registration.service";
-import {NgClass} from "@angular/common";
+import {NgClass, NgForOf} from "@angular/common";
+import {TabViewModule} from "primeng/tabview";
+import {MatTab, MatTabGroup} from "@angular/material/tabs";
 
 export interface DisplayUser extends User {
   position: number;
@@ -41,7 +43,11 @@ export interface DisplayUser extends User {
     MatHeaderRowDef,
     MatRowDef,
     MatButton,
-    NgClass
+    NgClass,
+    TabViewModule,
+    NgForOf,
+    MatTab,
+    MatTabGroup
   ],
   templateUrl: './scoreboard-overview.component.html',
   styleUrl: './scoreboard-overview.component.scss'
@@ -50,8 +56,11 @@ export class ScoreboardOverviewComponent implements OnInit {
 
   users: DisplayUser[] = [];
 
-  displayedColumns: string[] = ['position', 'username', 'level', 'experience', 'grade'];
-  dataSource: DisplayUser[] = [];
+  displayedColumns: string[] = ['position', 'username', 'level', 'experience'];
+  grades: string[] = ['first', 'second', 'third'];
+  selectedGradeIndex: number = 0;
+
+  dataSources: { [grade: string]: DisplayUser[] } = {}; // Stores user lists per grade
 
   constructor(private router: Router, private titleService: Title, private scoreboardOverviewService: ScoreboardOverviewService, private userRegistrationService: UserRegistrationService) {
     this.titleService.setTitle('Mathify!');
@@ -60,35 +69,51 @@ export class ScoreboardOverviewComponent implements OnInit {
   ngOnInit(): void {
     this.userRegistrationService.getUser().subscribe({
       next: (currentUser: User) => {
+        if (currentUser.grade === 'first') {
+          this.selectedGradeIndex = 0;
+        } else if (currentUser.grade === 'second') {
+          this.selectedGradeIndex = 1;
+        } else if (currentUser.grade === 'third') {
+          this.selectedGradeIndex = 2;
+        }
 
         this.scoreboardOverviewService.getScoreboard().subscribe({
           next: (response) => {
-            if (currentUser.grade && response[currentUser.grade]) {
-              const reversedData = response[currentUser.grade].slice().reverse();
-              this.dataSource = reversedData.map((user: any, index: number) => ({
+            this.grades.forEach((grade) => {
+              const reversedData = response[grade].slice().reverse();
+              this.dataSources[grade] = reversedData.map((user: any, index: number) => ({
                 ...user,
                 position: index + 1
               }));
 
-              this.dataSource = this.dataSource.map((user: DisplayUser) => {
+              this.dataSources[grade] =  this.dataSources[grade].map((user: DisplayUser) => {
                 if (user.username === currentUser.username) {
                   user.username = 'You';
                   user.isCurrentUser = true;
                 }
                 return user;
               });
-            }
+            });
           },
           error: (err) => console.error('Failed to load scoreboard:', err)
         });
       },
       error: (err) => console.error('Failed to load user:', err)
     });
-
   }
 
   startGame() {
     this.router.navigate(['/exercise']);
   }
 
+  getTableHeader(grade: string): string {
+    if (grade === 'first') {
+      return '1st Grade';
+    } else if (grade === 'second') {
+      return '2nd Grade';
+    } else if (grade === 'third') {
+      return '3rd Grade';
+    }
+    return '';
+  }
 }
