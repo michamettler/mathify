@@ -13,18 +13,6 @@ public class Scoreboard {
     private static final Logger LOG = LoggerFactory.getLogger(Scoreboard.class);
     private ScoreboardNode root;
 
-    /**
-     * Creates a Scoreboard and loads the current users from the users.json file
-     */
-    public Scoreboard() {
-        UserRepository userRepository = UserRepository.getInstance();
-        for (User user : userRepository.get()) {
-            if (user.getRole().equals(Role.USER)) {
-                insert(new ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
-            }
-        }
-    }
-
     public ScoreboardNode getRoot() {
         return root;
     }
@@ -216,13 +204,23 @@ public class Scoreboard {
         return 1 + Math.max(calculateHeight(node.leftScoreboardNode), calculateHeight(node.rightScoreboardNode));
     }
 
+    public Map<Grade, List<ScoreboardNode>> createRanking() {
+        clear();
+        for (User user : UserRepository.getInstance().get()) {
+            if (user.getRole().equals(Role.USER)) {
+                insert(new ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
+            }
+        }
+        return inOrderTraversal(root);
+    }
+
     /**
      * Traverses the Scoreboard in in-order
      *
      * @param node The current node
      * @return The list of nodes in in-order
      */
-    public Map<Grade, List<ScoreboardNode>> inOrderTraversal(ScoreboardNode node) {
+    Map<Grade, List<ScoreboardNode>> inOrderTraversal(ScoreboardNode node) {
         LOG.debug("Traversing the scoreboard in in-order");
         Map<Grade, List<ScoreboardNode>> gradeMap = new HashMap<>();
 

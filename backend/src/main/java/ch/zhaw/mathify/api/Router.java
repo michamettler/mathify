@@ -78,7 +78,7 @@ public class Router {
         }, Role.ANONYMOUS);
         get("/login", AuthenticationHandler::login, Role.ANONYMOUS);
         get("/scoreboard", ctx -> {
-            ctx.json(scoreboard.inOrderTraversal(scoreboard.getRoot()));
+            ctx.json(scoreboard.createRanking());
             LOG.info("Scoreboard page was accessed");
         }, Role.USER, Role.ADMIN);
         get("/page-not-found", ctx -> {
