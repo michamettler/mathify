@@ -23,7 +23,7 @@ import {FormsModule} from "@angular/forms";
 export class MathNeighborOperationComponent implements OnInit, OnChanges {
   @Input() exercise?: Exercise;
   lowerNeighbor: string = '';
-  upperNeighbor: string =  '';
+  upperNeighbor: string = '';
 
   ngOnInit(): void {
     this.loadExercise();

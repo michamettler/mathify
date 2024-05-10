@@ -4,8 +4,8 @@
       <div *ngFor="let item of numbersMultiplicationTable; let i = index trackBy: trackByFn" class="input-container">
         <mat-form-field appearance="fill">
           <mat-label>{{ number }} x {{ i + 1 }}</mat-label>
-          <input [(ngModel)]="numbersMultiplicationTable[i]" (change)="loadResult()"
-                 class="input-field" type="number" matInput>
+          <input (change)="loadResult()" [(ngModel)]="numbersMultiplicationTable[i]"
+                 class="input-field" matInput type="number">
         </mat-form-field>
       </div>
     </div>
