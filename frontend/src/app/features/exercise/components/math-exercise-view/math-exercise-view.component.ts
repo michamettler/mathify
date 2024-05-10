@@ -136,10 +136,17 @@ export class MathExerciseViewComponent implements OnInit {
 
   skipExercise() {
     if (this.exercise) {
+      let result: string;
+      if (this.category === 'LongArithmeticOperation' || this.category === 'LongMultiplicativeOperation') {
+        let resultList = JSON.parse(this.exercise?.result);
+        result = resultList[resultList.length - 1];
+      } else {
+        result = (JSON.parse(this.exercise.result).join(', '))
+      }
       this.messageService.add({
         severity: 'info',
         summary: 'Experience + 0 XP!',
-        detail: 'Exercise skipped, result would have been: ' + (JSON.parse(this.exercise.result).join(', '))
+        detail: 'Exercise skipped, result would have been: ' + result
       })
       this.loadExercise();
     }
