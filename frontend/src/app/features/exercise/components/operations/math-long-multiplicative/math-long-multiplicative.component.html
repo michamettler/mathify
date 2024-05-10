@@ -1,0 +1,41 @@
+<div class="long-calculation">
+  <div class="input-container">
+    <ng-container *ngFor="let digit of operand1; let i = index trackBy: trackByFn">
+      <input [(ngModel)]="operand1[i]" [disabled]="true" class="input-field" maxlength="1" pInputText type="text"/>
+    </ng-container>
+    <div class="operator">
+      <h1>{{ operator }}</h1>
+    </div>
+    <ng-container *ngFor="let digit of operand2; let i = index trackBy: trackByFn">
+      <input [(ngModel)]="operand2[i]" [disabled]="true" class="input-field" maxlength="1" pInputText type="text"/>
+    </ng-container>
+  </div>
+  <p-divider class="long-calculation-divider"/>
+
+  <ng-container *ngFor="let step of steps; let i = index trackBy: trackByFn">
+    <div [style.padding-right.px]="(i+1) * 50" class="input-container-carry-over">
+      <ng-container *ngFor="let digit of stepCarryOvers[i]; let j = index trackBy: trackByFn">
+        <input (change)="loadResult()" [(ngModel)]="stepCarryOvers[i][j]" class="input-field-carry-over" maxlength="1"
+               pInputText
+               type="number"/>
+      </ng-container>
+    </div>
+    <div [style.padding-right.px]="(i+1) * 50 - 50" class="input-container">
+      <div class="operator">
+        <h1>{{ getSubOperator(i) }}</h1>
+      </div>
+      <ng-container *ngFor="let digit of steps[i]; let j = index trackBy: trackByFn">
+        <input (change)="loadResult()" [(ngModel)]="steps[i][j]" class="input-field" maxlength="1" pInputText
+               type="number"/>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <p-divider class="long-calculation-divider"/>
+  <div class="input-container">
+    <ng-container *ngFor="let digit of resultInputs; let i = index trackBy: trackByFn">
+      <input (change)="loadResult()" [(ngModel)]="resultInputs[i]" class="input-field" maxlength="1" pInputText
+             type="number"/>
+    </ng-container>
+  </div>
+</div>

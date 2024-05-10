@@ -1,0 +1,48 @@
+.long-calculation {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-container {
+  display: flex;
+  justify-content: flex-end !important;
+  gap: 10px;
+  margin-top: 1vh;
+  width: 100%
+}
+
+.operator {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+}
+
+.input-field {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+}
+
+.input-field-carry-over {
+  @extend .input-field;
+  background-color: #f0f0f0
+}
+
+.input-container-carry-over {
+  @extend .input-container;
+  margin-top: 3vh;
+  padding-right: 50px;
+}
+
+.long-calculation-divider {
+  width: 100% !important;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}

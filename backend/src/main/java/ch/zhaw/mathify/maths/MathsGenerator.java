@@ -329,7 +329,7 @@ public class MathsGenerator {
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max + 1);
-        double[] calculationValues = {a, b};
+        double[] calculationValues = {b, a};
 
         int tempA = a;
         int tempB = b;
@@ -357,7 +357,7 @@ public class MathsGenerator {
                 .mapToDouble(Integer::doubleValue)
                 .toArray();
 
-        return new MathsExercise(result, new double[result.length], "Calculate " + a + " * " + b + " using long multiplication", calculationValues,
+        return new MathsExercise(result, new double[result.length], "Calculate " + b + " * " + a + " using long multiplication", calculationValues,
                 "Multiply each digit of one number by each digit of the other number, starting from the right and working your way left. Then, add up all the partial products to get the final result.",
                 ExerciseSubType.LONGMULTIPLICATION);
     }

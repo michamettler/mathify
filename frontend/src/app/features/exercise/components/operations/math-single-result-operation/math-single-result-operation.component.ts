@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {MatCard, MatCardContent, MatCardTitle} from "@angular/material/card";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
@@ -8,7 +8,6 @@ import {MatInput} from "@angular/material/input";
 import {HeaderComponent} from "../../../../../core/components/header/header.component";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {Exercise} from "../../../../../../model/exercise";
-import {UserInputs} from "../../../../../../model/userInputs";
 
 @Component({
   selector: 'app-math-single-result-operation',
@@ -29,16 +28,25 @@ import {UserInputs} from "../../../../../../model/userInputs";
   templateUrl: './math-single-result-operation.component.html',
   styleUrl: './math-single-result-operation.component.scss'
 })
-export class MathSingleResultOperationComponent {
+export class MathSingleResultOperationComponent implements OnInit, OnChanges {
   @Input() exercise?: Exercise;
-  @Input() userInputs?: UserInputs;
+  userSolution: string = '';
 
-  loadResult(event: Event): void {
-    if (this.userInputs) {
-      this.userInputs.singleSolution = (event.target as HTMLInputElement).value;
-      if (this.exercise) {
-        this.exercise.userResult = JSON.stringify([Number(this.userInputs.singleSolution)]);
-      }
+  ngOnInit(): void {
+    this.loadExercise();
+  }
+
+  ngOnChanges(): void {
+    this.loadExercise();
+  }
+
+  loadExercise(): void {
+    this.userSolution = '';
+  }
+
+  loadResult(): void {
+    if (this.exercise) {
+      this.exercise.userResult = JSON.stringify([Number(this.userSolution)]);
     }
   }
 

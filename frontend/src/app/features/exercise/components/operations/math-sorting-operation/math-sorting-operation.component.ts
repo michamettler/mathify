@@ -1,11 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Exercise} from '../../../../../../model/exercise';
 import {MatButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {NgIf} from "@angular/common";
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from "@angular/cdk/drag-drop";
-import {UserInputs} from "../../../../../../model/userInputs";
 
 @Component({
   selector: 'app-math-sorting-operation',
@@ -22,22 +21,38 @@ import {UserInputs} from "../../../../../../model/userInputs";
   templateUrl: './math-sorting-operation.component.html',
   styleUrl: './math-sorting-operation.component.scss'
 })
-export class MathSortingOperationComponent {
+export class MathSortingOperationComponent implements OnInit, OnChanges {
   @Input() exercise?: Exercise;
-  @Input() userInputs?: UserInputs;
+
+  numbers: [] = [];
+
+  ngOnInit(): void {
+    this.loadExercise();
+    if (this.numbers && this.exercise) {
+      this.exercise.userResult = JSON.stringify(this.numbers);
+    }
+  }
+
+  ngOnChanges(): void {
+    this.loadExercise();
+  }
+
+  loadExercise(): void {
+    if (this.exercise?.calculationValues) {
+      this.numbers = JSON.parse(this.exercise.calculationValues);
+    }
+  }
 
   drop(event: CdkDragDrop<string[]>) {
-    if (this.userInputs) {
-      moveItemInArray(this.userInputs.numbersSorting, event.previousIndex, event.currentIndex);
+    if (this.exercise?.calculationValues) {
+      moveItemInArray(this.numbers, event.previousIndex, event.currentIndex);
       this.loadResult();
     }
   }
 
   loadResult(): void {
-    if (this.userInputs) {
-      if (this.exercise) {
-        this.exercise.userResult = JSON.stringify(this.userInputs.numbersSorting);
-      }
+    if (this.numbers && this.exercise) {
+      this.exercise.userResult = JSON.stringify(this.numbers);
     }
   }
 

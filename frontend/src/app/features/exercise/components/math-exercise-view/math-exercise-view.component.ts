@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HeaderComponent} from "../../../../core/components/header/header.component";
 import {MatButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
@@ -22,12 +22,15 @@ import {
 } from "../operations/math-multiplication-table/math-multiplication-table.component";
 import {Message, MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
-import {UserInputs} from "../../../../../model/userInputs";
 import {MessagesModule} from "primeng/messages";
 import {SpeedDialModule} from "primeng/speeddial";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {UserRegistrationService} from "../../../registration/services/user-registration.service";
 import Swal from 'sweetalert2'
+import {MathLongArithmeticComponent} from "../operations/math-long-arithmetic/math-long-arithmetic.component";
+import {
+  MathLongMultiplicativeComponent
+} from "../operations/math-long-multiplicative/math-long-multiplicative.component";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -51,7 +54,9 @@ import Swal from 'sweetalert2'
     ToastModule,
     MessagesModule,
     SpeedDialModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    MathLongArithmeticComponent,
+    MathLongMultiplicativeComponent
   ],
   providers: [MessageService],
   templateUrl: './math-exercise-view.component.html',
@@ -59,23 +64,10 @@ import Swal from 'sweetalert2'
 })
 export class MathExerciseViewComponent implements OnInit {
 
-  @ViewChild(MathSingleResultOperationComponent) mathSingleResultOperationComponent: MathSingleResultOperationComponent | undefined;
-  @ViewChild(MathNeighborOperationComponent) mathNeighborOperationComponent: MathNeighborOperationComponent | undefined;
-  @ViewChild(MathMultiplicationTableComponent) mathMultiplicationTableComponent: MathMultiplicationTableComponent | undefined;
-  @ViewChild(MathSortingOperationComponent) mathSortingOperationComponent: MathSortingOperationComponent | undefined;
-
   exercise?: Exercise;
   category?: string;
   hintMessage: Message[] = [{severity: 'info', detail: ''}]
   showHint: boolean = false;
-
-  userInputs: UserInputs = {
-    singleSolution: '',
-    lowerNeighbor: '',
-    upperNeighbor: '',
-    numbersSorting: [],
-    numbersMultiplicationTable: Array(10).fill('')
-  };
 
   user?: User;
 
@@ -105,18 +97,19 @@ export class MathExerciseViewComponent implements OnInit {
           hint: response.hint ? response.hint : ''
         }
         this.hintMessage = [{severity: 'info', detail: this.exercise.hint}]
-        if (this.category === 'SortingOperation') {
-          if (this.exercise && this.exercise.calculationValues) {
-            this.exercise.userResult = this.exercise.calculationValues;
-            this.userInputs.numbersSorting = JSON.parse(this.exercise.calculationValues);
-          }
-        }
       }
     });
   }
 
   findCategory(operation: string): string {
-    const {SingleResultOperation, NeighborOperation, SortingOperation, TableOperation} = MathExerciseSubType;
+    const {
+      SingleResultOperation,
+      NeighborOperation,
+      SortingOperation,
+      TableOperation,
+      LongArithmeticOperation,
+      LongMultiplicativeOperation
+    } = MathExerciseSubType;
 
     if (Object.values(SingleResultOperation).includes(operation as any)) {
       this.category = 'SingleResultOperation';
@@ -130,9 +123,15 @@ export class MathExerciseViewComponent implements OnInit {
     } else if (Object.values(TableOperation).includes(operation as any)) {
       this.category = 'TableOperation';
       return operation;
+    } else if (Object.values(LongArithmeticOperation).includes(operation as any)) {
+      this.category = 'LongArithmeticOperation';
+      return operation;
+    } else if (Object.values(LongMultiplicativeOperation).includes(operation as any)) {
+      this.category = 'LongMultiplicativeOperation';
+      return operation;
     }
-
-    return 'Unknown Category';
+    this.category = 'Unknown';
+    return operation;
   }
 
   skipExercise() {
@@ -140,9 +139,8 @@ export class MathExerciseViewComponent implements OnInit {
       this.messageService.add({
         severity: 'info',
         summary: 'Experience + 0 XP!',
-        detail: 'Exercise skipped, result would have been: ' + (JSON.parse(this.exercise.result).join(', '))
+        detail: 'Exercise skipped, result would have been: ' + this.getResult(this.exercise)
       })
-      this.clear();
       this.loadExercise();
     }
   }
@@ -176,7 +174,6 @@ export class MathExerciseViewComponent implements OnInit {
                 no-repeat
               `
               })
-              this.clear();
               this.loadExercise();
             } else {
               if (JSON.parse(response.correct) === true) {
@@ -185,15 +182,13 @@ export class MathExerciseViewComponent implements OnInit {
                   summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
                   detail: 'Congratulations! You got it right! Keep it up!'
                 })
-                this.clear();
                 this.loadExercise();
               } else {
                 this.messageService.add({
                   severity: 'error',
                   summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
-                  detail: 'Dont worry, Im sure you will get it the next time!'
+                  detail: 'Dont worry, Im sure you will get it the next time! result would have been: ' + this.getResult(this.exercise)
                 })
-                this.clear();
                 this.loadExercise();
               }
             }
@@ -203,25 +198,28 @@ export class MathExerciseViewComponent implements OnInit {
     }
   }
 
-  clear(): void {
-    this.userInputs = {
-      singleSolution: '',
-      lowerNeighbor: '',
-      upperNeighbor: '',
-      numbersSorting: [],
-      numbersMultiplicationTable: Array(10).fill('')
-    };
+  getResult(exercise: Exercise | undefined): string {
+    if (exercise) {
+      if (this.category === 'LongArithmeticOperation' || this.category === 'LongMultiplicativeOperation') {
+        let resultList = JSON.parse(exercise.result);
+        return resultList[resultList.length - 1];
+      } else {
+        return (JSON.parse(exercise.result).join(', '))
+      }
+    }
+    return '';
   }
 
   hasEmptyFields(): boolean {
-    if (this.category === 'SingleResultOperation') {
-      return this.userInputs.singleSolution === '';
-    } else if (this.category === 'NeighborOperation') {
-      return this.userInputs.lowerNeighbor === '' || this.userInputs.upperNeighbor === '';
-    } else if (this.category === 'TableOperation') {
-      return this.userInputs.numbersMultiplicationTable.includes('');
+    if (this.exercise) {
+      if (this.category === 'TableOperation') {
+        return this.exercise.userResult === '' || JSON.parse(this.exercise.userResult).includes('');
+      } else {
+        return this.exercise.userResult === ''
+      }
+    } else {
+      return true;
     }
-    return true;
   }
 
   toggleHint(): void {

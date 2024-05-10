@@ -86,7 +86,7 @@ export class ScoreboardOverviewComponent implements OnInit {
                 position: index + 1
               }));
 
-              this.dataSources[grade] =  this.dataSources[grade].map((user: DisplayUser) => {
+              this.dataSources[grade] = this.dataSources[grade].map((user: DisplayUser) => {
                 if (user.username === currentUser.username) {
                   user.username = 'You';
                   user.isCurrentUser = true;
