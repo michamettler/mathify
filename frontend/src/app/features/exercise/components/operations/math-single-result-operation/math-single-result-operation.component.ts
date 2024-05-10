@@ -41,9 +41,7 @@ export class MathSingleResultOperationComponent implements OnInit, OnChanges {
   }
 
   loadExercise(): void {
-    if (this.exercise?.calculationValues) {
-      this.userSolution = JSON.parse(this.exercise.calculationValues);
-    }
+    this.userSolution = '';
   }
 
   loadResult(): void {

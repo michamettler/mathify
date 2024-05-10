@@ -191,14 +191,14 @@ export class MathExerciseViewComponent implements OnInit {
   }
 
   hasEmptyFields(): boolean {
-    if (this.category === 'TableOperation') {
-      if (this.exercise) {
-        return JSON.parse(this.exercise?.userResult).includes('');
+    if (this.exercise) {
+      if (this.category === 'TableOperation') {
+        return this.exercise.userResult === '' || JSON.parse(this.exercise.userResult).includes('');
       } else {
-        return true;
+        return this.exercise.userResult === ''
       }
     } else {
-      return this.exercise?.userResult === ''
+      return true;
     }
   }
 
