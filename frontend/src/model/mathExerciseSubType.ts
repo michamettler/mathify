@@ -28,12 +28,12 @@ export namespace MathExerciseSubType {
     MULTIPLICATIONTABLE = 'MULTIPLICATIONTABLE'
   }
 
-  export enum LongArithmeticOperations {
+  export enum LongArithmeticOperation {
     LONGADDITION = 'LONGADDITION',
     LONGSUBTRACTION = 'LONGSUBTRACTION',
   }
 
-  export enum LongMultiplicativeOperations {
+  export enum LongMultiplicativeOperation {
     LONGMULTIPLICATION = 'LONGMULTIPLICATION',
   }
 }

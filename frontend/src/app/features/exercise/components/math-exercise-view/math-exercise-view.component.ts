@@ -27,7 +27,10 @@ import {SpeedDialModule} from "primeng/speeddial";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {UserRegistrationService} from "../../../registration/services/user-registration.service";
 import Swal from 'sweetalert2'
-import {MathLongArithmeticComponent} from "../operations/math-long-calculation/math-long-arithmetic.component";
+import {MathLongArithmeticComponent} from "../operations/math-long-arithmetic/math-long-arithmetic.component";
+import {
+  MathLongMultiplicativeComponent
+} from "../operations/math-long-multiplicative/math-long-multiplicative.component";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -52,7 +55,8 @@ import {MathLongArithmeticComponent} from "../operations/math-long-calculation/m
     MessagesModule,
     SpeedDialModule,
     OverlayPanelModule,
-    MathLongArithmeticComponent
+    MathLongArithmeticComponent,
+    MathLongMultiplicativeComponent
   ],
   providers: [MessageService],
   templateUrl: './math-exercise-view.component.html',
@@ -103,7 +107,8 @@ export class MathExerciseViewComponent implements OnInit {
       NeighborOperation,
       SortingOperation,
       TableOperation,
-      LongArithmeticOperations
+      LongArithmeticOperation,
+      LongMultiplicativeOperation
     } = MathExerciseSubType;
 
     if (Object.values(SingleResultOperation).includes(operation as any)) {
@@ -118,8 +123,11 @@ export class MathExerciseViewComponent implements OnInit {
     } else if (Object.values(TableOperation).includes(operation as any)) {
       this.category = 'TableOperation';
       return operation;
-    } else if (Object.values(LongArithmeticOperations).includes(operation as any)) {
+    } else if (Object.values(LongArithmeticOperation).includes(operation as any)) {
       this.category = 'LongArithmeticOperation';
+      return operation;
+    } else if (Object.values(LongMultiplicativeOperation).includes(operation as any)) {
+      this.category = 'LongMultiplicativeOperation';
       return operation;
     }
     this.category = 'Unknown';
