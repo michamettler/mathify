@@ -154,13 +154,6 @@ export class MathExerciseViewComponent implements OnInit {
       })
     } else {
       if (this.exercise) {
-        let result: string;
-        if (this.category === 'LongArithmeticOperation' || this.category === 'LongMultiplicativeOperation') {
-          let resultList = JSON.parse(this.exercise?.result);
-          result = resultList[resultList.length - 1];
-        } else {
-          result = (JSON.parse(this.exercise.result).join(', '))
-        }
         this.mathExerciseService.verifyExercise(this.exercise).subscribe({
           next: (response: any) => {
             if (this.user) {
