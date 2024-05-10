@@ -329,7 +329,7 @@ public class MathsGenerator {
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
         int a = random.nextInt(max + 1);
         int b = random.nextInt(max + 1);
-        double[] calculationValues = {a, b};
+        double[] calculationValues = {b, a};
 
         int tempA = a;
         int tempB = b;
