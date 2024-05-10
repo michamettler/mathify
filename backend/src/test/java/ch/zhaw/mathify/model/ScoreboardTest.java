@@ -41,6 +41,7 @@ class ScoreboardTest {
 
     @Test
     void testRemove() {
+        scoreboard.createRanking();
         int currentSize = scoreboard.size();
         Scoreboard.ScoreboardNode node = new Scoreboard.ScoreboardNode("sarah_jackson", Grade.FOURTH, 6, 22);
         assertNotNull(scoreboard.search(scoreboard.getRoot(), node));
@@ -54,6 +55,7 @@ class ScoreboardTest {
 
     @Test
     void testUpdate() {
+        scoreboard.createRanking();
         int currentSize = scoreboard.size();
         Scoreboard.ScoreboardNode node = new Scoreboard.ScoreboardNode("jane_smith", Grade.SECOND, 8, 44);
         assertNotNull(scoreboard.search(scoreboard.getRoot(), node));
