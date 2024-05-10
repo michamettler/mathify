@@ -10,12 +10,10 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
-import java.util.Optional;
 
 public class App {
     private static final Logger LOG = LoggerFactory.getLogger(App.class);
-    private static final Optional<URL> SETTINGS_FILE = Optional.ofNullable(App.class.getClassLoader().getResource("settings.json"));
+    private static final URL SETTINGS_FILE = App.class.getClassLoader().getResource("settings.json");
     private static Settings settings;
 
     /**
@@ -25,13 +23,13 @@ public class App {
         LOG.info("Starting app...");
 
 
-        if (SETTINGS_FILE.isEmpty()) {
+        if (SETTINGS_FILE == null) {
             LOG.error("settings.json not found! Make sure to provide a settings.json in the resources folder.");
             throw new SettingsNotFoundException("settings.json not found! Make sure to provide a settings.json in the resources folder.");
         }
         LOG.info("settings.json found!");
         try {
-            settings = JsonMapper.readSettingsFromJson(new File(Objects.requireNonNull(SETTINGS_FILE.get().getFile())));
+            settings = JsonMapper.readSettingsFromJson(new File(SETTINGS_FILE.getFile()));
         } catch (IOException e) {
             LOG.error("Could not read settings.json!", e);
             throw new SettingsNotFoundException("Could not read settings.json!");

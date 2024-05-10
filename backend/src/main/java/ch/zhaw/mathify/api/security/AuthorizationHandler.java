@@ -16,9 +16,10 @@ import java.util.Set;
  */
 public final class AuthorizationHandler {
     private static final Logger LOG = LoggerFactory.getLogger(AuthorizationHandler.class);
-    private static final SessionHandler sessionHandler = SessionHandler.getInstance();
+    private final SessionHandler sessionHandler;
 
-    private AuthorizationHandler() {
+    public AuthorizationHandler() {
+        sessionHandler = SessionHandler.getInstance();
     }
 
     /**
@@ -26,7 +27,7 @@ public final class AuthorizationHandler {
      *
      * @param ctx The context of the request
      */
-    public static void validateEndpointAccess(Context ctx) {
+    public void validateEndpointAccess(Context ctx) {
         Set<RouteRole> permittedRole = ctx.routeRoles();
 
         if (permittedRole.contains((Role.ANONYMOUS))) {

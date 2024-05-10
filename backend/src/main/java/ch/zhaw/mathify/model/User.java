@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 /**
@@ -17,11 +17,11 @@ public class User {
     private static final Logger LOG = LoggerFactory.getLogger(User.class);
     private static final int MIN_TECHNICAL_SCORE = 1;
     private static final int MAX_TECHNICAL_SCORE = 10;
-    private final HashMap<ExerciseSubType, Integer> technicalScore;
+    private final String guid;
+    private Map<ExerciseSubType, Integer> technicalScore;
     private String username;
     private int level;
     private int experience;
-    private String guid;
     private String password;
     private String email;
     private Grade grade;
@@ -43,8 +43,8 @@ public class User {
         this.grade = grade;
         this.guid = createGuid();
         this.level = 1;
-        this.technicalScore = initializeTechnicalScore();
         this.role = Role.USER;
+        initializeTechnicalScore();
     }
 
     /**
@@ -54,9 +54,9 @@ public class User {
         this.guid = createGuid();
         this.level = 1;
         this.experience = 0;
-        this.technicalScore = initializeTechnicalScore();
         this.role = Role.USER;
         this.grade = Grade.NONE;
+        initializeTechnicalScore();
     }
 
     /**
@@ -109,7 +109,7 @@ public class User {
     public void addTechnicalScore(ExerciseSubType exerciseSubType, int technicalScore) {
         LOG.debug("Adding {} technical score to {}", technicalScore, this.username);
         int currentScore = this.technicalScore.get(exerciseSubType);
-        int newScore = Math.min(MAX_TECHNICAL_SCORE, Math.max(MIN_TECHNICAL_SCORE, currentScore + technicalScore));
+        int newScore = Math.clamp(currentScore + technicalScore, MIN_TECHNICAL_SCORE, MAX_TECHNICAL_SCORE);
         this.technicalScore.put(exerciseSubType, newScore);
     }
 
@@ -172,10 +172,6 @@ public class User {
         this.email = email;
     }
 
-    public void setGuid(String guid) {
-        this.guid = guid;
-    }
-
     public Grade getGrade() {
         return grade;
     }
@@ -196,11 +192,10 @@ public class User {
         return technicalScore;
     }
 
-    private HashMap<ExerciseSubType, Integer> initializeTechnicalScore() {
-        HashMap<ExerciseSubType, Integer> technicalScore = new HashMap<>();
+    private void initializeTechnicalScore() {
+        technicalScore = new EnumMap<>(ExerciseSubType.class);
         for (ExerciseSubType subType : ExerciseSubType.values()) {
             technicalScore.put(subType, 1);
         }
-        return technicalScore;
     }
 }

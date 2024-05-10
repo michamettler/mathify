@@ -13,6 +13,18 @@ public class Scoreboard {
     private static final Logger LOG = LoggerFactory.getLogger(Scoreboard.class);
     private ScoreboardNode root;
 
+    /**
+     * Creates a Scoreboard and loads the current users from the users.json file
+     */
+    public Scoreboard() {
+        UserRepository userRepository = UserRepository.getInstance();
+        for (User user : userRepository.get()) {
+            if (user.getRole().equals(Role.USER)) {
+                insert(new ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
+            }
+        }
+    }
+
     public ScoreboardNode getRoot() {
         return root;
     }
@@ -204,23 +216,13 @@ public class Scoreboard {
         return 1 + Math.max(calculateHeight(node.leftScoreboardNode), calculateHeight(node.rightScoreboardNode));
     }
 
-    public Map<Grade, List<ScoreboardNode>> createRanking() {
-        clear();
-        for (User user : UserRepository.getInstance().get()) {
-            if (user.getRole().equals(Role.USER)) {
-                insert(new ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
-            }
-        }
-        return inOrderTraversal(root);
-    }
-
     /**
      * Traverses the Scoreboard in in-order
      *
      * @param node The current node
      * @return The list of nodes in in-order
      */
-    Map<Grade, List<ScoreboardNode>> inOrderTraversal(ScoreboardNode node) {
+    public Map<Grade, List<ScoreboardNode>> inOrderTraversal(ScoreboardNode node) {
         LOG.debug("Traversing the scoreboard in in-order");
         Map<Grade, List<ScoreboardNode>> gradeMap = new HashMap<>();
 
@@ -301,6 +303,34 @@ public class Scoreboard {
             } else {
                 return 1;
             }
+        }
+
+        /**
+         * Checks if the current node is equal to another node
+         *
+         * @param obj the object to be compared.
+         * @return true if the objects are equal, false otherwise
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null || getClass() != obj.getClass()) {
+                return false;
+            }
+            ScoreboardNode other = (ScoreboardNode) obj;
+            return this.level == other.level && this.experience == other.experience;
+        }
+
+        /**
+         * Returns the hash code of the current node
+         *
+         * @return the hash code of the current node
+         */
+        @Override
+        public int hashCode() {
+            return Objects.hash(username, grade, level, experience);
         }
 
         public String getUsername() {
