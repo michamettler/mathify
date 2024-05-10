@@ -27,7 +27,7 @@ export class MathLongMultiplicativeComponent implements OnInit, OnChanges {
   resultInputs: string[] = [];
   multiplicationSteps: number = 0;
   steps: string[][] = [];
-  stepTakeovers: string[][] = [];
+  stepCarryOvers: string[][] = [];
 
   operand1: string[] = [];
   operand2: string[] = [];
@@ -57,10 +57,10 @@ export class MathLongMultiplicativeComponent implements OnInit, OnChanges {
     for (let i = this.multiplicationSteps - 1; i >= 0; i--) {
       let length = (Number(operand1Number) * Number(this.operand2[i])).toString().length;
       this.steps[i] = new Array(length).fill('');
-      this.stepTakeovers[i] = new Array(length - 1).fill('');
+      this.stepCarryOvers[i] = new Array(length - 1).fill('');
     }
     this.steps = this.steps.slice().reverse();
-    this.stepTakeovers = this.stepTakeovers.slice().reverse();
+    this.stepCarryOvers = this.stepCarryOvers.slice().reverse();
   }
 
   loadResult() {
@@ -68,12 +68,12 @@ export class MathLongMultiplicativeComponent implements OnInit, OnChanges {
 
     for (let i = 0; i < this.multiplicationSteps; i++) {
       for (let indexResult = this.steps[i].length - 1; indexResult >= 0; indexResult--) {
-        let indexTakeOver = indexResult - 1;
+        let indexCarryOver = indexResult - 1;
         reconstructedArray.push(JSON.parse(this.steps[i][indexResult] ? this.steps[i][indexResult] : '0'));
-        if (indexResult === 0 && !this.stepTakeovers[i][indexTakeOver]) {
+        if (indexResult === 0 && !this.stepCarryOvers[i][indexCarryOver]) {
           break;
         } else {
-          reconstructedArray.push(JSON.parse(this.stepTakeovers[i][indexTakeOver] ? this.stepTakeovers[i][indexTakeOver] : '0'));
+          reconstructedArray.push(JSON.parse(this.stepCarryOvers[i][indexCarryOver] ? this.stepCarryOvers[i][indexCarryOver] : '0'));
         }
       }
     }

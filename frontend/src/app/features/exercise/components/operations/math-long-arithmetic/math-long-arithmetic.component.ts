@@ -28,7 +28,7 @@ export class MathLongArithmeticComponent implements OnInit, OnChanges {
   result: string = '';
   operator: string = '';
 
-  takeOverInputs: string[] = [];
+  carryOverInputs: string[] = [];
   resultInputs: string[] = [];
 
   operand1: string[] = [];
@@ -56,7 +56,7 @@ export class MathLongArithmeticComponent implements OnInit, OnChanges {
     this.operand1 = JSON.parse(<string>this.exercise?.calculationValues)[0].toString().split('');
     this.operand2 = JSON.parse(<string>this.exercise?.calculationValues)[1].toString().split('');
 
-    this.takeOverInputs = new Array(Math.floor((resultList.length - 1) / 2)).fill('');
+    this.carryOverInputs = new Array(Math.floor((resultList.length - 1) / 2)).fill('');
     this.resultInputs = new Array(Math.floor((resultList.length - 1) / 2) + 1).fill('');
   }
 
@@ -64,12 +64,12 @@ export class MathLongArithmeticComponent implements OnInit, OnChanges {
     let reconstructedArray: string[] = [];
 
     for (let indexResult = this.resultInputs.length - 1; indexResult >= 0; indexResult--) {
-      let indexTakeOver = indexResult - 1;
+      let indexCarryOver = indexResult - 1;
       reconstructedArray.push(JSON.parse(this.resultInputs[indexResult] ? this.resultInputs[indexResult] : '0'));
-      if (indexResult === 0 && !this.takeOverInputs[indexTakeOver]) {
+      if (indexResult === 0 && !this.carryOverInputs[indexCarryOver]) {
         break;
       } else {
-        reconstructedArray.push(JSON.parse(this.takeOverInputs[indexTakeOver] ? this.takeOverInputs[indexTakeOver] : '0'));
+        reconstructedArray.push(JSON.parse(this.carryOverInputs[indexCarryOver] ? this.carryOverInputs[indexCarryOver] : '0'));
       }
     }
 

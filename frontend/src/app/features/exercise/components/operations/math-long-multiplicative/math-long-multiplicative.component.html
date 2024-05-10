@@ -13,9 +13,9 @@
   <p-divider class="long-calculation-divider"/>
 
   <ng-container *ngFor="let step of steps; let i = index trackBy: trackByFn">
-    <div [style.padding-right.px]="(i+1) * 50" class="input-container-take-over">
-      <ng-container *ngFor="let digit of stepTakeovers[i]; let j = index trackBy: trackByFn">
-        <input (change)="loadResult()" [(ngModel)]="stepTakeovers[i][j]" class="input-field-take-over" maxlength="1"
+    <div [style.padding-right.px]="(i+1) * 50" class="input-container-carry-over">
+      <ng-container *ngFor="let digit of stepCarryOvers[i]; let j = index trackBy: trackByFn">
+        <input (change)="loadResult()" [(ngModel)]="stepCarryOvers[i][j]" class="input-field-carry-over" maxlength="1"
                pInputText
                type="number"/>
       </ng-container>
