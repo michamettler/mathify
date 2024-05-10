@@ -104,7 +104,6 @@ public final class UserRepository implements Repository<User> {
     /**
      * @param username the name of the user to get
      * @return the user with the given name
-     *
      * @throws NoSuchElementException if the user with the given name does not exist
      */
     @NotNull

@@ -39,26 +39,6 @@ public class Scoreboard {
         root = insertAt(root, node);
     }
 
-    /**
-     * Inserts a new node into the Scoreboard at the specified position
-     *
-     * @param currentNode The current node
-     * @param newNode     The new node to be inserted
-     * @return The new node
-     */
-    private ScoreboardNode insertAt(ScoreboardNode currentNode, ScoreboardNode newNode) {
-        LOG.debug("Inserting (at) {} into the scoreboard", newNode.username);
-        if (currentNode == null) {
-            return new ScoreboardNode(newNode.username, newNode.grade, newNode.level, newNode.experience);
-        } else if (newNode.username.equals(currentNode.username)) {
-            update(currentNode, newNode.level, newNode.experience);
-        } else if (newNode.compareTo(currentNode) <= 0) {
-            currentNode.leftScoreboardNode = insertAt(currentNode.leftScoreboardNode, newNode);
-        } else {
-            currentNode.rightScoreboardNode = insertAt(currentNode.rightScoreboardNode, newNode);
-        }
-        return currentNode;
-    }
 
     /**
      * Removes a node from the Scoreboard
@@ -72,6 +52,76 @@ public class Scoreboard {
             root = removeAt(root, node);
         }
         return node;
+    }
+
+    /**
+     * Searches for a node in the Scoreboard
+     *
+     * @param currentNode The current node
+     * @param searchNode  The node to be searched for
+     * @return The searched node
+     */
+    public ScoreboardNode search(ScoreboardNode currentNode, ScoreboardNode searchNode) {
+        LOG.debug("Searching for {} in the scoreboard", searchNode.username);
+        if (currentNode == null) {
+            return null;
+        } else if (searchNode.username.equals(currentNode.username)) {
+            return currentNode;
+        } else if (searchNode.compareTo(currentNode) <= 0) {
+            return search(currentNode.leftScoreboardNode, searchNode);
+        } else {
+            return search(currentNode.rightScoreboardNode, searchNode);
+        }
+    }
+
+    /**
+     * Updates a node in the Scoreboard
+     *
+     * @param node          The node to be updated
+     * @param newLevel      The new level
+     * @param newExperience The new experience
+     */
+    public void update(ScoreboardNode node, int newLevel, int newExperience) {
+        LOG.debug("Updating {} in the scoreboard", node.username);
+        ScoreboardNode nodeToUpdate = search(root, node);
+        if (nodeToUpdate != null) {
+            remove(node);
+            nodeToUpdate.level = newLevel;
+            nodeToUpdate.experience = newExperience;
+            insert(nodeToUpdate);
+        }
+    }
+
+    /**
+     * Returns the size of the Scoreboard
+     *
+     * @return The size of the Scoreboard
+     */
+    public int size() {
+        return calculateSize(root);
+    }
+
+
+    /**
+     * Traverses the Scoreboard in in-order
+     *
+     * @param node The current node
+     * @return The list of nodes in in-order
+     */
+    public Map<Grade, List<ScoreboardNode>> inOrderTraversal(ScoreboardNode node) {
+        LOG.debug("Traversing the scoreboard in in-order");
+        Map<Grade, List<ScoreboardNode>> gradeMap = new EnumMap<>(Grade.class);
+
+        if (node != null) {
+            for (Grade grade : Grade.values()) {
+                if (!grade.equals(Grade.NONE)) {
+                    List<ScoreboardNode> usersOfGrade = getUsersByGrade(node, grade);
+                    gradeMap.put(grade, usersOfGrade);
+                }
+            }
+        }
+
+        return gradeMap;
     }
 
     /**
@@ -124,50 +174,22 @@ public class Scoreboard {
     }
 
     /**
-     * Searches for a node in the Scoreboard
-     *
-     * @param currentNode The current node
-     * @param searchNode  The node to be searched for
-     * @return The searched node
+     * @param node  The current node
+     * @param grade The grade to be searched for
+     * @return The list of users with the specified grade
      */
-    public ScoreboardNode search(ScoreboardNode currentNode, ScoreboardNode searchNode) {
-        LOG.debug("Searching for {} in the scoreboard", searchNode.username);
-        if (currentNode == null) {
-            return null;
-        } else if (searchNode.username.equals(currentNode.username)) {
-            return currentNode;
-        } else if (searchNode.compareTo(currentNode) <= 0) {
-            return search(currentNode.leftScoreboardNode, searchNode);
-        } else {
-            return search(currentNode.rightScoreboardNode, searchNode);
+    private List<ScoreboardNode> getUsersByGrade(ScoreboardNode node, Grade grade) {
+        List<ScoreboardNode> users = new LinkedList<>();
+        if (node.leftScoreboardNode != null) {
+            users.addAll(getUsersByGrade(node.leftScoreboardNode, grade));
         }
-    }
-
-    /**
-     * Updates a node in the Scoreboard
-     *
-     * @param node          The node to be updated
-     * @param newLevel      The new level
-     * @param newExperience The new experience
-     */
-    public void update(ScoreboardNode node, int newLevel, int newExperience) {
-        LOG.debug("Updating {} in the scoreboard", node.username);
-        ScoreboardNode nodeToUpdate = search(root, node);
-        if (nodeToUpdate != null) {
-            remove(node);
-            nodeToUpdate.level = newLevel;
-            nodeToUpdate.experience = newExperience;
-            insert(nodeToUpdate);
+        if (node.getGrade() == grade) {
+            users.add(node);
         }
-    }
-
-    /**
-     * Returns the size of the Scoreboard
-     *
-     * @return The size of the Scoreboard
-     */
-    public int size() {
-        return calculateSize(root);
+        if (node.rightScoreboardNode != null) {
+            users.addAll(getUsersByGrade(node.rightScoreboardNode, grade));
+        }
+        return users;
     }
 
     /**
@@ -185,39 +207,24 @@ public class Scoreboard {
     }
 
     /**
-     * Traverses the Scoreboard in in-order
+     * Inserts a new node into the Scoreboard at the specified position
      *
-     * @param node The current node
-     * @return The list of nodes in in-order
+     * @param currentNode The current node
+     * @param newNode     The new node to be inserted
+     * @return The new node
      */
-    public Map<Grade, List<ScoreboardNode>> inOrderTraversal(ScoreboardNode node) {
-        LOG.debug("Traversing the scoreboard in in-order");
-        Map<Grade, List<ScoreboardNode>> gradeMap = new EnumMap<>(Grade.class);
-
-        if (node != null) {
-            for (Grade grade : Grade.values()) {
-                if (!grade.equals(Grade.NONE)) {
-                    List<ScoreboardNode> usersOfGrade = getUsersByGrade(node, grade);
-                    gradeMap.put(grade, usersOfGrade);
-                }
-            }
+    private ScoreboardNode insertAt(ScoreboardNode currentNode, ScoreboardNode newNode) {
+        LOG.debug("Inserting (at) {} into the scoreboard", newNode.username);
+        if (currentNode == null) {
+            return new ScoreboardNode(newNode.username, newNode.grade, newNode.level, newNode.experience);
+        } else if (newNode.username.equals(currentNode.username)) {
+            update(currentNode, newNode.level, newNode.experience);
+        } else if (newNode.compareTo(currentNode) <= 0) {
+            currentNode.leftScoreboardNode = insertAt(currentNode.leftScoreboardNode, newNode);
+        } else {
+            currentNode.rightScoreboardNode = insertAt(currentNode.rightScoreboardNode, newNode);
         }
-
-        return gradeMap;
-    }
-
-    private List<ScoreboardNode> getUsersByGrade(ScoreboardNode node, Grade grade) {
-        List<ScoreboardNode> users = new LinkedList<>();
-        if (node.leftScoreboardNode != null) {
-            users.addAll(getUsersByGrade(node.leftScoreboardNode, grade));
-        }
-        if (node.getGrade() == grade) {
-            users.add(node);
-        }
-        if (node.rightScoreboardNode != null) {
-            users.addAll(getUsersByGrade(node.rightScoreboardNode, grade));
-        }
-        return users;
+        return currentNode;
     }
 
     /**

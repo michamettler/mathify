@@ -72,11 +72,6 @@ public class User {
         }
     }
 
-    private static String createGuid() {
-        LOG.debug("Creating GUID");
-        return java.util.UUID.randomUUID().toString();
-    }
-
     /**
      * @param password password to hash
      * @return hashed password
@@ -197,5 +192,10 @@ public class User {
         for (ExerciseSubType subType : ExerciseSubType.values()) {
             technicalScore.put(subType, 1);
         }
+    }
+
+    private static String createGuid() {
+        LOG.debug("Creating GUID");
+        return java.util.UUID.randomUUID().toString();
     }
 }
