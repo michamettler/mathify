@@ -4,6 +4,7 @@ import ch.zhaw.mathify.model.Grade;
 import ch.zhaw.mathify.model.exercise.Exercise;
 import ch.zhaw.mathify.model.exercise.ExerciseSubType;
 import ch.zhaw.mathify.model.exercise.MathsExercise;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,6 @@ public class MathsGenerator {
             case LONGSUBTRACTION -> generateLongSubtraction(grade, technicalScore);
             case LONGMULTIPLICATION -> generateLongMultiplication(grade, technicalScore);
             case ORDEROFOPERATIONS -> generateOrderOfOperations(grade, technicalScore);
-            default -> throw new IllegalArgumentException("Sub type " + subType + " is not supported!");
         };
     }
 
@@ -81,7 +81,9 @@ public class MathsGenerator {
     private static Exercise generateComparison(Grade grade, int technicalScore) {
         LOG.info("Generating comparison exercise");
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
-        int a, b, c;
+        int a;
+        int b;
+        int c;
         do {
             a = random.nextInt(max + 1);
             b = random.nextInt(max + 1);
@@ -199,7 +201,9 @@ public class MathsGenerator {
     private static Exercise generateThreeStepAddition(Grade grade, int technicalScore) {
         LOG.info("Generating three step addition exercise");
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
-        int a, b, c;
+        int a;
+        int b;
+        int c;
         do {
             a = random.nextInt(max + 1);
             b = random.nextInt(max + 1);
@@ -215,7 +219,9 @@ public class MathsGenerator {
     private static Exercise generateThreeStepSubtraction(Grade grade, int technicalScore) {
         LOG.info("Generating three step subtraction exercise");
         int max = (int) Math.round(grade.getMax() * getDifficultyFactor(technicalScore));
-        int a, b, c;
+        int a;
+        int b;
+        int c;
         do {
             a = random.nextInt(max + 1);
             b = random.nextInt(max + 1);
@@ -235,7 +241,7 @@ public class MathsGenerator {
         double[] result = new double[10];
         double[] calculationValues = {a};
         for (int i = 0; i < result.length; i++) {
-            result[i] = a * (i + 1);
+            result[i] = (double) a * (i + 1);
         }
         return new MathsExercise(result, new double[result.length], "Generate the multiplication table for " + a, calculationValues,
                 "To make a multiplication table, multiply a number by the numbers from 1 to 10.",
@@ -279,7 +285,7 @@ public class MathsGenerator {
             tempB /= 10;
         }
 
-        result[result.length - 1] = a + b;
+        result[result.length - 1] = (double) a + b;
 
         return new MathsExercise(result, new double[result.length], "Calculate " + a + " + " + b + " using long addition", calculationValues,
                 "When adding large numbers, start from the right and work your way left. Add each column separately, carrying over any excess to the next column if needed.",
@@ -307,7 +313,7 @@ public class MathsGenerator {
         for (int i = 0; i < countDigits(a - b); i++) {
             int difference = tempA % 10 - tempB % 10 - carryOver;
             if (difference < 0) {
-                result[2 * i] = 10 - Math.abs(difference);
+                result[2 * i] = (double) 10 - Math.abs(difference);
             } else {
                 result[2 * i] = Math.abs(difference);
             }
@@ -317,7 +323,7 @@ public class MathsGenerator {
             tempB /= 10;
         }
 
-        result[result.length - 1] = a - b;
+        result[result.length - 1] = (double) a - b;
 
         return new MathsExercise(result, new double[result.length], "Calculate " + a + " - " + b + " using long subtraction", calculationValues,
                 "When subtracting large numbers, start from the right and work your way left. If the digit on top is smaller than the one below, borrow from the next digit to the left. Subtract each digit and remember to carry over if needed.",
@@ -331,6 +337,18 @@ public class MathsGenerator {
         int b = random.nextInt(max + 1);
         double[] calculationValues = {a, b};
 
+        List<Integer> tempList = getIntegerList(a, b);
+
+        double[] result = tempList.stream()
+                .mapToDouble(Integer::doubleValue)
+                .toArray();
+
+        return new MathsExercise(result, new double[result.length], "Calculate " + a + " * " + b + " using long multiplication", calculationValues,
+                "Multiply each digit of one number by each digit of the other number, starting from the right and working your way left. Then, add up all the partial products to get the final result.",
+                ExerciseSubType.LONGMULTIPLICATION);
+    }
+
+    private static @NotNull List<Integer> getIntegerList(int a, int b) {
         int tempA = a;
         int tempB = b;
         List<Integer> tempList = new ArrayList<>();
@@ -352,14 +370,7 @@ public class MathsGenerator {
         }
 
         tempList.add(a * b);
-
-        double[] result = tempList.stream()
-                .mapToDouble(Integer::doubleValue)
-                .toArray();
-
-        return new MathsExercise(result, new double[result.length], "Calculate " + a + " * " + b + " using long multiplication", calculationValues,
-                "Multiply each digit of one number by each digit of the other number, starting from the right and working your way left. Then, add up all the partial products to get the final result.",
-                ExerciseSubType.LONGMULTIPLICATION);
+        return tempList;
     }
 
     private static Exercise generateOrderOfOperations(Grade grade, int technicalScore) {
@@ -374,24 +385,21 @@ public class MathsGenerator {
         char operatorSymbol2 = getRandomOperator(operator2);
         double[] result = new double[1];
 
-        switch (operatorSymbol1) {
-            case '+' -> {
-                switch (operatorSymbol2) {
-                    case '*' -> result[0] = a + b * c;
-                    case '/' -> result[0] = a + (double) b / c;
-                }
+        if (operatorSymbol1 == '+') {
+            if (operatorSymbol2 == '*') {
+                result[0] = (double) a + b * c;
+            } else {
+                result[0] = a + (double) b / c;
             }
-            case '-' -> {
-                switch (operatorSymbol2) {
-                    case '*' -> {
-                        while (a < b * c) {
-                            if (b > c) b--;
-                            else c--;
-                        }
-                        result[0] = a - b * c;
-                    }
-                    case '/' -> result[0] = a - (double) b / c;
+        } else if (operatorSymbol1 == '-') {
+            if (operatorSymbol2 == '*') {
+                while (a < b * c) {
+                    if (b > c) b--;
+                    else c--;
                 }
+                result[0] = (double) a - b * c;
+            } else {
+                result[0] = a - (double) b / c;
             }
         }
 
@@ -435,12 +443,12 @@ public class MathsGenerator {
     }
 
     private static char getRandomOperator(int num) {
-        char operatorSymbol = ' ';
+        char operatorSymbol;
         switch (num) {
-            case 0 -> operatorSymbol = '+';
             case 1 -> operatorSymbol = '-';
             case 2 -> operatorSymbol = '*';
             case 3 -> operatorSymbol = '/';
+            default -> operatorSymbol = '+';
         }
         return operatorSymbol;
     }

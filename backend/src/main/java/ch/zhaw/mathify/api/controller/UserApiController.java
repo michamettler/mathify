@@ -45,7 +45,7 @@ public class UserApiController implements CrudHandler {
 
     /**
      * @param context the context of the request
-     * @param token    the token of the user to delete
+     * @param token   the token of the user to delete
      */
     @Override
     public void delete(@NotNull Context context, @NotNull String token) {
@@ -58,10 +58,7 @@ public class UserApiController implements CrudHandler {
             context.result(responseMessage);
             LOG.info(responseMessage);
         } catch (NoSuchElementException e) {
-            String responseMessage = "User not found!";
-            context.status(404);
-            context.result(responseMessage);
-            LOG.error(responseMessage);
+            handleUserNotFound(context);
         }
     }
 
@@ -76,7 +73,7 @@ public class UserApiController implements CrudHandler {
 
     /**
      * @param context the context of the request
-     * @param token    the token of the user to retrieve
+     * @param token   the token of the user to retrieve
      */
     @Override
     public void getOne(@NotNull Context context, @NotNull String token) {
@@ -85,15 +82,13 @@ public class UserApiController implements CrudHandler {
             context.json(user);
             LOG.info("user {} was retrieved via GET /users/{} endpoint", token, token);
         } catch (NoSuchElementException e) {
-            context.status(404);
-            context.result("User not found!");
-            LOG.error("User not found!");
+            handleUserNotFound(context);
         }
     }
 
     /**
      * @param context the context of the request
-     * @param token    the token of the user to update
+     * @param token   the token of the user to update
      */
     @Override
     public void update(@NotNull Context context, @NotNull String token) {
@@ -105,9 +100,7 @@ public class UserApiController implements CrudHandler {
             context.result("User updated successfully!");
             LOG.info("User updated successfully!");
         } catch (NoSuchElementException e) {
-            context.status(404);
-            context.result("User not found!");
-            LOG.error("User not found!");
+            handleUserNotFound(context);
         }
     }
 
@@ -117,5 +110,12 @@ public class UserApiController implements CrudHandler {
                                 && !user.getUsername().isBlank() && !user.getPassword().isBlank() && !user.getEmail().isBlank(),
                         new ValidationError<>("username, password and email must not be null!"))
                 .get();
+    }
+
+    private void handleUserNotFound(Context context) {
+        String responseMessage = "User not found!";
+        context.status(404);
+        context.result(responseMessage);
+        LOG.error(responseMessage);
     }
 }
