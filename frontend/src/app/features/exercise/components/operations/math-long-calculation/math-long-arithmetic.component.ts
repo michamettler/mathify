@@ -8,7 +8,7 @@ import {MatDivider} from "@angular/material/divider";
 import {DividerModule} from "primeng/divider";
 
 @Component({
-  selector: 'app-math-long-calculation',
+  selector: 'app-math-long-arithmetic',
   standalone: true,
   imports: [
     InputOtpModule,
@@ -18,10 +18,10 @@ import {DividerModule} from "primeng/divider";
     MatDivider,
     DividerModule
   ],
-  templateUrl: './math-long-calculation.component.html',
-  styleUrl: './math-long-calculation.component.scss'
+  templateUrl: './math-long-arithmetic.component.html',
+  styleUrl: './math-long-arithmetic.component.scss'
 })
-export class MathLongCalculationComponent implements OnInit, OnChanges {
+export class MathLongArithmeticComponent implements OnInit, OnChanges {
 
   @Input() exercise?: Exercise;
 
@@ -51,8 +51,6 @@ export class MathLongCalculationComponent implements OnInit, OnChanges {
       this.operator = '+';
     } else if (operatorText === 'subtraction') {
       this.operator = '-';
-    } else if (operatorText === 'multiplication') {
-      this.operator = '*';
     }
 
     this.operand1 = JSON.parse(<string>this.exercise?.calculationValues)[0].toString().split('');

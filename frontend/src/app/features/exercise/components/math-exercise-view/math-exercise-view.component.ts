@@ -27,7 +27,7 @@ import {SpeedDialModule} from "primeng/speeddial";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {UserRegistrationService} from "../../../registration/services/user-registration.service";
 import Swal from 'sweetalert2'
-import {MathLongCalculationComponent} from "../operations/math-long-calculation/math-long-calculation.component";
+import {MathLongArithmeticComponent} from "../operations/math-long-calculation/math-long-arithmetic.component";
 
 @Component({
   selector: 'app-math-exercise-view',
@@ -52,7 +52,7 @@ import {MathLongCalculationComponent} from "../operations/math-long-calculation/
     MessagesModule,
     SpeedDialModule,
     OverlayPanelModule,
-    MathLongCalculationComponent
+    MathLongArithmeticComponent
   ],
   providers: [MessageService],
   templateUrl: './math-exercise-view.component.html',
@@ -103,7 +103,7 @@ export class MathExerciseViewComponent implements OnInit {
       NeighborOperation,
       SortingOperation,
       TableOperation,
-      LongOperations
+      LongArithmeticOperations
     } = MathExerciseSubType;
 
     if (Object.values(SingleResultOperation).includes(operation as any)) {
@@ -118,12 +118,12 @@ export class MathExerciseViewComponent implements OnInit {
     } else if (Object.values(TableOperation).includes(operation as any)) {
       this.category = 'TableOperation';
       return operation;
-    } else if (Object.values(LongOperations).includes(operation as any)) {
-      this.category = 'LongCalculationOperation';
+    } else if (Object.values(LongArithmeticOperations).includes(operation as any)) {
+      this.category = 'LongArithmeticOperation';
       return operation;
     }
-
-    return 'Unknown Category';
+    this.category = 'Unknown';
+    return operation;
   }
 
   skipExercise() {
