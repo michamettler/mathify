@@ -136,17 +136,10 @@ export class MathExerciseViewComponent implements OnInit {
 
   skipExercise() {
     if (this.exercise) {
-      let result: string;
-      if (this.category === 'LongArithmeticOperation' || this.category === 'LongMultiplicativeOperation') {
-        let resultList = JSON.parse(this.exercise?.result);
-        result = resultList[resultList.length - 1];
-      } else {
-        result = (JSON.parse(this.exercise.result).join(', '))
-      }
       this.messageService.add({
         severity: 'info',
         summary: 'Experience + 0 XP!',
-        detail: 'Exercise skipped, result would have been: ' + result
+        detail: 'Exercise skipped, result would have been: ' + this.getResult(this.exercise)
       })
       this.loadExercise();
     }
@@ -161,6 +154,13 @@ export class MathExerciseViewComponent implements OnInit {
       })
     } else {
       if (this.exercise) {
+        let result: string;
+        if (this.category === 'LongArithmeticOperation' || this.category === 'LongMultiplicativeOperation') {
+          let resultList = JSON.parse(this.exercise?.result);
+          result = resultList[resultList.length - 1];
+        } else {
+          result = (JSON.parse(this.exercise.result).join(', '))
+        }
         this.mathExerciseService.verifyExercise(this.exercise).subscribe({
           next: (response: any) => {
             if (this.user) {
@@ -194,7 +194,7 @@ export class MathExerciseViewComponent implements OnInit {
                 this.messageService.add({
                   severity: 'error',
                   summary: 'Experience + ' + (response.experience - response.experienceBefore) + ' XP!',
-                  detail: 'Dont worry, Im sure you will get it the next time!'
+                  detail: 'Dont worry, Im sure you will get it the next time! result would have been: ' + this.getResult(this.exercise)
                 })
                 this.loadExercise();
               }
@@ -203,6 +203,18 @@ export class MathExerciseViewComponent implements OnInit {
         });
       }
     }
+  }
+
+  getResult(exercise: Exercise | undefined): string {
+    if (exercise) {
+      if (this.category === 'LongArithmeticOperation' || this.category === 'LongMultiplicativeOperation') {
+        let resultList = JSON.parse(exercise.result);
+        return resultList[resultList.length - 1];
+      } else {
+        return (JSON.parse(exercise.result).join(', '))
+      }
+    }
+    return '';
   }
 
   hasEmptyFields(): boolean {
