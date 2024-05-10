@@ -83,7 +83,7 @@ export class MathLongMultiplicativeComponent implements OnInit, OnChanges {
       }
     }
 
-    if (reconstructedArray[0] !== '0' && reconstructedArray[0] !== '') {
+    if (reconstructedArray[0] !== '0' && reconstructedArray[0] !== '' && !this.resultInputs.includes('')) {
       reconstructedArray.push(JSON.parse(this.resultInputs.join('')));
     }
     if (this.exercise) {
