@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Exercise} from "../../../../../../model/exercise";
 import {InputOtpModule} from "primeng/inputotp";
 import {FormsModule} from "@angular/forms";
