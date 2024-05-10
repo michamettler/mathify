@@ -55,7 +55,7 @@ export class MathLongMultiplicativeComponent implements OnInit, OnChanges {
     this.multiplicationSteps = this.operand2.length;
 
     for (let i = this.multiplicationSteps - 1; i >= 0; i--) {
-      let length = (Number(operand1Number) * Number(this.operand2[i])).toString().length;
+      let length = (Number(operand1Number) * Number(this.operand2[i])).toString().length > this.operand2.length ? (Number(operand1Number) * Number(this.operand2[i])).toString().length : this.operand2.length;
       this.steps[i] = new Array(length).fill('');
       this.stepCarryOvers[i] = new Array(length - 1).fill('');
     }
