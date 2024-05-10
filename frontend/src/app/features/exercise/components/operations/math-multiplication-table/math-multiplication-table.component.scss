@@ -17,13 +17,12 @@
 
 @media (max-width: 768px) {
   .input-container {
-    flex: 1 0 33.33%; /* 3 items per row */
+    flex: 1 0 33.33%;
   }
 }
 
-/* Adjustments for very small screens */
 @media (max-width: 480px) {
   .input-container {
-    flex: 1 0 50%; /* 2 items per row */
+    flex: 1 0 50%;
   }
 }

@@ -25,7 +25,7 @@ export class MathMultiplicationTableComponent implements OnInit, OnChanges {
 
   @Input() exercise?: Exercise;
   numbersMultiplicationTable: string[] = Array(10).fill('');
-  number: number | undefined;
+  number?: number;
 
   ngOnInit(): void {
     this.loadExercise();
