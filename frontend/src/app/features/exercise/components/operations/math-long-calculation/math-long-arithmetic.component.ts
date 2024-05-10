@@ -38,7 +38,7 @@ export class MathLongArithmeticComponent implements OnInit, OnChanges {
     this.loadExercise()
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.loadExercise()
   }
 

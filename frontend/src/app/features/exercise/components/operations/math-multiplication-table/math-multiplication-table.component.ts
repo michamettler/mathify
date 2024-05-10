@@ -31,7 +31,7 @@ export class MathMultiplicationTableComponent implements OnInit, OnChanges {
     this.loadExercise();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.loadExercise();
   }
 
