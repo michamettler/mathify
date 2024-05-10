@@ -23,6 +23,11 @@
   text-align: center;
 }
 
+.input-field-take-over {
+  @extend .input-field;
+  background-color: #f0f0f0
+}
+
 .input-container-take-over {
   @extend .input-container;
   margin-top: 3vh;
