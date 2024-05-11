@@ -20,6 +20,7 @@ import static org.mockito.Mockito.*;
 class AuthorizationHandlerTest {
     private final Context ctx = Mockito.mock(Context.class);
     private final BasicAuthCredentials credentials = new BasicAuthCredentials("zehndjon", "jonas");
+    private final AuthorizationHandler authorizationHandler = new AuthorizationHandler();
 
     @Test
     void testSuccessfulAuthentication() {
@@ -31,7 +32,7 @@ class AuthorizationHandlerTest {
         when(ctx.basicAuthCredentials()).thenReturn(credentials);
         when(ctx.header("Authorization")).thenReturn(token);
 
-        AuthorizationHandler.validateEndpointAccess(ctx);
+        authorizationHandler.validateEndpointAccess(ctx);
 
         verify(ctx, times(1)).status(200);
         verify(ctx, never()).status(401);
@@ -45,7 +46,7 @@ class AuthorizationHandlerTest {
         when(ctx.basicAuthCredentials()).thenReturn(credentials);
 
         try {
-            AuthorizationHandler.validateEndpointAccess(ctx);
+            authorizationHandler.validateEndpointAccess(ctx);
         } catch (UnauthorizedResponse e) {
             verify(ctx, never()).status(200);
             verify(ctx, times(1)).status(401);

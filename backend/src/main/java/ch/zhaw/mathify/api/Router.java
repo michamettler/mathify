@@ -37,6 +37,8 @@ public class Router {
     private final ExerciseApiController exerciseApiController;
     private final UserApiController userApiController;
     private final UserRepository userRepository;
+    private final AuthorizationHandler authorizationHandler;
+    private final AuthenticationHandler authenticationHandler;
     private final Scoreboard scoreboard;
     private final int port;
     private Javalin app;
@@ -49,6 +51,8 @@ public class Router {
         userApiController = new UserApiController();
         exerciseApiController = new ExerciseApiController();
         userRepository = UserRepository.getInstance();
+        authorizationHandler = new AuthorizationHandler();
+        authenticationHandler = new AuthenticationHandler();
 
         port = App.getSettings().getHttp().port();
     }
@@ -76,7 +80,7 @@ public class Router {
             ctx.result("Welcome to Mathify!");
             LOG.info("Welcome page was accessed");
         }, Role.ANONYMOUS);
-        get("/login", AuthenticationHandler::login, Role.ANONYMOUS);
+        get("/login", authenticationHandler::login, Role.ANONYMOUS);
         get("/scoreboard", ctx -> {
             ctx.json(scoreboard.createRanking());
             LOG.info("Scoreboard page was accessed");
@@ -101,7 +105,7 @@ public class Router {
             post("/verify", exerciseApiController::verifyResult, Role.USER, Role.ADMIN);
         });
 
-        post("/register", AuthenticationHandler::register, Role.ANONYMOUS);
+        post("/register", authenticationHandler::register, Role.ANONYMOUS);
         post("/stop", this::invokeStop, Role.ADMIN);
     }
 
@@ -130,11 +134,11 @@ public class Router {
                 ctx.attribute("role", Role.ANONYMOUS);
             }
 
-            AuthorizationHandler.validateEndpointAccess(ctx);
+            authorizationHandler.validateEndpointAccess(ctx);
         });
     }
 
-    private void invokeStop(Context ctx){
+    private void invokeStop(Context ctx) {
         ctx.result("Stopping server...");
         LOG.info("Server was stopped");
         closeApplication();
@@ -164,9 +168,6 @@ public class Router {
         return Optional.ofNullable(sslPlugin);
     }
 
-    /**
-     * Shuts the Javalin instance including the Endpoints down
-     */
     private void closeApplication() {
         if (app != null) {
             app.stop();

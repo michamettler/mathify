@@ -17,10 +17,12 @@ import java.util.NoSuchElementException;
  */
 public final class AuthenticationHandler {
     private static final Logger LOG = LoggerFactory.getLogger(AuthenticationHandler.class);
-    private static final UserRepository userRepository = UserRepository.getInstance();
-    private static final SessionHandler sessionHandler = SessionHandler.getInstance();
+    private final UserRepository userRepository;
+    private final SessionHandler sessionHandler;
 
-    private AuthenticationHandler() {
+    public  AuthenticationHandler() {
+        userRepository = UserRepository.getInstance();
+        sessionHandler = SessionHandler.getInstance();
     }
 
     /**
@@ -34,7 +36,7 @@ public final class AuthenticationHandler {
      *
      * @param ctx The context of the request
      */
-    public static void login(Context ctx) {
+    public void login(Context ctx) {
         LOG.info("Trying to login user...");
         BasicAuthCredentials credentials = ctx.basicAuthCredentials();
 
@@ -73,13 +75,13 @@ public final class AuthenticationHandler {
      * Registers a new user if it doesn't already exist
      * @param ctx The context of the request
      */
-    public static void register(Context ctx) {
+    public void register(Context ctx) {
         LOG.info("Trying to register user...");
 
         User user = ctx.bodyAsClass(User.class);
         user.setPassword(User.hashPassword(user.getPassword()));
 
-        if(user == null || user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getGrade() == null) {
+        if(user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getGrade() == null) {
             String message = "User data is empty";
             LOG.info(message);
             ctx.result(message);
@@ -110,11 +112,17 @@ public final class AuthenticationHandler {
      *
      * @param ctx The context of the request
      */
-    private static void createTokenAndStoreToSession(Context ctx) {
+    private void createTokenAndStoreToSession(Context ctx) {
         LOG.info("Creating user token...");
 
         try {
-            User user = userRepository.getByUserName(ctx.basicAuthCredentials().getUsername());
+            BasicAuthCredentials credentials = ctx.basicAuthCredentials();
+            if (credentials == null) {
+                LOG.error("Credentials are empty");
+                ctx.status(400);
+                return;
+            }
+            User user = userRepository.getByUserName(credentials.getUsername());
 
             String token = createToken();
             sessionHandler.createSession(user, token);
@@ -136,7 +144,7 @@ public final class AuthenticationHandler {
      * @return true if the user is authenticated, false otherwise
      * @throws NoSuchElementException if the user does not exist
      */
-    private static boolean authenticate(BasicAuthCredentials credentials) throws NoSuchElementException {
+    private boolean authenticate(BasicAuthCredentials credentials) throws NoSuchElementException {
         User user = userRepository.getByUserName(credentials.getUsername());
         return User.verifyPassword(credentials.getPassword(), user.getPassword());
     }
@@ -147,7 +155,7 @@ public final class AuthenticationHandler {
      * @return a new token
      */
     @NotNull
-    private static String createToken() {
+    private String createToken() {
         SecureRandom secureRandom = new SecureRandom();
         Base64.Encoder base64Encoder = Base64.getUrlEncoder();
         byte[] randomBytes = new byte[24];

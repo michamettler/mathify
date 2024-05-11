@@ -1,7 +1,5 @@
 package ch.zhaw.mathify.model.exercise;
 
-import java.util.Arrays;
-
 /**
  * Enum for exercise sub types.
  */
@@ -41,17 +39,5 @@ public enum ExerciseSubType {
      */
     public static ExerciseSubType valueOfIgnoreCase(String value) throws IllegalArgumentException {
         return ExerciseSubType.valueOf(value.toUpperCase());
-    }
-
-    /**
-     * @param displayName Name to find in display names
-     * @return the found display name
-     * @throws IllegalArgumentException if not found
-     */
-    public static ExerciseSubType getSubTypeFromDisplayName(String displayName) throws IllegalArgumentException {
-        return Arrays.stream(ExerciseSubType.values())
-                .filter(subType -> subType.getDisplayName().equals(displayName))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid exercise subtype"));
     }
 }

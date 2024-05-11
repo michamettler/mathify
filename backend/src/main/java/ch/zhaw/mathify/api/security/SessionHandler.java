@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
  * This class handles the sessions for the users.
  * The frontend doesn't need to keep track of the session.
  */
-public final class  SessionHandler {
+public final class SessionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(SessionHandler.class);
     private static SessionHandler instance;
     private final Map<User, String> sessions;
@@ -57,7 +57,7 @@ public final class  SessionHandler {
      */
     public boolean verifySession(@NotNull User user, @NotNull String token) {
         LOG.info("Verifying session for user: {}", user);
-        if(!sessions.containsKey(user)){
+        if (!sessions.containsKey(user)) {
             return false;
         }
         return sessions.get(user).equals(token);
@@ -105,7 +105,7 @@ public final class  SessionHandler {
                 .stream()
                 .filter(user -> sessions.get(user).equals(token))
                 .findFirst()
-                .orElseThrow(); 
+                .orElseThrow();
     }
 
     /**
