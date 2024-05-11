@@ -120,7 +120,7 @@ public class User {
         if (user.getGrade() != null) setGrade(user.getGrade());
         if (user.getRole() != null) setRole(user.getRole());
         if (user.getLevel() != 0) setLevel(user.getLevel());
-        if (user.getExperience() != 0) setExperience(user.getExperience());
+        if (user.getExperience() >= 0) setExperience(user.getExperience());
     }
 
     public String getUsername() {

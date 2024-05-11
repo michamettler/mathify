@@ -111,21 +111,22 @@ export class GradeAndModeSelectionComponent implements OnInit {
   }
 
   startGame() {
-    if (this.selectedGrade && this.selectedMode) {
-      this.userRegistrationService.getUser().subscribe({
-        next: (response: User) => {
-          response.grade = this.selectedGrade;
+    this.userRegistrationService.getUser().subscribe({
+      next: (response: User) => {
+        if (this.selectedGrade !== response.grade) {
           this.userRegistrationService.updateUser({
-            grade: this.selectedGrade
+            grade: this.selectedGrade,
+            level: 1,
+            experience: 0,
           }).subscribe({
             next: () => {
               this.router.navigate(['/scoreboard']);
             }
           });
+        } else {
+          this.router.navigate(['/scoreboard']);
         }
-      });
-    } else {
-      this.router.navigate(['/scoreboard']);
-    }
+      }
+    });
   }
 }
