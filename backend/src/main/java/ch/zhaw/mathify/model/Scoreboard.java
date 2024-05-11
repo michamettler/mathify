@@ -162,6 +162,15 @@ public class Scoreboard {
     }
 
     /**
+     * Checks if the Scoreboard is empty
+     *
+     * @return True if the Scoreboard is empty, false otherwise
+     */
+    public boolean isEmpty() {
+        return root == null;
+    }
+
+    /**
      * Returns the size of the Scoreboard
      *
      * @return The size of the Scoreboard
@@ -185,6 +194,29 @@ public class Scoreboard {
     }
 
     /**
+     * Returns the height of the Scoreboard
+     *
+     * @return The height of the Scoreboard
+     */
+    public int height() {
+        return calculateHeight(root);
+    }
+
+    /**
+     * Calculates the height of the Scoreboard
+     *
+     * @param node The current node
+     * @return The height of the Scoreboard
+     */
+    private int calculateHeight(ScoreboardNode node) {
+        LOG.debug("Calculating height of the scoreboard");
+        if (node == null) {
+            return 0;
+        }
+        return 1 + Math.max(calculateHeight(node.leftScoreboardNode), calculateHeight(node.rightScoreboardNode));
+    }
+
+    /**
      * Traverses the Scoreboard in in-order
      *
      * @param node The current node
@@ -192,7 +224,7 @@ public class Scoreboard {
      */
     public Map<Grade, List<ScoreboardNode>> inOrderTraversal(ScoreboardNode node) {
         LOG.debug("Traversing the scoreboard in in-order");
-        Map<Grade, List<ScoreboardNode>> gradeMap = new EnumMap<>(Grade.class);
+        Map<Grade, List<ScoreboardNode>> gradeMap = new HashMap<>();
 
         if (node != null) {
             for (Grade grade : Grade.values()) {
@@ -218,6 +250,14 @@ public class Scoreboard {
             users.addAll(getUsersByGrade(node.rightScoreboardNode, grade));
         }
         return users;
+    }
+
+    /**
+     * Clears the Scoreboard
+     */
+    public void clear() {
+        LOG.debug("Clearing the scoreboard");
+        root = null;
     }
 
     /**
@@ -263,34 +303,6 @@ public class Scoreboard {
             } else {
                 return 1;
             }
-        }
-
-        /**
-         * Checks if the current node is equal to another node
-         *
-         * @param obj the object to be compared.
-         * @return true if the objects are equal, false otherwise
-         */
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null || getClass() != obj.getClass()) {
-                return false;
-            }
-            ScoreboardNode other = (ScoreboardNode) obj;
-            return this.level == other.level && this.experience == other.experience;
-        }
-
-        /**
-         * Returns the hash code of the current node
-         *
-         * @return the hash code of the current node
-         */
-        @Override
-        public int hashCode() {
-            return Objects.hash(username, grade, level, experience);
         }
 
         public String getUsername() {
