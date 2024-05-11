@@ -2,21 +2,19 @@
 
 # Team 6 - Mathify Quiz
 ## 👨‍🎓 🧮 📐 Short Introduction to Mathify
-Mathify revolutionizes the way primary students from grade 1 to 6 engage with mathematics. Crafted with the latest educational research, it offers a playful learning environment that not only strengthens mathematical skills but is also tailored specifically for exam preparation. Through enjoyable quizzes, Mathify empowers students to master math concepts, fostering both confidence and competence in young learners.
+Mathify revolutionizes the way primary students from grade 1 to 9 engage with mathematics. Crafted with the latest educational research, it offers a playful learning environment that not only strengthens mathematical skills but is also tailored specifically for exam preparation. Through enjoyable quizzes, Mathify empowers students to master math concepts, fostering both confidence and competence in young learners.
 
 ## 📋 Table of contents
 - [Getting Started](#-getting-started)
 - [Key Features](#-key-features)
 - [Technical Details](#-technical-details)
   - [Technologies used in the Project](#-technologies-used-in-the-project)
-  - [Class-Diagram](#-class-diagram)
-  - [Architecture & MVC](#-architecture--mvc)
   - [Branching Modell](#-branching-modell)
   - [Pull Requests](#-pull-requests)
 - [Features to come (Post-MVP)](#-features-to-come-post-mvp)
 - [Credits & Contact](#-credits--contact)
 
-## 🚀 Getting started (Beta-Release)
+## 🚀 Getting started
 1. Clone the repository
 2. Open the project in your desired IDE (IntelliJ, Eclipse or else)
 3. Open Docker Desktop
@@ -36,17 +34,11 @@ Mathify revolutionizes the way primary students from grade 1 to 6 engage with ma
 
 ### 🧪 Technologies used in the Project
 
-- Java SDK 17
-- Gradle Version 8.0.1
-- Clean Code Convention
-- ...
-**- To be extended**
-
-### 🧮 Class-Diagram
---> To be added at the end of the project
-
-### 🏗 Architecture
---> To be added at the end of the project
+- Java SDK 21
+- Javalin 6.1.3
+- Gradle Version 8.7
+- Angular 17
+- Docker
 
 ### 🌳 Branching Modell 
 
@@ -57,14 +49,20 @@ A feature branch was generated for each task. If the feature was completed, a pu
 ### 👨‍🔧 Pull Requests
 Whenever there was a change, it was consequently merged via a pull request. Suggestions for improvements were either commented within the pull request or discussed in person. 
 
-Example: Pull-Request 
-
--- to be added at the end of the project!
+Example: [Pull-Request ](https://github.zhaw.ch/PM3-IT22tbWIN/PM3-FS24-IT22tb_WIN-Team6/pull/129)
 
 Not every pull-requests have discussion/improvement points in it, as if the reviewer agreed with the proposed changes, he immediately approved it. 
 
 ## 🔮 Features to come (Post-MVP)
-1. Will be added after discussion with team with regard to project sketch
+
+1. Exercises Grade 4-9
+2. Payment Service
+3. Password Reset Option
+4. Various Games Modes (Challenge Mode, Custom Mode)
+5. Badge System Motivation
+6. Tailored Features for Teachers
+7. Tutorial Library
+8. In-App Purchases and Addition Services
 
 ## 🙌📫 Credits & Contact
 
