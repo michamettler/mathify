@@ -13,18 +13,6 @@ public class Scoreboard {
     private static final Logger LOG = LoggerFactory.getLogger(Scoreboard.class);
     private ScoreboardNode root;
 
-    /**
-     * Creates a Scoreboard and loads the current users from the users.json file
-     */
-    public Scoreboard() {
-        UserRepository userRepository = UserRepository.getInstance();
-        for (User user : userRepository.get()) {
-            if (user.getRole().equals(Role.USER)) {
-                insert(new ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
-            }
-        }
-    }
-
     public ScoreboardNode getRoot() {
         return root;
     }
@@ -193,27 +181,14 @@ public class Scoreboard {
         return 1 + calculateSize(node.leftScoreboardNode) + calculateSize(node.rightScoreboardNode);
     }
 
-    /**
-     * Returns the height of the Scoreboard
-     *
-     * @return The height of the Scoreboard
-     */
-    public int height() {
-        return calculateHeight(root);
-    }
-
-    /**
-     * Calculates the height of the Scoreboard
-     *
-     * @param node The current node
-     * @return The height of the Scoreboard
-     */
-    private int calculateHeight(ScoreboardNode node) {
-        LOG.debug("Calculating height of the scoreboard");
-        if (node == null) {
-            return 0;
+    public Map<Grade, List<ScoreboardNode>> createRanking() {
+        clear();
+        for (User user : UserRepository.getInstance().get()) {
+            if (user.getRole().equals(Role.USER)) {
+                insert(new ScoreboardNode(user.getUsername(), user.getGrade(), user.getLevel(), user.getExperience()));
+            }
         }
-        return 1 + Math.max(calculateHeight(node.leftScoreboardNode), calculateHeight(node.rightScoreboardNode));
+        return inOrderTraversal(root);
     }
 
     /**
@@ -222,9 +197,9 @@ public class Scoreboard {
      * @param node The current node
      * @return The list of nodes in in-order
      */
-    public Map<Grade, List<ScoreboardNode>> inOrderTraversal(ScoreboardNode node) {
+    Map<Grade, List<ScoreboardNode>> inOrderTraversal(ScoreboardNode node) {
         LOG.debug("Traversing the scoreboard in in-order");
-        Map<Grade, List<ScoreboardNode>> gradeMap = new HashMap<>();
+        Map<Grade, List<ScoreboardNode>> gradeMap = new EnumMap<>(Grade.class);
 
         if (node != null) {
             for (Grade grade : Grade.values()) {
@@ -303,6 +278,33 @@ public class Scoreboard {
             } else {
                 return 1;
             }
+        }
+
+        @Override
+        public String toString() {
+            return "ScoreboardNode{" +
+                    "username='" + username + '\'' +
+                    ", grade=" + grade +
+                    ", level=" + level +
+                    ", experience=" + experience +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null || getClass() != obj.getClass()) {
+                return false;
+            }
+            ScoreboardNode that = (ScoreboardNode) obj;
+            return level == that.level && experience == that.experience && username.equals(that.username) && grade == that.grade;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(username, grade, level, experience);
         }
 
         public String getUsername() {
