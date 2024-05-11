@@ -27,13 +27,6 @@ public class Scoreboard {
         root = insertAt(root, node);
     }
 
-    /**
-     * Inserts a new node into the Scoreboard at the specified position
-     *
-     * @param currentNode The current node
-     * @param newNode     The new node to be inserted
-     * @return The new node
-     */
     private ScoreboardNode insertAt(ScoreboardNode currentNode, ScoreboardNode newNode) {
         LOG.debug("Inserting (at) {} into the scoreboard", newNode.username);
         if (currentNode == null) {
@@ -62,13 +55,6 @@ public class Scoreboard {
         return node;
     }
 
-    /**
-     * Removes a node from the Scoreboard at the specified position
-     *
-     * @param currentNode     The current node
-     * @param nodeToBeRemoved The node to be removed
-     * @return The removed node
-     */
     private ScoreboardNode removeAt(ScoreboardNode currentNode, ScoreboardNode nodeToBeRemoved) {
         LOG.debug("Removing (at) {} from the scoreboard", nodeToBeRemoved.username);
         if (currentNode == null) {
@@ -90,13 +76,6 @@ public class Scoreboard {
         return currentNode;
     }
 
-    /**
-     * Finds the replacement node for the node to be removed
-     *
-     * @param currentNode     The current node
-     * @param replacementNode The replacement node
-     * @return The replacement node
-     */
     private ScoreboardNode findReplacement(ScoreboardNode currentNode, ScoreboardNode replacementNode) {
         LOG.debug("Finding replacement for {}", replacementNode.username);
         if (currentNode.rightScoreboardNode == null) {
@@ -150,15 +129,6 @@ public class Scoreboard {
     }
 
     /**
-     * Checks if the Scoreboard is empty
-     *
-     * @return True if the Scoreboard is empty, false otherwise
-     */
-    public boolean isEmpty() {
-        return root == null;
-    }
-
-    /**
      * Returns the size of the Scoreboard
      *
      * @return The size of the Scoreboard
@@ -167,12 +137,6 @@ public class Scoreboard {
         return calculateSize(root);
     }
 
-    /**
-     * Calculates the size of the Scoreboard
-     *
-     * @param node The current node
-     * @return The size of the Scoreboard
-     */
     private int calculateSize(ScoreboardNode node) {
         LOG.debug("Calculating size of the scoreboard");
         if (node == null) {
@@ -191,12 +155,6 @@ public class Scoreboard {
         return inOrderTraversal(root);
     }
 
-    /**
-     * Traverses the Scoreboard in in-order
-     *
-     * @param node The current node
-     * @return The list of nodes in in-order
-     */
     Map<Grade, List<ScoreboardNode>> inOrderTraversal(ScoreboardNode node) {
         LOG.debug("Traversing the scoreboard in in-order");
         Map<Grade, List<ScoreboardNode>> gradeMap = new EnumMap<>(Grade.class);

@@ -168,9 +168,6 @@ public class Router {
         return Optional.ofNullable(sslPlugin);
     }
 
-    /**
-     * Shuts the Javalin instance including the Endpoints down
-     */
     private void closeApplication() {
         if (app != null) {
             app.stop();
