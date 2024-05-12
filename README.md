@@ -18,7 +18,7 @@ Mathify revolutionizes the way students from grade 1 to 9 engage with mathematic
 1. Clone the repository
 2. Open the project in your desired IDE (IntelliJ, Eclipse or else)
 3. Open Docker Desktop
-4. Run `docker compose up --build`in your local terminal (in the projects root folder)
+4. Run `docker compose up --build` in your local terminal (in the projects root folder)
 5. Open https://localhost/
  - You may see a `connection not safe` message in your browser due to the certificates used (security issues are not addressed in the MVP). Please ignore this message to access the application.
 6. Login or create a new account
