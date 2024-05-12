@@ -21,8 +21,8 @@ Mathify revolutionizes the way students from grade 1 to 9 engage with mathematic
 5. Run `docker compose up --build`in your local terminal (in the projects root folder)
 6. Open https://localhost/
  - You may see a `connection not safe` message in your browser due to the certificates used (security issues are not addressed in the MVP). Please ignore this message to access the application.
-8. Login or create a new account
-9. Play and have fun
+7. Login or create a new account
+8. Play and have fun
 
 ## 🔑 Key Features
 1. Intuitive User Interface: Experience seamless navigation through Mathify's quizzes with a user interface that combines aesthetic appeal with functionality. Designed for ease of use, it ensures learners of young age can interact with the platform without any hassle.
